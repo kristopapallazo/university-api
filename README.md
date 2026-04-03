@@ -1,59 +1,153 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# University App — Backend API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Backend është ndërtuar me **Laravel 12** dhe ofron një REST API të sigurt me autentikim bazuar në token (Laravel Sanctum).
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Cfare duhet te kesh parasysh
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Para se të nisësh, sigurohu që ke të instaluar:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **PHP** v8.2 ose më i ri (une kam perdorur XAMPP)
+- **Composer** v2 ose më i ri
+- **MySQL** (vjen me XAMPP)
+- **Git**
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+##  Klono repon
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+git clone https://github.com/kristopapallazo/university-api.git
+cd university-api
+```
 
-## Laravel Sponsors
+ME PAS:
+Krijo database-in me emrin university_db në phpMyAdmin
+Kopjo .env.example → .env dhe plotëso kredencialet
+Ekzekuto php artisan migrate
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-### Premium Partners
+#. Nis serverin e zhvillimit
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+php artisan serve
+```
 
-## Contributing
+API është e disponueshme në `http://localhost:8000`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## Komandat e dobishme
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan serve          # Nis serverin lokal
+php artisan migrate        # Ekzekuto migrations
+php artisan migrate:fresh  # Fshi dhe rikrijoj të gjitha tabelat
+php artisan route:list     # Shiko të gjitha routes
+php artisan make:model X   # Krijo model të ri
+php artisan make:controller XController  # Krijo controller të ri
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Rolet
 
-## License
+Aplikacioni ka tre role: `admin`, `pedagog`, `student`.  
+Çdo kërkesë e mbrojtur kërkon token të vlefshëm në header:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```
+Authorization: Bearer {token}
+```
+
+Tokeni merret pas login-it ose regjistrit.
+
+---
+
+## Endpoints kryesore
+
+### Publike (nuk kërkojnë login)
+
+Metoda  URL  Përshkrim 
+
+ POST  `/api/register`  Regjistrim i ri 
+ POST  `/api/login`  Kyçje dhe marrje token 
+
+### Të mbrojtura (kërkojnë token)
+
+| Metoda | URL | Përshkrim |
+|--------|-----|-----------|
+| POST | `/api/logout` | Dalje |
+| GET | `/api/students` | Lista e studentëve |
+| GET | `/api/pedagogues` | Lista e pedagogëve |
+| GET | `/api/courses` | Lista e lëndëve |
+| GET | `/api/schedules` | Orari |
+| GET | `/api/grades` | Notat |
+
+Çdo resource mbështet: `GET`, `POST`, `PUT/PATCH`, `DELETE`.
+
+---
+
+## Struktura e projektit
+
+```
+app/
+├── Http/
+│   └── Controllers/      # Logjika e API
+│       ├── AuthController.php
+│       ├── StudentController.php
+│       ├── PedagogueController.php
+│       ├── CourseController.php
+│       ├── ScheduleController.php
+│       └── GradeController.php
+├── Models/               # Modelet e database-it
+│   ├── User.php
+│   ├── Student.php
+│   ├── Pedagogue.php
+│   ├── Course.php
+│   ├── Schedule.php
+│   └── Grade.php
+database/
+└── migrations/           # Struktura e tabelave
+routes/
+└── api.php               # Të gjitha routes e API
+```
+
+---
+
+## Thirrjet API
+
+Bëhen vetëm nëpërmjet skedarëve në `src/services/` nga frontend.  
+Gjithmonë dërgo header:
+
+```
+Content-Type: application/json
+Accept: application/json
+```
+
+---
+
+## Commit-et
+
+Çdo commit duhet të ndjekë formatin:
+
+```
+feat(scope): përshkrim
+fix(scope): përshkrim
+docs(scope): përshkrim
+```
+
+**Shembuj:**
+```
+feat(auth): shto endpoint për login
+fix(grades): korrigjo validimin e notës
+docs(readme): përditëso udhëzimet e instalimit
+```
+
+---
+
+## Shënime të rëndësishme
+
+- Kurrë mos bej commit skedarin `.env` — ai është në `.gitignore`
+- Gjithmonë ekzekuto `php artisan migrate` pas pull-it nëse ka migration të reja
+- E gjithë UI dhe mesazhet e API janë në **shqip**
