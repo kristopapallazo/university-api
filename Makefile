@@ -1,4 +1,4 @@
-.PHONY: setup dev migrate fresh lint fix analyse test ci docs
+.PHONY: setup dev migrate fresh lint fix analyse test ci docs env-local env-prod
 
 ## ── Setup ──────────────────────────────────────────────────────
 setup:
@@ -44,3 +44,15 @@ ci: lint analyse test
 ## ── Docs ───────────────────────────────────────────────────────
 docs:
 	php artisan scribe:generate
+
+## ── Environment switching ──────────────────────────────────────
+env-local:
+	@cp .env.example .env
+	@echo "✅ Switched to LOCAL environment (.env.example → .env)"
+	@echo "   Edit .env and set DB_PASSWORD if needed."
+
+env-prod:
+	@test -f .env.production || { echo "❌ .env.production not found. Create it first (see docs/backend/onboarding.md)."; exit 1; }
+	@cp .env.production .env
+	@echo "✅ Switched to PRODUCTION environment (.env.production → .env)"
+	@echo "   ⚠️  You are now pointing at the PRODUCTION database. Be careful."
