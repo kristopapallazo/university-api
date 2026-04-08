@@ -1,0 +1,220 @@
+name: Authentication
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/auth/login
+    metadata:
+      custom: []
+      groupName: Authentication
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Login (pedagog / admin)'
+      description: |-
+        Returns a Sanctum token for pedagog and admin users.
+        Students must use the Google OAuth flow instead.
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      email:
+        custom: []
+        name: email
+        description: 'Adresa email e pedagog-ut ose admin-it. Must be a valid email address.'
+        required: true
+        example: arjan.hoxha@uamd.edu.al
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      password:
+        custom: []
+        name: password
+        description: Fjalëkalimi.
+        required: true
+        example: secret123
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      email: arjan.hoxha@uamd.edu.al
+      password: secret123
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {"user": {"id": 1, "name": "Arjan Hoxha", "email": "arjan@uamd.edu.al", "role": "pedagog"}, "token": "1|abc..."},
+            "message": "Hyrja u krye me sukses.",
+            "status": 200
+          }
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 401
+        content: '{"data": null, "message": "Email ose fjal\u00ebkalimi i gab\u00fear.", "status": 401}'
+        headers: []
+        description: 'Wrong credentials'
+      -
+        custom: []
+        status: 403
+        content: '{"data": null, "message": "Studen\u00ebtët p\u00ebrdorin Google.", "status": 403}'
+        headers: []
+        description: 'Student tried email login'
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/auth/google/callback
+    metadata:
+      custom: []
+      groupName: Authentication
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Google OAuth — callback'
+      description: |-
+        Handles Google's redirect back. Verifies the `@students.uamd.edu.al` domain,
+        creates or retrieves the user, and returns a Sanctum token.
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {"user": {"id": 5, "name": "Ana Koci", "email": "a.koci@students.uamd.edu.al", "role": "student"}, "token": "2|xyz..."},
+            "message": "Hyrja me Google u krye me sukses.",
+            "status": 200
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: '{"data": null, "message": "Vet\u00ebm student\u00ebt e UAMD...", "status": 403}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/auth/me
+    metadata:
+      custom: []
+      groupName: Authentication
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get authenticated user'
+      description: "Returns the currently authenticated user's profile."
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {"id": 1, "name": "Arjan Hoxha", "email": "arjan@uamd.edu.al", "role": "pedagog", "avatarUrl": null},
+            "message": "OK",
+            "status": 200
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/auth/logout
+    metadata:
+      custom: []
+      groupName: Authentication
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: Logout
+      description: 'Revokes the current Sanctum token.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": null, "message": "Dalja u krye me sukses.", "status": 200}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

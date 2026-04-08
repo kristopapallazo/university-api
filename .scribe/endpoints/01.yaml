@@ -1,0 +1,225 @@
+name: 'Reference Data'
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/faculties
+    metadata:
+      custom: []
+      groupName: 'Reference Data'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List faculties'
+      description: 'Returns all 6 UAMD faculties ordered by ID.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [{"id": 1, "name": "Fakulteti i Shkencave t\u00eb Biznesit"}, {"id": 2, "name": "Fakulteti i Shkencave Teknike"}],
+            "message": "Fakultetet u mor\u00ebn me sukses.",
+            "status": 200
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/faculties/{id}'
+    metadata:
+      custom: []
+      groupName: 'Reference Data'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get a faculty'
+      description: 'Returns a single faculty by its ID.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the faculty.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "name": "Fakulteti i Shkencave t\u00eb Biznesit"}, "message": "Fakulteti u mor me sukses.", "status": 200}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"data": null, "message": "Not Found", "status": 404}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/departments
+    metadata:
+      custom: []
+      groupName: 'Reference Data'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List departments'
+      description: 'Returns all departments. Pass `faculty_id` to filter by faculty.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      faculty_id:
+        custom: []
+        name: faculty_id
+        description: 'optional Filter by faculty.'
+        required: false
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      faculty_id: 2
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [{"id": 4, "name": "Departamenti i Informatik\u00ebs", "facultyId": 2}],
+            "message": "Departamentet u mor\u00ebn me sukses.",
+            "status": 200
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/departments/{id}'
+    metadata:
+      custom: []
+      groupName: 'Reference Data'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get a department'
+      description: 'Returns a single department by its ID.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the department.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 4, "name": "Departamenti i Informatik\u00ebs", "facultyId": 2}, "message": "Departamenti u mor me sukses.", "status": 200}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"data": null, "message": "Not Found", "status": 404}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

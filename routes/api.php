@@ -1,33 +1,35 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\PedagogueController;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\ScheduleController;
-use App\Http\Controllers\GradeController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\SocialAuthController;
+use Illuminate\Support\Facades\Route;
 
-// Public routes - nuk kërkojnë login
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+/*
+|--------------------------------------------------------------------------
+| API Routes — /api/v1/
+|--------------------------------------------------------------------------
+| Prefix is set in bootstrap/app.php via apiPrefix.
+| All routes here are automatically under /api/v1/.
+*/
 
-// Protected routes - kërkojnë token
+// ── Public ──────────────────────────────────────────────────────
+Route::post('/auth/login', [AuthController::class, 'login'])
+    ->middleware('throttle:6,1');
+
+// Google OAuth (students only — @students.uamd.edu.al)
+Route::get('/auth/google/redirect', [SocialAuthController::class, 'redirect']);
+Route::get('/auth/google/callback', [SocialAuthController::class, 'callback']);
+
+// ── Protected ───────────────────────────────────────────────────
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/auth/me', [AuthController::class, 'me']);
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
 
-    // Students
-    Route::apiResource('students', StudentController::class);
-
-    // Pedagogues
-    Route::apiResource('pedagogues', PedagogueController::class);
-
-    // Courses
-    Route::apiResource('courses', CourseController::class);
-
-    // Schedules
-    Route::apiResource('schedules', ScheduleController::class);
-
-    // Grades
-    Route::apiResource('grades', GradeController::class);
+    // Reference data
+    Route::get('/faculties', [FacultyController::class, 'index']);
+    Route::get('/faculties/{id}', [FacultyController::class, 'show']);
+    Route::get('/departments', [DepartmentController::class, 'index']);
+    Route::get('/departments/{id}', [DepartmentController::class, 'show']);
 });

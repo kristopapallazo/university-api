@@ -1,90 +1,131 @@
 # University App — Backend API
 
-Backend është ndërtuar me **Laravel 12** dhe ofron një REST API të sigurt me autentikim bazuar në token (Laravel Sanctum).
+REST API për **Portalin e Universitetit Aleksander Moisiu Durrës (UAMD)**, ndërtuar me **Laravel 12** dhe me autentikim me token (Laravel Sanctum + Google OAuth për studentët).
+
+> **Status:** Phase 2 në zhvillim. E gjithë logjika e dizajnit (auth, konvencionet, plani i PR-ve) është në repon e workspace-it kryesor te `docs/backend/phase-2-plan.md`. Lexoje atë para se të hapësh një PR.
 
 ---
 
-## Cfare duhet te kesh parasysh
+## Çfarë duhet të kesh të instaluar
 
-Para se të nisësh, sigurohu që ke të instaluar:
+| Tool     | Versioni  |
+| -------- | --------- |
+| PHP      | 8.3+      |
+| Composer | 2+        |
+| MySQL    | 8         |
+| Git      | latest    |
 
-- **PHP** v8.2 ose më i ri (une kam perdorur XAMPP)
-- **Composer** v2 ose më i ri
-- **MySQL** (vjen me XAMPP)
-- **Git**
+XAMPP funksionon mirë për PHP + MySQL në Windows.
 
 ---
 
-##  Klono repon
+## Setup-i i parë (njëherësh)
 
 ```bash
 git clone https://github.com/kristopapallazo/university-api.git
 cd university-api
+make setup
 ```
 
-ME PAS:
-Krijo database-in me emrin university_db në phpMyAdmin
-Kopjo .env.example → .env dhe plotëso kredencialet
-Ekzekuto php artisan migrate
+`make setup` bën gjithçka për ty: `composer install`, kopjon `.env`, gjeneron `APP_KEY`, lidh git hooks, dhe ekzekuton migrations.
 
+Para se ta nisësh, krijo database-in në MySQL/phpMyAdmin:
 
-#. Nis serverin e zhvillimit
-
-```bash
-php artisan serve
+```sql
+CREATE DATABASE university_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-API është e disponueshme në `http://localhost:8000`
+Pastaj hap `.env` dhe plotëso:
+
+- `DB_PASSWORD` — fjalëkalimi yt lokal i MySQL
+- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — vetëm nëse po teston OAuth lokalisht (merr nga Google Cloud Console)
 
 ---
 
-## Komandat e dobishme
+## Komandat ditore (Makefile)
 
-```bash
-php artisan serve          # Nis serverin lokal
-php artisan migrate        # Ekzekuto migrations
-php artisan migrate:fresh  # Fshi dhe rikrijoj të gjitha tabelat
-php artisan route:list     # Shiko të gjitha routes
-php artisan make:model X   # Krijo model të ri
-php artisan make:controller XController  # Krijo controller të ri
-```
+| Komanda        | Çfarë bën                                              |
+| -------------- | ------------------------------------------------------ |
+| `make dev`     | Nis API-n në `http://localhost:8000`                   |
+| `make migrate` | Ekzekuto migrations e reja                             |
+| `make fresh`   | Fshi DB-në dhe rifresko tabelat + seeders              |
+| `make lint`    | Pint check (formatter, vetëm raporton)                 |
+| `make fix`     | Pint apply (auto-format)                               |
+| `make analyse` | Larastan static analysis                               |
+| `make test`    | Ekzekuto PHPUnit                                       |
+| `make ci`      | lint + analyse + test (çfarë ekzekuton CI)             |
+| `make docs`    | Rigjenero dokumentet e API-t (Scribe)                  |
+
+Pre-commit hook (lidhet automatikisht nga `make setup`) ekzekuton `pint --test` dhe `phpstan` para çdo commit-i. Nëse dështon, ekzekuto `make fix` dhe bëj commit përsëri.
+
+---
+
+## Endpoint-et aktuale
+
+Të gjitha route-et janë nën `/api/v1/`. I gjen tek [routes/api.php](routes/api.php).
+
+### Publike (pa token)
+
+| Metoda | URL                          | Përshkrim                                                       |
+| ------ | ---------------------------- | --------------------------------------------------------------- |
+| POST   | `/api/v1/auth/login`         | Login pedagog/admin me email + password (rate-limit 6/min)      |
+| GET    | `/api/v1/auth/google/redirect` | Kthen URL-në e konsentit të Google                            |
+| GET    | `/api/v1/auth/google/callback` | Verifikon `@students.uamd.edu.al`, krijon token Sanctum       |
+
+### Të mbrojtura (kërkojnë `Authorization: Bearer {token}`)
+
+| Metoda | URL                       | Përshkrim                          |
+| ------ | ------------------------- | ---------------------------------- |
+| GET    | `/api/v1/auth/me`         | Useri aktual + roli                |
+| POST   | `/api/v1/auth/logout`     | Anulo token-in aktual              |
+| GET    | `/api/v1/faculties`       | Lista e fakulteteve                |
+| GET    | `/api/v1/faculties/{id}`  | Një fakultet i vetëm               |
+| GET    | `/api/v1/departments`     | Lista e departamenteve             |
+| GET    | `/api/v1/departments/{id}`| Një departament i vetëm            |
+
+> **Nuk ka endpoint publik `/register`** — është hequr me qëllim. Studentët regjistrohen automatikisht nëpërmjet Google OAuth callback-ut. Pedagogët krijohen nga admin. Admin-i seedohet manualisht (shih `database/seeders/AdminSeeder.php`).
+
+Për shemat e plota request/response shih Scribe te `http://localhost:8000/docs` (pas `make docs`).
 
 ---
 
 ## Rolet
 
-Aplikacioni ka tre role: `admin`, `pedagog`, `student`.  
-Çdo kërkesë e mbrojtur kërkon token të vlefshëm në header:
+| Rol      | Si autentikohet                     |
+| -------- | ----------------------------------- |
+| `student`  | Vetëm me Google OAuth (`@students.uamd.edu.al`) |
+| `pedagog`  | Email + password (krijuar nga admin)            |
+| `admin`    | Email + password (i seedosur manualisht)        |
 
-```
-Authorization: Bearer {token}
-```
-
-Tokeni merret pas login-it ose regjistrit.
+Roli ruhet në kolonën `users.role`. **Mos prano kurrë `role` nga klienti** — kjo do të lejojë këdo të bëhet admin.
 
 ---
 
-## Endpoints kryesore
+## Format i përgjigjes (response envelope)
 
-### Publike (nuk kërkojnë login)
+Çdo përgjigje — sukses ose gabim — ndjek këtë format:
 
-Metoda  URL  Përshkrim 
+```json
+{
+  "data": {},
+  "message": "OK",
+  "status": 200
+}
+```
 
- POST  `/api/register`  Regjistrim i ri 
- POST  `/api/login`  Kyçje dhe marrje token 
+**Mos kthe kurrë modele Eloquent direkt.** Gjithmonë kalo nëpër një API Resource në `app/Http/Resources/`.
 
-### Të mbrojtura (kërkojnë token)
+---
 
-| Metoda | URL | Përshkrim |
-|--------|-----|-----------|
-| POST | `/api/logout` | Dalje |
-| GET | `/api/students` | Lista e studentëve |
-| GET | `/api/pedagogues` | Lista e pedagogëve |
-| GET | `/api/courses` | Lista e lëndëve |
-| GET | `/api/schedules` | Orari |
-| GET | `/api/grades` | Notat |
+## Konvencionet (të detyrueshme)
 
-Çdo resource mbështet: `GET`, `POST`, `PUT/PATCH`, `DELETE`.
+- **Validimi** jeton në klasa `FormRequest` nën `app/Http/Requests/`. Asnjë `$request->validate()` brenda kontrollerave.
+- **Transformimi** jeton në API Resources nën `app/Http/Resources/`.
+- Route-et grupohen sipas auth state-it në `routes/api.php`. Prefiksi `/api/v1/` është caktuar globalisht në `bootstrap/app.php`.
+- Rolet ruhen tek `users.role` (`student` | `pedagog` | `admin`).
+- Migrations ndjekin emrat e tabelave me UPPERCASE (p.sh. `FAKULTET`) — cakto `protected $table` te modeli në mënyrë eksplicite.
+
+Nëse i thyen këto konvencione, **dokumentet e API-t bëhen të padobishme** (shih më poshtë).
 
 ---
 
@@ -93,61 +134,95 @@ Metoda  URL  Përshkrim
 ```
 app/
 ├── Http/
-│   └── Controllers/      # Logjika e API
-│       ├── AuthController.php
-│       ├── StudentController.php
-│       ├── PedagogueController.php
-│       ├── CourseController.php
-│       ├── ScheduleController.php
-│       └── GradeController.php
-├── Models/               # Modelet e database-it
-│   ├── User.php
-│   ├── Student.php
-│   ├── Pedagogue.php
-│   ├── Course.php
-│   ├── Schedule.php
-│   └── Grade.php
+│   ├── Controllers/         # AuthController, SocialAuthController, FacultyController, DepartmentController
+│   ├── Requests/Auth/       # LoginRequest (FormRequest për validim)
+│   └── Resources/           # UserResource, FacultyResource, DepartmentResource
+└── Models/                  # User, Faculty, Department
 database/
-└── migrations/           # Struktura e tabelave
+├── migrations/              # users, fakultet, departament, sanctum tokens, ...
+└── seeders/                 # FacultySeeder, DepartmentSeeder, AdminSeeder
 routes/
-└── api.php               # Të gjitha routes e API
+└── api.php                  # Të gjitha route-et (me prefiks /api/v1/)
+config/
+├── cors.php                 # CORS për frontend
+├── sanctum.php              # Konfigurimi i tokenave
+├── scribe.php               # Konfigurimi i dokumenteve auto
+└── services.php             # Kredencialet Google OAuth
 ```
 
 ---
 
-## Thirrjet API
+## Dokumentimi i API-t (Scribe) — LEXOJE
 
-Bëhen vetëm nëpërmjet skedarëve në `src/services/` nga frontend.  
-Gjithmonë dërgo header:
+Ne e dokumentojmë API-n **automatikisht** me [Scribe](https://scribe.knuckles.wtf/). **Nuk shkruajmë annotation Swagger me dorë.** Scribe lexon kodin tënd dhe i gjeneron dokumentet vetë.
 
-```
-Content-Type: application/json
-Accept: application/json
-```
+### Çfarë gjenerohet
+
+Kur ekzekuton `make docs`, merr tre gjëra njëherësh:
+
+1. **Dokumente HTML interaktive** në `http://localhost:8000/docs` — me buton "Try it out" për çdo endpoint
+2. **Një spec OpenAPI 3 / Swagger** në `storage/app/private/scribe/openapi.yaml`
+3. **Një koleksion Postman** që ekipi i frontend-it mund ta importojë
+
+> "OpenAPI" dhe "Swagger" janë i njëjti format me dy emra. Çdo viewer Swagger lexon skedarin që Scribe gjeneron.
+
+### Si i di Scribe çfarë të dokumentojë
+
+Scribe nis Laravel-in dhe inspekton kodin tënd:
+
+| Çfarë lexon Scribe                          | Çfarë bëhet në dokument                       |
+| ------------------------------------------- | --------------------------------------------- |
+| `routes/api.php`                            | URL-ja dhe metoda e endpoint-it               |
+| `FormRequest`-i që type-hint në kontroller  | Skema e body-t + rregullat e validimit        |
+| `Resource`-i që metoda kthen                | Skema e response-it                           |
+| Docblock-u i metodës së kontrollerit        | Titulli + përshkrimi i endpoint-it            |
+
+**Domethënë:** nëse ndjek konvencionet (FormRequest për input, Resource për output, docblock 1-rreshtësh), dokumenti shkruhet vetë. Nëse i anashkalon dhe valido inline me `$request->validate(...)`, **Scribe nuk e sheh dot dhe dokumenti për atë endpoint do të jetë bosh ose i gabuar.** Ky është një arsye më shumë pse konvencionet janë të detyrueshme.
+
+### Workflow-i kur shton një endpoint të ri
+
+1. Shto një route në `routes/api.php`
+2. Krijo një `FormRequest` për input-in (në `app/Http/Requests/`)
+3. Krijo një `Resource` për output-in (në `app/Http/Resources/`)
+4. Shkruaj metodën e kontrollerit me një docblock 1-rreshtësh që e përshkruan
+5. Ekzekuto `make docs`
+6. Hap `http://localhost:8000/docs` dhe **kontrollo që endpoint-i yt është aty dhe duket si duhet**
+7. Bëj commit edhe skedarëve të rigjeneruar nën `.scribe/` dhe `storage/app/private/scribe/`
+
+**Mos e modifiko kurrë `openapi.yaml` me dorë.** Është një build artifact. Nëse diçka duket gabim te dokumenti, rregullimi është te `FormRequest`, te `Resource`, ose te route — jo te YAML-i.
+
+### Pse e bëjmë kështu
+
+- Dokumentet e shkruara me dorë gjithmonë largohen nga kodi me kalimin e kohës. Dokumentet e gjeneruara nuk mund të largohen.
+- Ekipi i frontend-it punon në një repo tjetër. Marrin një URL të vetme (`/docs`) dhe i shërbejnë vetes gjithçka.
+- E shpërblen konvencionin që po zbatojmë tashmë. Një rregull, dy fitime: kod më i pastër DHE dokumente falas.
 
 ---
 
-## Commit-et
+## Commit-et (Conventional Commits)
 
-Çdo commit duhet të ndjekë formatin:
+Pre-commit hook + commitlint detyrojnë formatin:
 
 ```
-feat(scope): përshkrim
-fix(scope): përshkrim
-docs(scope): përshkrim
+type(scope): përshkrim
 ```
+
+Tipet e lejuara: `feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `ci`, `style`, `perf`.
 
 **Shembuj:**
 ```
-feat(auth): shto endpoint për login
-fix(grades): korrigjo validimin e notës
-docs(readme): përditëso udhëzimet e instalimit
+feat(auth): shto endpoint për Google OAuth callback
+fix(faculty): korrigjo validimin e ID-së
+docs(readme): përditëso udhëzimet e setup-it
+chore(ci): shto Larastan në pipeline
 ```
 
 ---
 
 ## Shënime të rëndësishme
 
-- Kurrë mos bej commit skedarin `.env` — ai është në `.gitignore`
-- Gjithmonë ekzekuto `php artisan migrate` pas pull-it nëse ka migration të reja
-- E gjithë UI dhe mesazhet e API janë në **shqip**
+- **Mos bëj commit `.env`** — është në `.gitignore`.
+- **Mos prano kurrë `role` nga input-i i klientit.** Çdo endpoint që krijon user duhet ta fiksojë rolin në backend.
+- **Pas `git pull`**, ekzekuto `make migrate` (ose `make fresh` nëse pranon humbjen e të dhënave lokale).
+- **Të gjitha mesazhet e API-t janë në shqip.**
+- **Nëse `make ci` dështon lokalisht, edhe CI në GitHub do dështojë.** Rregulloje para se të bësh push.

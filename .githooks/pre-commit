@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+echo "→ Running Pint (formatter)..."
+vendor/bin/pint --test
+
+echo "→ Running Larastan (static analysis)..."
+vendor/bin/phpstan analyse --memory-limit=1G
+
+echo "✅ All checks passed."

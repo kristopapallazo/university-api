@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,11 +16,15 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'provider',
+        'provider_id',
+        'avatar_url',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
+        'provider_id',
     ];
 
     protected function casts(): array
