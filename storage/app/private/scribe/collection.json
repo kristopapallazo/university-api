@@ -1,0 +1,358 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "http:\/\/localhost:8000"
+        }
+    ],
+    "info": {
+        "name": "UAMD Portal API",
+        "_postman_id": "9e042321-124b-419d-8302-94fd6f7dedb1",
+        "description": "REST API p\u00ebr Portalin e Universitetit Aleksander Moisiu Durr\u00ebs (UAMD). T\u00eb gjitha endpoint-et jan\u00eb t\u00eb prefixuara me \/api\/v1\/.",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "description": "",
+            "item": [
+                {
+                    "name": "Login (pedagog \/ admin)",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/login",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/login"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"arjan.hoxha@uamd.edu.al\",\"password\":\"secret123\"}"
+                        },
+                        "description": "Returns a Sanctum token for pedagog and admin users.\nStudents must use the Google OAuth flow instead.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": {\"user\": {\"id\": 1, \"name\": \"Arjan Hoxha\", \"email\": \"arjan@uamd.edu.al\", \"role\": \"pedagog\"}, \"token\": \"1|abc...\"},\n  \"message\": \"Hyrja u krye me sukses.\",\n  \"status\": 200\n}",
+                            "name": "Success"
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\"data\": null, \"message\": \"Email ose fjal\\u00ebkalimi i gab\\u00fear.\", \"status\": 401}",
+                            "name": "Wrong credentials"
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\"data\": null, \"message\": \"Studen\\u00ebt\u00ebt p\\u00ebrdorin Google.\", \"status\": 403}",
+                            "name": "Student tried email login"
+                        }
+                    ]
+                },
+                {
+                    "name": "Google OAuth \u2014 callback",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/google\/callback",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/google\/callback"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Handles Google's redirect back. Verifies the `@students.uamd.edu.al` domain,\ncreates or retrieves the user, and returns a Sanctum token.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": {\"user\": {\"id\": 5, \"name\": \"Ana Koci\", \"email\": \"a.koci@students.uamd.edu.al\", \"role\": \"student\"}, \"token\": \"2|xyz...\"},\n  \"message\": \"Hyrja me Google u krye me sukses.\",\n  \"status\": 200\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\"data\": null, \"message\": \"Vet\\u00ebm student\\u00ebt e UAMD...\", \"status\": 403}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get authenticated user",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/me",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/me"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the currently authenticated user's profile."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": {\"id\": 1, \"name\": \"Arjan Hoxha\", \"email\": \"arjan@uamd.edu.al\", \"role\": \"pedagog\", \"avatarUrl\": null},\n  \"message\": \"OK\",\n  \"status\": 200\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/logout",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/logout"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Revokes the current Sanctum token."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": null, \"message\": \"Dalja u krye me sukses.\", \"status\": 200}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Reference Data",
+            "description": "",
+            "item": [
+                {
+                    "name": "List faculties",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/faculties",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/faculties"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns all 6 UAMD faculties ordered by ID."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [{\"id\": 1, \"name\": \"Fakulteti i Shkencave t\\u00eb Biznesit\"}, {\"id\": 2, \"name\": \"Fakulteti i Shkencave Teknike\"}],\n  \"message\": \"Fakultetet u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get a faculty",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/faculties\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/faculties\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the faculty."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a single faculty by its ID."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": {\"id\": 1, \"name\": \"Fakulteti i Shkencave t\\u00eb Biznesit\"}, \"message\": \"Fakulteti u mor me sukses.\", \"status\": 200}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"data\": null, \"message\": \"Not Found\", \"status\": 404}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List departments",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/departments",
+                            "query": [
+                                {
+                                    "key": "faculty_id",
+                                    "value": "2",
+                                    "description": "optional Filter by faculty.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/departments?faculty_id=2"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns all departments. Pass `faculty_id` to filter by faculty."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [{\"id\": 4, \"name\": \"Departamenti i Informatik\\u00ebs\", \"facultyId\": 2}],\n  \"message\": \"Departamentet u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get a department",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/departments\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/departments\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the department."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a single department by its ID."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": {\"id\": 4, \"name\": \"Departamenti i Informatik\\u00ebs\", \"facultyId\": 2}, \"message\": \"Departamenti u mor me sukses.\", \"status\": 200}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"data\": null, \"message\": \"Not Found\", \"status\": 404}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "Authorization",
+                "type": "string"
+            }
+        ]
+    }
+}
