@@ -11,6 +11,19 @@ class FacultyController extends Controller
 {
     use ApiResponse;
 
+    /**
+     * List faculties
+     *
+     * Returns all 6 UAMD faculties ordered by ID.
+     *
+     * @group Reference Data
+     *
+     * @response 200 {
+     *   "data": [{"id": 1, "name": "Fakulteti i Shkencave t\u00eb Biznesit"}, {"id": 2, "name": "Fakulteti i Shkencave Teknike"}],
+     *   "message": "Fakultetet u mor\u00ebn me sukses.",
+     *   "status": 200
+     * }
+     */
     public function index(): JsonResponse
     {
         $faculties = Faculty::orderBy('FAK_ID')->get();
@@ -21,6 +34,16 @@ class FacultyController extends Controller
         );
     }
 
+    /**
+     * Get a faculty
+     *
+     * Returns a single faculty by its ID.
+     *
+     * @group Reference Data
+     *
+     * @response 200 {"data": {"id": 1, "name": "Fakulteti i Shkencave t\u00eb Biznesit"}, "message": "Fakulteti u mor me sukses.", "status": 200}
+     * @response 404 {"data": null, "message": "Not Found", "status": 404}
+     */
     public function show(int $id): JsonResponse
     {
         $faculty = Faculty::findOrFail($id);

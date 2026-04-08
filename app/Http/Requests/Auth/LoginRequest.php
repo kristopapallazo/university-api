@@ -27,4 +27,18 @@ class LoginRequest extends FormRequest
             'password.required' => 'Fjalëkalimi është i detyrueshëm.',
         ];
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'email' => [
+                'description' => 'Adresa email e pedagog-ut ose admin-it.',
+                'example' => 'arjan.hoxha@uamd.edu.al',
+            ],
+            'password' => [
+                'description' => 'Fjalëkalimi.',
+                'example' => 'secret123',
+            ],
+        ];
+    }
 }

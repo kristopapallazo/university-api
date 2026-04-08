@@ -12,6 +12,21 @@ class DepartmentController extends Controller
 {
     use ApiResponse;
 
+    /**
+     * List departments
+     *
+     * Returns all departments. Pass `faculty_id` to filter by faculty.
+     *
+     * @group Reference Data
+     *
+     * @queryParam faculty_id integer optional Filter by faculty. Example: 2
+     *
+     * @response 200 {
+     *   "data": [{"id": 4, "name": "Departamenti i Informatik\u00ebs", "facultyId": 2}],
+     *   "message": "Departamentet u mor\u00ebn me sukses.",
+     *   "status": 200
+     * }
+     */
     public function index(Request $request): JsonResponse
     {
         $query = Department::query()->orderBy('DEP_ID');
@@ -26,6 +41,16 @@ class DepartmentController extends Controller
         );
     }
 
+    /**
+     * Get a department
+     *
+     * Returns a single department by its ID.
+     *
+     * @group Reference Data
+     *
+     * @response 200 {"data": {"id": 4, "name": "Departamenti i Informatik\u00ebs", "facultyId": 2}, "message": "Departamenti u mor me sukses.", "status": 200}
+     * @response 404 {"data": null, "message": "Not Found", "status": 404}
+     */
     public function show(int $id): JsonResponse
     {
         $department = Department::findOrFail($id);

@@ -13,6 +13,24 @@ class AuthController extends Controller
 {
     use ApiResponse;
 
+    /**
+     * Login (pedagog / admin)
+     *
+     * Returns a Sanctum token for pedagog and admin users.
+     * Students must use the Google OAuth flow instead.
+     *
+     * @group Authentication
+     *
+     * @unauthenticated
+     *
+     * @response 200 scenario="Success" {
+     *   "data": {"user": {"id": 1, "name": "Arjan Hoxha", "email": "arjan@uamd.edu.al", "role": "pedagog"}, "token": "1|abc..."},
+     *   "message": "Hyrja u krye me sukses.",
+     *   "status": 200
+     * }
+     * @response 401 scenario="Wrong credentials" {"data": null, "message": "Email ose fjal\u00ebkalimi i gab\u00fear.", "status": 401}
+     * @response 403 scenario="Student tried email login" {"data": null, "message": "Studen\u00ebtët p\u00ebrdorin Google.", "status": 403}
+     */
     public function login(LoginRequest $request): JsonResponse
     {
         if (! Auth::attempt($request->only('email', 'password'))) {
@@ -35,6 +53,19 @@ class AuthController extends Controller
         ], 'Hyrja u krye me sukses.');
     }
 
+    /**
+     * Get authenticated user
+     *
+     * Returns the currently authenticated user's profile.
+     *
+     * @group Authentication
+     *
+     * @response 200 {
+     *   "data": {"id": 1, "name": "Arjan Hoxha", "email": "arjan@uamd.edu.al", "role": "pedagog", "avatarUrl": null},
+     *   "message": "OK",
+     *   "status": 200
+     * }
+     */
     public function me(Request $request): JsonResponse
     {
         return $this->success(
@@ -43,6 +74,15 @@ class AuthController extends Controller
         );
     }
 
+    /**
+     * Logout
+     *
+     * Revokes the current Sanctum token.
+     *
+     * @group Authentication
+     *
+     * @response 200 {"data": null, "message": "Dalja u krye me sukses.", "status": 200}
+     */
     public function logout(Request $request): JsonResponse
     {
         $request->user()->currentAccessToken()->delete();

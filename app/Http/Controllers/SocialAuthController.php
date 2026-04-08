@@ -15,8 +15,15 @@ class SocialAuthController extends Controller
     use ApiResponse;
 
     /**
-     * Redirect the student to Google's consent screen.
-     * The FE opens this URL in the browser (not via fetch/axios).
+     * Google OAuth — redirect
+     *
+     * Redirects the browser to Google's consent screen.
+     * Open this URL directly in the browser; **do not** call it via fetch/axios.
+     * Only @students.uamd.edu.al accounts are accepted.
+     *
+     * @group Authentication
+     *
+     * @unauthenticated
      */
     public function redirect(): RedirectResponse
     {
@@ -30,8 +37,21 @@ class SocialAuthController extends Controller
     }
 
     /**
-     * Handle Google's callback after the student approves.
-     * Verifies the domain, creates/finds the user, returns a Sanctum token.
+     * Google OAuth — callback
+     *
+     * Handles Google's redirect back. Verifies the `@students.uamd.edu.al` domain,
+     * creates or retrieves the user, and returns a Sanctum token.
+     *
+     * @group Authentication
+     *
+     * @unauthenticated
+     *
+     * @response 200 {
+     *   "data": {"user": {"id": 5, "name": "Ana Koci", "email": "a.koci@students.uamd.edu.al", "role": "student"}, "token": "2|xyz..."},
+     *   "message": "Hyrja me Google u krye me sukses.",
+     *   "status": 200
+     * }
+     * @response 403 {"data": null, "message": "Vet\u00ebm student\u00ebt e UAMD...", "status": 403}
      */
     public function callback(): JsonResponse
     {
