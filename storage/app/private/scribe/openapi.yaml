@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 servers:
   -
-    url: 'http://localhost:8000'
+    url: 'https://university-api-production.up.railway.app'
 tags:
   -
     name: Authentication
