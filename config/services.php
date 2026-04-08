@@ -36,8 +36,11 @@ return [
     ],
 
     'google' => [
-        'client_id' => env('GOOGLE_CLIENT_ID'),
-        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        // Renamed from GOOGLE_CLIENT_ID/SECRET because Railpack treats those
+        // names as build-time secrets and fails the build if not mounted.
+        // Socialite only needs them at runtime, so renaming sidesteps the issue.
+        'client_id' => env('GOOGLE_OAUTH_ID'),
+        'client_secret' => env('GOOGLE_OAUTH_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 

@@ -2,20 +2,20 @@
 
 REST API për **Portalin e Universitetit Aleksander Moisiu Durrës (UAMD)**, ndërtuar me **Laravel 12** dhe me autentikim me token (Laravel Sanctum + Google OAuth për studentët).
 
-> **Status:** Phase 2 në zhvillim. E gjithë logjika e dizajnit (auth, konvencionet, plani i PR-ve) është në repon e workspace-it kryesor te `docs/backend/phase-2-plan.md`. Lexoje atë para se të hapësh një PR.
+> **Status:** Phase 2 në zhvillim. Backend-i është i deploy-uar në **Railway** (shih `railway.json`). E gjithë logjika e dizajnit (auth, konvencionet, plani i PR-ve) është në repon e workspace-it kryesor te `docs/backend/phase-2-plan.md`. Lexoje atë para se të hapësh një PR.
 
 ---
 
 ## Çfarë duhet të kesh të instaluar
 
-| Tool     | Versioni  |
-| -------- | --------- |
-| PHP      | 8.3+      |
-| Composer | 2+        |
-| MySQL    | 8         |
-| Git      | latest    |
+| Tool     | Versioni  | I detyrueshëm? |
+| -------- | --------- | -------------- |
+| PHP      | 8.3+      | po             |
+| Composer | 2+        | po             |
+| Git      | latest    | po             |
+| MySQL    | 8         | **jo** — vetëm nëse do të punosh me schema lokale |
 
-XAMPP funksionon mirë për PHP + MySQL në Windows.
+> **MySQL nuk nevojitet për punë normale backend-i.** Si parazgjedhje, projekti lidhet me DB-në e prodhimit (Railway). Vetëm lead-i menaxhon migrations/schema. Juniorët shkruajnë controllers/resources/requests dhe lexojnë/shkruajnë te e njëjta DB e përbashkët.
 
 ---
 
@@ -27,18 +27,35 @@ cd university-api
 make setup
 ```
 
-`make setup` bën gjithçka për ty: `composer install`, kopjon `.env`, gjeneron `APP_KEY`, lidh git hooks, dhe ekzekuton migrations.
+`make setup` bën: `composer install`, kopjon `.env` nga `.env.example`, gjeneron `APP_KEY`, lidh git hooks. Migrations ekzekutohen **vetëm nëse je në DB lokale** (përndryshe anashkalohen automatikisht).
 
-Para se ta nisësh, krijo database-in në MySQL/phpMyAdmin:
+### Kredencialet (kërko nga lead-i)
 
-```sql
-CREATE DATABASE university_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+`.env.example` përmban vetëm placeholder. Vlerat reale të prodhimit (DB host, user, password, Google OAuth keys) **nuk janë në git**. Pyet Kriston dhe i fut në `.env`-in tënd lokal:
+
+- `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` (Railway)
+- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`
+
+⚠️ **Mos bëj kurrë commit `.env`.** Është në `.gitignore`.
+
+---
+
+## Pas çdo `git pull`
+
+```bash
+git pull
+composer install      # no-op nëse asgjë s'ka ndryshuar — i sigurt ta ekzekutosh gjithmonë
+make dev
 ```
 
-Pastaj hap `.env` dhe plotëso:
+Nëse diçka duket çuditshëm pas pull-it (ndryshime që nuk shfaqen, gabime "class not found"):
 
-- `DB_PASSWORD` — fjalëkalimi yt lokal i MySQL
-- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — vetëm nëse po teston OAuth lokalisht (merr nga Google Cloud Console)
+```bash
+php artisan config:clear
+php artisan cache:clear
+```
+
+**Mos ekzekuto `make migrate` ose `make fresh`.** Skema e DB-së menaxhohet vetëm nga lead-i. Nëse pas një pull-i sheh gabime tipi "table doesn't exist" ose "column not found", kjo do të thotë që migration-i i ri nuk është aplikuar ende në prodhim — njofto Kriston, mos provo ta rregullosh vetë.
 
 ---
 
@@ -55,6 +72,8 @@ Pastaj hap `.env` dhe plotëso:
 | `make test`    | Ekzekuto PHPUnit                                       |
 | `make ci`      | lint + analyse + test (çfarë ekzekuton CI)             |
 | `make docs`    | Rigjenero dokumentet e API-t (Scribe)                  |
+| `make env-local` | Kalo te `.env` lokal (DB lokal)                      |
+| `make env-prod`  | Kalo te `.env.production` (⚠️ DB e prodhimit)        |
 
 Pre-commit hook (lidhet automatikisht nga `make setup`) ekzekuton `pint --test` dhe `phpstan` para çdo commit-i. Nëse dështon, ekzekuto `make fix` dhe bëj commit përsëri.
 
@@ -215,6 +234,38 @@ feat(auth): shto endpoint për Google OAuth callback
 fix(faculty): korrigjo validimin e ID-së
 docs(readme): përditëso udhëzimet e setup-it
 chore(ci): shto Larastan në pipeline
+```
+
+---
+
+## Prodhimi (Railway) & siguria e DB-së
+
+Backend-i ekzekutohet në Railway. Variablat e mjedisit në prodhim menaxhohen nga paneli i Railway. Lokalisht, parazgjedhja është të lidhesh me të njëjtën DB të prodhimit — kjo do të thotë **një burim i vetëm i të dhënave** për të gjithë ekipin.
+
+### Safeguards (mbrojtjet)
+
+`make migrate` dhe `make fresh` **refuzojnë të ekzekutohen** nëse `DB_HOST` nuk është `127.0.0.1` ose `localhost`. Mesazhi që do të shohësh:
+
+```
+❌ REFUSING: DB_HOST=... is not local.
+   This command would touch a remote database (likely PRODUCTION).
+```
+
+Kjo do të thotë që nuk mund të fshish ose modifikosh aksidentalisht skemën e prodhimit nga komandat e Makefile.
+
+⚠️ **Por kujdes:** mbrojtja është vetëm te Makefile. `php artisan migrate` direkt, `php artisan tinker` me `User::truncate()`, ose SQL i papërpunuar **nuk** ndalohen. Mos ekzekuto komanda që modifikojnë DB-në po se nuk e di saktësisht çfarë po bën.
+
+### Punë me schema (vetëm lead-i)
+
+Ndryshimet e skemës bëhen lokalisht kundër MySQL-së lokale, pastaj aplikohen në prodhim:
+
+```bash
+make env-local     # kalon te .env me DB lokale
+make migrate       # ose make fresh — i sigurt, je në lokale
+# ... krijo migration, testo ...
+make env-prod      # kalon te .env.production (nëse e ke)
+# aplikon migration në prod manualisht (Railway CLI ose dashboard)
+make env-local     # KTHEHU
 ```
 
 ---

@@ -1,4 +1,16 @@
-.PHONY: setup dev migrate fresh lint fix analyse test ci docs env-local env-prod
+.PHONY: setup dev migrate fresh lint fix analyse test ci docs env-local env-prod _guard-local
+
+## ── Safety guard ───────────────────────────────────────────────
+## Refuses to run destructive DB commands unless DB_HOST is localhost.
+## This prevents accidentally migrating/wiping the production DB.
+_guard-local:
+	@host=$$(grep -E '^DB_HOST=' .env 2>/dev/null | cut -d= -f2 | tr -d '"' | tr -d "'"); \
+	if [ "$$host" != "127.0.0.1" ] && [ "$$host" != "localhost" ] && [ "$$host" != "" ]; then \
+		echo "❌ REFUSING: DB_HOST=$$host is not local."; \
+		echo "   This command would touch a remote database (likely PRODUCTION)."; \
+		echo "   Run 'make env-local' first if you really mean to work locally."; \
+		exit 1; \
+	fi
 
 ## ── Setup ──────────────────────────────────────────────────────
 setup:
@@ -11,8 +23,14 @@ setup:
 	@echo "→ Wiring git hooks..."
 	git config core.hooksPath .githooks
 	@chmod +x .githooks/pre-commit 2>/dev/null || true
-	@echo "→ Running migrations..."
-	php artisan migrate
+	@host=$$(grep -E '^DB_HOST=' .env | cut -d= -f2 | tr -d '"' | tr -d "'"); \
+	if [ "$$host" = "127.0.0.1" ] || [ "$$host" = "localhost" ]; then \
+		echo "→ Local DB detected, running migrations..."; \
+		php artisan migrate; \
+	else \
+		echo "→ Remote DB detected ($$host), skipping migrations."; \
+		echo "   Schema is managed by the lead. You're ready to code."; \
+	fi
 	@echo ""
 	@echo "✅ Setup complete. Run 'make dev' to start the server."
 
@@ -20,10 +38,10 @@ setup:
 dev:
 	php artisan serve
 
-migrate:
+migrate: _guard-local
 	php artisan migrate
 
-fresh:
+fresh: _guard-local
 	php artisan migrate:fresh --seed
 
 ## ── Quality ────────────────────────────────────────────────────
