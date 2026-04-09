@@ -17,7 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->statefulApi();
+        // statefulApi() is intentionally NOT called here.
+        // We use Sanctum token-based auth (Bearer tokens), not cookie/session-based SPA auth.
+        // Calling statefulApi() would add CSRF verification to API routes, causing 419 errors.
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (AuthenticationException $e, Request $request) {
