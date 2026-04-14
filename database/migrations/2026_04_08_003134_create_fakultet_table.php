@@ -12,7 +12,8 @@ return new class extends Migration
             $table->integerIncrements('FAK_ID');
             $table->string('FAK_EM', 100)->unique();
             // PED_ID (dean) FK to PEDAGOG — added via ALTER TABLE after PEDAGOG migration
-            $table->unsignedInteger('PED_ID')->default(0);
+            // Nullable: a faculty may exist before a dean is assigned
+            $table->unsignedInteger('PED_ID')->nullable()->default(null);
             $table->timestamp('CREATED_AT')->useCurrent();
             $table->timestamp('UPDATED_AT')->useCurrent()->useCurrentOnUpdate();
         });

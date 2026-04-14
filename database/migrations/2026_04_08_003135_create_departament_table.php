@@ -13,7 +13,8 @@ return new class extends Migration
             $table->string('DEP_EM', 100)->unique();
             $table->unsignedInteger('FAK_ID');
             // PED_ID (head) FK to PEDAGOG — added via ALTER TABLE after PEDAGOG migration
-            $table->unsignedInteger('PED_ID')->default(0);
+            // Nullable: a department may exist before a head is assigned
+            $table->unsignedInteger('PED_ID')->nullable()->default(null);
             $table->timestamp('CREATED_AT')->useCurrent();
             $table->timestamp('UPDATED_AT')->useCurrent()->useCurrentOnUpdate();
 
