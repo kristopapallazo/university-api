@@ -19,10 +19,26 @@ Instalo këto me radhë:
 | **Git** | Shkarko dhe instalo nga [git-scm.com/download/win](https://git-scm.com/download/win) |
 | **Make** | Hap PowerShell si Administrator dhe ekzekuto: `winget install GnuWin32.Make` → pastaj shto `C:\Program Files (x86)\GnuWin32\bin` te PATH |
 
+Pas instalimit të PHP, **aktivizo SQLite** në `php.ini` — pa këtë, migrimet dështojnë:
+
+1. Gjej `php.ini` duke ekzekutuar: `php --ini` (shiko rreshtin `Loaded Configuration File`)
+2. Hap atë skedar dhe gjej këto dy rreshta:
+   ```
+   ;extension=pdo_sqlite
+   ;extension=sqlite3
+   ```
+3. Hiq pikëpresjet (`;`) nga fillimi i të dy rreshtave:
+   ```
+   extension=pdo_sqlite
+   extension=sqlite3
+   ```
+4. Ruaj skedarin dhe hap terminal të ri
+
 Verifikimi — hap terminal të ri dhe ekzekuto:
 
 ```bash
 php -v
+php -m | grep -i sqlite   # duhet të shfaqë: pdo_sqlite, sqlite3
 composer -V
 git --version
 make --version
