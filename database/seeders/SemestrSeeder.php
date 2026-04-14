@@ -32,10 +32,10 @@ class SemestrSeeder extends Seeder
 
             if (! $exists) {
                 DB::table('SEMESTR')->insert([
-                    'SEM_NR'          => $sem['SEM_NR'],
+                    'SEM_NR' => $sem['SEM_NR'],
                     'SEM_DAT_FILLIMI' => $sem['SEM_DAT_FILLIMI'],
                     'SEM_DAT_MBARIMI' => $sem['SEM_DAT_MBARIMI'],
-                    'VIT_ID'          => $vit->VIT_ID,
+                    'VIT_ID' => $vit->VIT_ID,
                 ]);
             }
         }
