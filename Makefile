@@ -23,13 +23,20 @@ setup:
 	@echo "→ Wiring git hooks..."
 	git config core.hooksPath .githooks
 	@chmod +x .githooks/pre-commit 2>/dev/null || true
-	@host=$$(grep -E '^DB_HOST=' .env | cut -d= -f2 | tr -d '"' | tr -d "'"); \
-	if [ "$$host" = "127.0.0.1" ] || [ "$$host" = "localhost" ]; then \
-		echo "→ Local DB detected, running migrations..."; \
-		php artisan migrate; \
+	@conn=$$(grep -E '^DB_CONNECTION=' .env | cut -d= -f2 | tr -d '"' | tr -d "'"); \
+	if [ "$$conn" = "sqlite" ]; then \
+		echo "→ SQLite detected, creating database file and running migrations..."; \
+		touch database/database.sqlite; \
+		php artisan migrate --seed; \
 	else \
-		echo "→ Remote DB detected ($$host), skipping migrations."; \
-		echo "   Schema is managed by the lead. You're ready to code."; \
+		host=$$(grep -E '^DB_HOST=' .env | cut -d= -f2 | tr -d '"' | tr -d "'"); \
+		if [ "$$host" = "127.0.0.1" ] || [ "$$host" = "localhost" ]; then \
+			echo "→ Local MySQL detected, running migrations..."; \
+			php artisan migrate; \
+		else \
+			echo "→ Remote DB detected ($$host), skipping migrations."; \
+			echo "   Schema is managed by the lead. You're ready to code."; \
+		fi; \
 	fi
 	@echo ""
 	@echo "✅ Setup complete. Run 'make dev' to start the server."
