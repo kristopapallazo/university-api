@@ -67,16 +67,6 @@ make dev
 
 ```bash
 git pull
-composer install   # i sigurt ta ekzekutosh gjithmonë
-make dev
-```
-
----
-
-## Pas çdo `git pull`
-
-```bash
-git pull
 composer install      # no-op nëse asgjë s'ka ndryshuar — i sigurt ta ekzekutosh gjithmonë
 make dev
 ```

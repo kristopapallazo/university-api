@@ -155,13 +155,13 @@ Status of `university-app` is outside this doc, but the backend assumes the SPA 
 
 **Symptom:** `/api/v1/auth/google/callback` is the only endpoint failing in production. All other 7 endpoints work.
 
-**Status:** mid-fix. See conversation log / commit history for full timeline. Short version:
+**Status:** fix applied — code renamed to `GOOGLE_OAUTH_ID` / `GOOGLE_OAUTH_SECRET`, Railpack build issue resolved.
 
-1. Initial cause: `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` were empty in Railway env vars.
-2. Adding them caused a **Railpack build failure** because Railpack auto-detects `env('GOOGLE_*')` calls in PHP code and demands them as build-time secrets, not runtime variables.
-3. **Workaround applied:** renamed env vars to `GOOGLE_OAUTH_ID` / `GOOGLE_OAUTH_SECRET` (Railpack heuristics don't flag those names). [config/services.php](../config/services.php) updated to match.
-4. **Pending action:** delete the old `GOOGLE_CLIENT_*` vars from Railway dashboard, add the new `GOOGLE_OAUTH_*` ones, push the code change, redeploy, retest.
-5. **Also pending:** verify `https://university-api-production.up.railway.app/api/v1/auth/google/callback` is registered in Google Cloud Console as an Authorized Redirect URI. If not, the callback will fail with `redirect_uri_mismatch` even after the build is fixed.
+1. ~~Initial cause: `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` were empty in Railway env vars.~~
+2. ~~Railpack build failure — auto-detected `GOOGLE_CLIENT_*` as build-time secrets.~~
+3. ~~Workaround: renamed to `GOOGLE_OAUTH_ID` / `GOOGLE_OAUTH_SECRET`. `config/services.php` updated.~~ ✅
+4. **Still pending:** verify `https://university-api-production.up.railway.app/api/v1/auth/google/callback` is in Google Cloud Console → Authorized Redirect URIs.
+5. **Still pending:** OAuth consent screen publishing status — if set to "Testing", only manually added test users can log in.
 
 ---
 

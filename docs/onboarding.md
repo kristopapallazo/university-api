@@ -29,7 +29,8 @@
 | ----------------- | -------- | --------------------------------- |
 | PHP               | 8.3+     | Gjuha kryesore                    |
 | Laravel           | 12       | Framework-u backend               |
-| MySQL             | 8        | Databaza                          |
+| SQLite            | 3        | Databaza lokale (pa instalim)     |
+| MySQL             | 8        | Databaza e prodhimit (Railway)    |
 | Laravel Sanctum   | 4.x      | Token-based auth (SPA)            |
 | Laravel Socialite | 5.x      | Google OAuth (vetëm studentë)     |
 | Scribe            | 5.x      | Auto-generated API docs (`/docs`) |

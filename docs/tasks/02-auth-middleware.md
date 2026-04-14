@@ -1,7 +1,6 @@
-# Backend — Today's Tasks
+# Backend — Auth & Middleware Tasks
 
-> **Date:** 2026-04-09
-> **Stack:** Laravel 11, Sanctum, MySQL (Railway)
+> **Stack:** Laravel 12, Sanctum, SQLite (local) / MySQL (Railway)
 > **Before you start:** read `docs/auth-plan.md` for full auth context.
 
 ---
