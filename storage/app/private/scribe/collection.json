@@ -5,12 +5,12 @@
             "key": "baseUrl",
             "type": "string",
             "name": "string",
-            "value": "http:\/\/localhost:8000"
+            "value": "http:\/\/127.0.0.1:8000"
         }
     ],
     "info": {
         "name": "UAMD Portal API",
-        "_postman_id": "9e042321-124b-419d-8302-94fd6f7dedb1",
+        "_postman_id": "e60f2e64-cedf-4f1a-a001-d050a469748c",
         "description": "REST API p\u00ebr Portalin e Universitetit Aleksander Moisiu Durr\u00ebs (UAMD). T\u00eb gjitha endpoint-et jan\u00eb t\u00eb prefixuara me \/api\/v1\/.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -66,6 +66,58 @@
                             "code": 403,
                             "body": "{\"data\": null, \"message\": \"Studen\\u00ebt\u00ebt p\\u00ebrdorin Google.\", \"status\": 403}",
                             "name": "Student tried email login"
+                        }
+                    ]
+                },
+                {
+                    "name": "Google OAuth \u2014 redirect",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/google\/redirect",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/google\/redirect"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Redirects the browser to Google's consent screen.\nOpen this URL directly in the browser; **do not** call it via fetch\/axios.\nOnly @students.uamd.edu.al accounts are accepted.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "location",
+                                    "value": "https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&scope=openid+profile+email&response_type=code&hd=students.uamd.edu.al"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "text\/html; charset=utf-8"
+                                },
+                                {
+                                    "key": "vary",
+                                    "value": "Origin"
+                                }
+                            ],
+                            "code": 302,
+                            "body": "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" \/>\n        <meta http-equiv=\"refresh\" content=\"0;url='https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al'\" \/>\n\n        <title>Redirecting to https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al<\/title>\n    <\/head>\n    <body>\n        Redirecting to <a href=\"https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al\">https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al<\/a>.\n    <\/body>\n<\/html>",
+                            "name": ""
                         }
                     ]
                 },

@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 servers:
   -
-    url: 'https://university-api-production.up.railway.app'
+    url: 'http://127.0.0.1:8000'
 tags:
   -
     name: Authentication
@@ -136,6 +136,23 @@ paths:
               required:
                 - email
                 - password
+      security: []
+  /api/v1/auth/google/redirect:
+    get:
+      summary: 'Google OAuth — redirect'
+      operationId: googleOAuthRedirect
+      description: "Redirects the browser to Google's consent screen.\nOpen this URL directly in the browser; **do not** call it via fetch/axios.\nOnly @students.uamd.edu.al accounts are accepted."
+      parameters: []
+      responses:
+        302:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" />\n        <meta http-equiv=\"refresh\" content=\"0;url='https://accounts.google.com/o/oauth2/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al'\" />\n\n        <title>Redirecting to https://accounts.google.com/o/oauth2/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al</title>\n    </head>\n    <body>\n        Redirecting to <a href=\"https://accounts.google.com/o/oauth2/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al\">https://accounts.google.com/o/oauth2/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al</a>.\n    </body>\n</html>"
+      tags:
+        - Authentication
       security: []
   /api/v1/auth/google/callback:
     get:
