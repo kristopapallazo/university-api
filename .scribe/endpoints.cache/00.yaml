@@ -120,19 +120,19 @@ endpoints:
           <html>
               <head>
                   <meta charset="UTF-8" />
-                  <meta http-equiv="refresh" content="0;url='https://accounts.google.com/o/oauth2/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al'" />
+                  <meta http-equiv="refresh" content="0;url='https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al'" />
 
-                  <title>Redirecting to https://accounts.google.com/o/oauth2/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al</title>
+                  <title>Redirecting to https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al</title>
               </head>
               <body>
-                  Redirecting to <a href="https://accounts.google.com/o/oauth2/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al">https://accounts.google.com/o/oauth2/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al</a>.
+                  Redirecting to <a href="https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al">https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al</a>.
               </body>
           </html>
         headers:
           cache-control: 'no-cache, private'
-          location: 'https://accounts.google.com/o/oauth2/auth?client_id=&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&scope=openid+profile+email&response_type=code&hd=students.uamd.edu.al'
+          location: 'https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&response_type=code&hd=students.uamd.edu.al'
           content-type: 'text/html; charset=utf-8'
-          vary: Origin
+          access-control-allow-origin: 'http://localhost:5173'
         description: null
     responseFields: []
     auth: []

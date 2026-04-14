@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 servers:
   -
-    url: 'http://127.0.0.1:8000'
+    url: 'http://localhost:8000'
 tags:
   -
     name: Authentication
@@ -150,7 +150,7 @@ paths:
             text/plain:
               schema:
                 type: string
-                example: "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" />\n        <meta http-equiv=\"refresh\" content=\"0;url='https://accounts.google.com/o/oauth2/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al'\" />\n\n        <title>Redirecting to https://accounts.google.com/o/oauth2/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al</title>\n    </head>\n    <body>\n        Redirecting to <a href=\"https://accounts.google.com/o/oauth2/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al\">https://accounts.google.com/o/oauth2/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al</a>.\n    </body>\n</html>"
+                example: "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" />\n        <meta http-equiv=\"refresh\" content=\"0;url='https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al'\" />\n\n        <title>Redirecting to https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al</title>\n    </head>\n    <body>\n        Redirecting to <a href=\"https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al\">https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al</a>.\n    </body>\n</html>"
       tags:
         - Authentication
       security: []
@@ -552,6 +552,459 @@ paths:
         in: path
         name: id
         description: 'The ID of the department.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  /api/v1/programs:
+    get:
+      summary: 'List study programs'
+      operationId: listStudyPrograms
+      description: 'Returns all study programs. Pass `department_id` to filter by department.'
+      parameters:
+        -
+          in: query
+          name: department_id
+          description: 'optional Filter by department.'
+          example: 4
+          required: false
+          schema:
+            type: integer
+            description: 'optional Filter by department.'
+            example: 4
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      name: Informatikë
+                      level: Bachelor
+                      credits: 180
+                      departmentId: 4
+                  message: 'Programet e studimit u morën me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: Informatikë
+                        level: Bachelor
+                        credits: 180
+                        departmentId: 4
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: Informatikë
+                        level:
+                          type: string
+                          example: Bachelor
+                        credits:
+                          type: integer
+                          example: 180
+                        departmentId:
+                          type: integer
+                          example: 4
+                  message:
+                    type: string
+                    example: 'Programet e studimit u morën me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+      tags:
+        - 'Reference Data'
+  '/api/v1/programs/{id}':
+    get:
+      summary: 'Get a study program'
+      operationId: getAStudyProgram
+      description: 'Returns a single study program by its ID.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    name: Informatikë
+                    level: Bachelor
+                    credits: 180
+                    departmentId: 4
+                  message: 'Programi i studimit u mor me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Informatikë
+                      level:
+                        type: string
+                        example: Bachelor
+                      credits:
+                        type: integer
+                        example: 180
+                      departmentId:
+                        type: integer
+                        example: 4
+                  message:
+                    type: string
+                    example: 'Programi i studimit u mor me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Rekordi nuk u gjet.'
+                  status: 404
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Rekordi nuk u gjet.'
+                  status:
+                    type: integer
+                    example: 404
+      tags:
+        - 'Reference Data'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the program.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  /api/v1/courses:
+    get:
+      summary: 'List courses'
+      operationId: listCourses
+      description: 'Returns all courses. Pass `department_id` to filter by department.'
+      parameters:
+        -
+          in: query
+          name: department_id
+          description: 'optional Filter by department.'
+          example: 4
+          required: false
+          schema:
+            type: integer
+            description: 'optional Filter by department.'
+            example: 4
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      name: Algoritmika
+                      code: INF101
+                      departmentId: 4
+                  message: 'Lëndët u morën me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: Algoritmika
+                        code: INF101
+                        departmentId: 4
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: Algoritmika
+                        code:
+                          type: string
+                          example: INF101
+                        departmentId:
+                          type: integer
+                          example: 4
+                  message:
+                    type: string
+                    example: 'Lëndët u morën me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+      tags:
+        - 'Reference Data'
+  '/api/v1/courses/{id}':
+    get:
+      summary: 'Get a course'
+      operationId: getACourse
+      description: 'Returns a single course by its ID.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    name: Algoritmika
+                    code: INF101
+                    departmentId: 4
+                  message: 'Lënda u mor me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Algoritmika
+                      code:
+                        type: string
+                        example: INF101
+                      departmentId:
+                        type: integer
+                        example: 4
+                  message:
+                    type: string
+                    example: 'Lënda u mor me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Rekordi nuk u gjet.'
+                  status: 404
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Rekordi nuk u gjet.'
+                  status:
+                    type: integer
+                    example: 404
+      tags:
+        - 'Reference Data'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the course.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  /api/v1/pedagogues:
+    get:
+      summary: 'List pedagogues'
+      operationId: listPedagogues
+      description: 'Returns all pedagogues. Pass `department_id` to filter by department.'
+      parameters:
+        -
+          in: query
+          name: department_id
+          description: 'optional Filter by department.'
+          example: 4
+          required: false
+          schema:
+            type: integer
+            description: 'optional Filter by department.'
+            example: 4
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      firstName: Arben
+                      lastName: Hoxha
+                      title: 'Prof. Dr.'
+                      email: ahoxha@uamd.edu.al
+                      gender: M
+                      departmentId: 4
+                  message: 'Pedagogët u morën me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        firstName: Arben
+                        lastName: Hoxha
+                        title: 'Prof. Dr.'
+                        email: ahoxha@uamd.edu.al
+                        gender: M
+                        departmentId: 4
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        firstName:
+                          type: string
+                          example: Arben
+                        lastName:
+                          type: string
+                          example: Hoxha
+                        title:
+                          type: string
+                          example: 'Prof. Dr.'
+                        email:
+                          type: string
+                          example: ahoxha@uamd.edu.al
+                        gender:
+                          type: string
+                          example: M
+                        departmentId:
+                          type: integer
+                          example: 4
+                  message:
+                    type: string
+                    example: 'Pedagogët u morën me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+      tags:
+        - 'Reference Data'
+  '/api/v1/pedagogues/{id}':
+    get:
+      summary: 'Get a pedagogue'
+      operationId: getAPedagogue
+      description: 'Returns a single pedagogue by their ID.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    firstName: Arben
+                    lastName: Hoxha
+                    title: 'Prof. Dr.'
+                    email: ahoxha@uamd.edu.al
+                    gender: M
+                    departmentId: 4
+                  message: 'Pedagogu u mor me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      firstName:
+                        type: string
+                        example: Arben
+                      lastName:
+                        type: string
+                        example: Hoxha
+                      title:
+                        type: string
+                        example: 'Prof. Dr.'
+                      email:
+                        type: string
+                        example: ahoxha@uamd.edu.al
+                      gender:
+                        type: string
+                        example: M
+                      departmentId:
+                        type: integer
+                        example: 4
+                  message:
+                    type: string
+                    example: 'Pedagogu u mor me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Rekordi nuk u gjet.'
+                  status: 404
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Rekordi nuk u gjet.'
+                  status:
+                    type: integer
+                    example: 404
+      tags:
+        - 'Reference Data'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the pedagogue.'
         example: architecto
         required: true
         schema:
