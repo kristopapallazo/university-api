@@ -60,4 +60,22 @@ class DepartmentController extends Controller
             'Departamenti u mor me sukses.'
         );
     }
+
+    /** @group Departments */
+    public function store(Request $request): JsonResponse
+    {
+        return $this->success(null, 'Ende nuk është implementuar.', 501);
+    }
+
+    /** @group Departments */
+    public function update(int $id): JsonResponse
+    {
+        return $this->success(null, 'Ende nuk është implementuar.', 501);
+    }
+
+    /** @group Departments */
+    public function destroy(int $id): JsonResponse
+    {
+        return $this->success(null, 'Ende nuk është implementuar.', 501);
+    }
 }
