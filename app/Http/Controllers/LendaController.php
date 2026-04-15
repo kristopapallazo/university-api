@@ -19,7 +19,7 @@ class LendaController extends Controller
      *
      * @group Reference Data
      *
-     * @queryParam department_id integer optional Filter by department. Example: 4
+     * @queryParam departmentId integer optional Filter by department. Example: 4
      *
      * @response 200 {
      *   "data": [{"id": 1, "name": "Algoritmika", "code": "INF101", "departmentId": 4}],
@@ -31,8 +31,8 @@ class LendaController extends Controller
     {
         $query = Lenda::query()->orderBy('LEND_ID');
 
-        if ($request->filled('department_id')) {
-            $query->where('DEP_ID', $request->integer('department_id'));
+        if ($request->filled('departmentId')) {
+            $query->where('DEP_ID', $request->integer('departmentId'));
         }
 
         return $this->success(
@@ -53,11 +53,7 @@ class LendaController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $lenda = Lenda::find($id);
-
-        if (! $lenda) {
-            return $this->error('Rekordi nuk u gjet.', 404);
-        }
+        $lenda = Lenda::findOrFail($id);
 
         return $this->success(
             new LendaResource($lenda),

@@ -20,8 +20,6 @@ class Pedagog extends Model
         'PED_TITULLI',
         'PED_EMAIL',
         'PED_TEL',
-        'PED_DTL',
-        'PED_DT_PUNESIM',
         'DEP_ID',
     ];
 

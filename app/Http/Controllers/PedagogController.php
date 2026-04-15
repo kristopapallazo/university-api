@@ -19,7 +19,7 @@ class PedagogController extends Controller
      *
      * @group Reference Data
      *
-     * @queryParam department_id integer optional Filter by department. Example: 4
+     * @queryParam departmentId integer optional Filter by department. Example: 4
      *
      * @response 200 {
      *   "data": [{"id": 1, "firstName": "Arben", "lastName": "Hoxha", "title": "Prof. Dr.", "email": "ahoxha@uamd.edu.al", "gender": "M", "departmentId": 4}],
@@ -31,8 +31,8 @@ class PedagogController extends Controller
     {
         $query = Pedagog::query()->orderBy('PED_ID');
 
-        if ($request->filled('department_id')) {
-            $query->where('DEP_ID', $request->integer('department_id'));
+        if ($request->filled('departmentId')) {
+            $query->where('DEP_ID', $request->integer('departmentId'));
         }
 
         return $this->success(
@@ -53,11 +53,7 @@ class PedagogController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $pedagog = Pedagog::find($id);
-
-        if (! $pedagog) {
-            return $this->error('Rekordi nuk u gjet.', 404);
-        }
+        $pedagog = Pedagog::findOrFail($id);
 
         return $this->success(
             new PedagogResource($pedagog),

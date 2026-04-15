@@ -19,7 +19,7 @@ class ProgramStudimController extends Controller
      *
      * @group Reference Data
      *
-     * @queryParam department_id integer optional Filter by department. Example: 4
+     * @queryParam departmentId integer optional Filter by department. Example: 4
      *
      * @response 200 {
      *   "data": [{"id": 1, "name": "Informatik\u00eb", "level": "Bachelor", "credits": 180, "departmentId": 4}],
@@ -31,8 +31,8 @@ class ProgramStudimController extends Controller
     {
         $query = ProgramStudim::query()->orderBy('PROG_ID');
 
-        if ($request->filled('department_id')) {
-            $query->where('DEP_ID', $request->integer('department_id'));
+        if ($request->filled('departmentId')) {
+            $query->where('DEP_ID', $request->integer('departmentId'));
         }
 
         return $this->success(
@@ -53,11 +53,7 @@ class ProgramStudimController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $program = ProgramStudim::find($id);
-
-        if (! $program) {
-            return $this->error('Rekordi nuk u gjet.', 404);
-        }
+        $program = ProgramStudim::findOrFail($id);
 
         return $this->success(
             new ProgramStudimResource($program),

@@ -19,7 +19,7 @@ class DepartmentController extends Controller
      *
      * @group Reference Data
      *
-     * @queryParam faculty_id integer optional Filter by faculty. Example: 2
+     * @queryParam facultyId integer optional Filter by faculty. Example: 2
      *
      * @response 200 {
      *   "data": [{"id": 4, "name": "Departamenti i Informatik\u00ebs", "facultyId": 2}],
@@ -31,8 +31,8 @@ class DepartmentController extends Controller
     {
         $query = Department::query()->orderBy('DEP_ID');
 
-        if ($request->filled('faculty_id')) {
-            $query->where('FAK_ID', $request->integer('faculty_id'));
+        if ($request->filled('facultyId')) {
+            $query->where('FAK_ID', $request->integer('facultyId'));
         }
 
         return $this->success(
