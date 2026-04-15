@@ -61,19 +61,19 @@ class DepartmentController extends Controller
         );
     }
 
-    /** @group Reference Data */
-    public function store(): JsonResponse
+    /** @group Departments */
+    public function store(Request $request): JsonResponse
     {
         return $this->success(null, 'Ende nuk është implementuar.', 501);
     }
 
-    /** @group Reference Data */
+    /** @group Departments */
     public function update(int $id): JsonResponse
     {
         return $this->success(null, 'Ende nuk është implementuar.', 501);
     }
 
-    /** @group Reference Data */
+    /** @group Departments */
     public function destroy(int $id): JsonResponse
     {
         return $this->success(null, 'Ende nuk është implementuar.', 501);

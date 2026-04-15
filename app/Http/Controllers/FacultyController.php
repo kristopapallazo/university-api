@@ -6,6 +6,7 @@ use App\Http\Resources\FacultyResource;
 use App\Http\Traits\ApiResponse;
 use App\Models\Faculty;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class FacultyController extends Controller
 {
@@ -54,19 +55,19 @@ class FacultyController extends Controller
         );
     }
 
-    /** @group Reference Data */
-    public function store(): JsonResponse
+    /** @group Faculties */
+    public function store(Request $request): JsonResponse
     {
         return $this->success(null, 'Ende nuk është implementuar.', 501);
     }
 
-    /** @group Reference Data */
+    /** @group Faculties */
     public function update(int $id): JsonResponse
     {
         return $this->success(null, 'Ende nuk është implementuar.', 501);
     }
 
-    /** @group Reference Data */
+    /** @group Faculties */
     public function destroy(int $id): JsonResponse
     {
         return $this->success(null, 'Ende nuk është implementuar.', 501);
