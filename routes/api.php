@@ -3,6 +3,9 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\LendaController;
+use App\Http\Controllers\PedagogController;
+use App\Http\Controllers\ProgramStudimController;
 use App\Http\Controllers\SocialAuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,4 +35,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/faculties/{id}', [FacultyController::class, 'show']);
     Route::get('/departments', [DepartmentController::class, 'index']);
     Route::get('/departments/{id}', [DepartmentController::class, 'show']);
+
+    Route::get('/programs', [ProgramStudimController::class, 'index']);
+    Route::get('/programs/{id}', [ProgramStudimController::class, 'show']);
+
+    Route::get('/courses', [LendaController::class, 'index']);
+    Route::get('/courses/{id}', [LendaController::class, 'show']);
+
+    Route::get('/pedagogues', [PedagogController::class, 'index']);
+    Route::get('/pedagogues/{id}', [PedagogController::class, 'show']);
 });

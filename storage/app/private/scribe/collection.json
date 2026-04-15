@@ -5,12 +5,12 @@
             "key": "baseUrl",
             "type": "string",
             "name": "string",
-            "value": "http:\/\/127.0.0.1:8000"
+            "value": "http:\/\/localhost:8000"
         }
     ],
     "info": {
         "name": "UAMD Portal API",
-        "_postman_id": "e60f2e64-cedf-4f1a-a001-d050a469748c",
+        "_postman_id": "1126748d-b7a4-467d-95b6-20a1a312965a",
         "description": "REST API p\u00ebr Portalin e Universitetit Aleksander Moisiu Durr\u00ebs (UAMD). T\u00eb gjitha endpoint-et jan\u00eb t\u00eb prefixuara me \/api\/v1\/.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -104,19 +104,19 @@
                                 },
                                 {
                                     "key": "location",
-                                    "value": "https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&scope=openid+profile+email&response_type=code&hd=students.uamd.edu.al"
+                                    "value": "https:\/\/accounts.google.com\/o\/oauth2\/auth?scope=openid+profile+email&response_type=code&hd=students.uamd.edu.al"
                                 },
                                 {
                                     "key": "content-type",
                                     "value": "text\/html; charset=utf-8"
                                 },
                                 {
-                                    "key": "vary",
-                                    "value": "Origin"
+                                    "key": "access-control-allow-origin",
+                                    "value": "http:\/\/localhost:5173"
                                 }
                             ],
                             "code": 302,
-                            "body": "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" \/>\n        <meta http-equiv=\"refresh\" content=\"0;url='https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al'\" \/>\n\n        <title>Redirecting to https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al<\/title>\n    <\/head>\n    <body>\n        Redirecting to <a href=\"https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al\">https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al<\/a>.\n    <\/body>\n<\/html>",
+                            "body": "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" \/>\n        <meta http-equiv=\"refresh\" content=\"0;url='https:\/\/accounts.google.com\/o\/oauth2\/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al'\" \/>\n\n        <title>Redirecting to https:\/\/accounts.google.com\/o\/oauth2\/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al<\/title>\n    <\/head>\n    <body>\n        Redirecting to <a href=\"https:\/\/accounts.google.com\/o\/oauth2\/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al\">https:\/\/accounts.google.com\/o\/oauth2\/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al<\/a>.\n    <\/body>\n<\/html>",
                             "name": ""
                         }
                     ]
@@ -391,6 +391,261 @@
                             "header": [],
                             "code": 404,
                             "body": "{\"data\": null, \"message\": \"Not Found\", \"status\": 404}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List study programs",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/programs",
+                            "query": [
+                                {
+                                    "key": "department_id",
+                                    "value": "4",
+                                    "description": "optional Filter by department.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/programs?department_id=4"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns all study programs. Pass `department_id` to filter by department."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [{\"id\": 1, \"name\": \"Informatik\\u00eb\", \"level\": \"Bachelor\", \"credits\": 180, \"departmentId\": 4}],\n  \"message\": \"Programet e studimit u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get a study program",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/programs\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/programs\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the program."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a single study program by its ID."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": {\"id\": 1, \"name\": \"Informatik\\u00eb\", \"level\": \"Bachelor\", \"credits\": 180, \"departmentId\": 4}, \"message\": \"Programi i studimit u mor me sukses.\", \"status\": 200}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"data\": null, \"message\": \"Rekordi nuk u gjet.\", \"status\": 404}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List courses",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/courses",
+                            "query": [
+                                {
+                                    "key": "department_id",
+                                    "value": "4",
+                                    "description": "optional Filter by department.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/courses?department_id=4"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns all courses. Pass `department_id` to filter by department."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [{\"id\": 1, \"name\": \"Algoritmika\", \"code\": \"INF101\", \"departmentId\": 4}],\n  \"message\": \"L\\u00ebnd\\u00ebt u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get a course",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/courses\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/courses\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the course."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a single course by its ID."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": {\"id\": 1, \"name\": \"Algoritmika\", \"code\": \"INF101\", \"departmentId\": 4}, \"message\": \"L\\u00ebnda u mor me sukses.\", \"status\": 200}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"data\": null, \"message\": \"Rekordi nuk u gjet.\", \"status\": 404}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List pedagogues",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/pedagogues",
+                            "query": [
+                                {
+                                    "key": "department_id",
+                                    "value": "4",
+                                    "description": "optional Filter by department.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/pedagogues?department_id=4"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns all pedagogues. Pass `department_id` to filter by department."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [{\"id\": 1, \"firstName\": \"Arben\", \"lastName\": \"Hoxha\", \"title\": \"Prof. Dr.\", \"email\": \"ahoxha@uamd.edu.al\", \"gender\": \"M\", \"departmentId\": 4}],\n  \"message\": \"Pedagog\\u00ebt u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get a pedagogue",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/pedagogues\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/pedagogues\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the pedagogue."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a single pedagogue by their ID."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": {\"id\": 1, \"firstName\": \"Arben\", \"lastName\": \"Hoxha\", \"title\": \"Prof. Dr.\", \"email\": \"ahoxha@uamd.edu.al\", \"gender\": \"M\", \"departmentId\": 4}, \"message\": \"Pedagogu u mor me sukses.\", \"status\": 200}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"data\": null, \"message\": \"Rekordi nuk u gjet.\", \"status\": 404}",
                             "name": ""
                         }
                     ]
