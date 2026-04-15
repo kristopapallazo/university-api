@@ -30,11 +30,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/me', [AuthController::class, 'me']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 
-    // Reference data
+    // Reference data — reads (any authenticated role)
     Route::get('/faculties', [FacultyController::class, 'index']);
     Route::get('/faculties/{id}', [FacultyController::class, 'show']);
     Route::get('/departments', [DepartmentController::class, 'index']);
     Route::get('/departments/{id}', [DepartmentController::class, 'show']);
+
+    // Reference data — writes (admin only)
+    Route::middleware('role:admin')->group(function () {
+        Route::post('/faculties', [FacultyController::class, 'store']);
+        Route::put('/faculties/{id}', [FacultyController::class, 'update']);
+        Route::delete('/faculties/{id}', [FacultyController::class, 'destroy']);
+
+        Route::post('/departments', [DepartmentController::class, 'store']);
+        Route::put('/departments/{id}', [DepartmentController::class, 'update']);
+        Route::delete('/departments/{id}', [DepartmentController::class, 'destroy']);
+    });
 
     Route::get('/programs', [ProgramStudimController::class, 'index']);
     Route::get('/programs/{id}', [ProgramStudimController::class, 'show']);
