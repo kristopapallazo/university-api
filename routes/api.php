@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\LendaController;
+use App\Http\Controllers\Pedagog\SectionGradeController as PedagogSectionGradeController;
 use App\Http\Controllers\PedagogController;
 use App\Http\Controllers\ProgramStudimController;
 use App\Http\Controllers\SocialAuthController;
@@ -62,5 +63,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:student')->group(function () {
         Route::get('/student/grades', [StudentGradeController::class, 'index']);
         Route::get('/student/invoices', [StudentFatureController::class, 'index']);
+    });
+
+    // Pedagog reports (pedagog role only)
+    Route::middleware('role:pedagog')->group(function () {
+        Route::get('/pedagog/sections/{sectionId}/grades', [PedagogSectionGradeController::class, 'index']);
     });
 });
