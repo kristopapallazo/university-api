@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $SEK_ID
@@ -27,7 +28,11 @@ class Seksion extends Model
 
     protected $primaryKey = 'SEK_ID';
 
-    public $timestamps = false;
+    public $timestamps = true;
+
+    const CREATED_AT = 'CREATED_AT';
+
+    const UPDATED_AT = 'UPDATED_AT';
 
     protected $fillable = [
         'DITA',
@@ -40,10 +45,6 @@ class Seksion extends Model
         'SALL_ID',
     ];
 
-    const CREATED_AT = 'CREATED_AT';
-
-    const UPDATED_AT = 'UPDATED_AT';
-
     public function lenda(): BelongsTo
     {
         return $this->belongsTo(Lenda::class, 'LEND_ID', 'LEND_ID');
@@ -52,5 +53,30 @@ class Seksion extends Model
     public function pedagog(): BelongsTo
     {
         return $this->belongsTo(Pedagog::class, 'PED_ID', 'PED_ID');
+    }
+
+    public function program(): BelongsTo
+    {
+        return $this->belongsTo(ProgramStudim::class, 'PROG_ID', 'PROG_ID');
+    }
+
+    public function semester(): BelongsTo
+    {
+        return $this->belongsTo(Semestr::class, 'SEM_ID', 'SEM_ID');
+    }
+
+    public function sala(): BelongsTo
+    {
+        return $this->belongsTo(Auditor::class, 'SALL_ID', 'SALL_ID');
+    }
+
+    public function regjistrimet(): HasMany
+    {
+        return $this->hasMany(Regjistrim::class, 'SEK_ID', 'SEK_ID');
+    }
+
+    public function provimet(): HasMany
+    {
+        return $this->hasMany(Provim::class, 'SEK_ID', 'SEK_ID');
     }
 }

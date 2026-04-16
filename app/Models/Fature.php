@@ -23,7 +23,11 @@ class Fature extends Model
 
     protected $primaryKey = 'FAT_ID';
 
-    public $timestamps = false;
+    public $timestamps = true;
+
+    const CREATED_AT = 'CREATED_AT';
+
+    const UPDATED_AT = 'UPDATED_AT';
 
     protected $fillable = [
         'FAT_DAT_LESHIM',
@@ -33,9 +37,13 @@ class Fature extends Model
         'STU_ID',
     ];
 
-    const CREATED_AT = 'CREATED_AT';
-
-    const UPDATED_AT = 'UPDATED_AT';
+    protected function casts(): array
+    {
+        return [
+            'FAT_DAT_LESHIM' => 'date',
+            'FAT_SHUMA' => 'decimal:2',
+        ];
+    }
 
     public function student(): BelongsTo
     {

@@ -23,7 +23,11 @@ class Nota extends Model
 
     protected $primaryKey = 'NOTA_ID';
 
-    public $timestamps = false;
+    public $timestamps = true;
+
+    const CREATED_AT = 'CREATED_AT';
+
+    const UPDATED_AT = 'UPDATED_AT';
 
     protected $fillable = [
         'NOTA_VLERA',
@@ -32,9 +36,13 @@ class Nota extends Model
         'PROV_ID',
     ];
 
-    const CREATED_AT = 'CREATED_AT';
-
-    const UPDATED_AT = 'UPDATED_AT';
+    protected function casts(): array
+    {
+        return [
+            'NOTA_VLERA' => 'decimal:2',
+            'NOTA_DAT' => 'date',
+        ];
+    }
 
     public function provim(): BelongsTo
     {

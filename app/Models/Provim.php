@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $PROV_ID
@@ -21,7 +22,11 @@ class Provim extends Model
 
     protected $primaryKey = 'PROV_ID';
 
-    public $timestamps = false;
+    public $timestamps = true;
+
+    const CREATED_AT = 'CREATED_AT';
+
+    const UPDATED_AT = 'UPDATED_AT';
 
     protected $fillable = [
         'TIP_EMER',
@@ -29,12 +34,20 @@ class Provim extends Model
         'SEK_ID',
     ];
 
-    const CREATED_AT = 'CREATED_AT';
-
-    const UPDATED_AT = 'UPDATED_AT';
+    protected function casts(): array
+    {
+        return [
+            'DAT_PROVIM' => 'date',
+        ];
+    }
 
     public function seksion(): BelongsTo
     {
         return $this->belongsTo(Seksion::class, 'SEK_ID', 'SEK_ID');
+    }
+
+    public function notat(): HasMany
+    {
+        return $this->hasMany(Nota::class, 'PROV_ID', 'PROV_ID');
     }
 }
