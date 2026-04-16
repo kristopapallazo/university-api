@@ -87,12 +87,12 @@ class KurrikulaSeeder extends Seeder
                 Kurrikula::firstOrCreate(
                     ['PROG_ID' => $program->PROG_ID, 'LEND_ID' => $lenda->LEND_ID],
                     [
-                        'KURR_VIT'            => $entry['vit'],
-                        'KURR_NR_SEMESTER'    => $entry['sem'],
-                        'KURR_KREDIT'         => $entry['kredit'],
-                        'KURR_I_DETYRUESHEM'  => $entry['detyrueshem'],
-                        'PROG_ID'             => $program->PROG_ID,
-                        'LEND_ID'             => $lenda->LEND_ID,
+                        'KURR_VIT' => $entry['vit'],
+                        'KURR_NR_SEMESTER' => $entry['sem'],
+                        'KURR_KREDIT' => $entry['kredit'],
+                        'KURR_I_DETYRUESHEM' => $entry['detyrueshem'],
+                        'PROG_ID' => $program->PROG_ID,
+                        'LEND_ID' => $lenda->LEND_ID,
                     ]
                 );
             }

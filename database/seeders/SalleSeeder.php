@@ -41,14 +41,14 @@ class SalleSeeder extends Seeder
             }
 
             $salleId = DB::table('SALLE')->insertGetId([
-                'SALLE_NR'         => $room['SALLE_NR'],
-                'SALLE_KAPACITET'  => $room['SALLE_KAPACITET'],
-                'SALLE_LLOJ'       => 'A',
+                'SALLE_NR' => $room['SALLE_NR'],
+                'SALLE_KAPACITET' => $room['SALLE_KAPACITET'],
+                'SALLE_LLOJ' => 'A',
             ]);
 
             DB::table('AUDITOR')->insert([
                 'SALL_ID' => $salleId,
-                'AUD_Y'   => $room['floor'],
+                'AUD_Y' => $room['floor'],
                 'AUD_TIP' => $room['tip'],
             ]);
         }
@@ -60,20 +60,20 @@ class SalleSeeder extends Seeder
             }
 
             $salleId = DB::table('SALLE')->insertGetId([
-                'SALLE_NR'        => $room['SALLE_NR'],
+                'SALLE_NR' => $room['SALLE_NR'],
                 'SALLE_KAPACITET' => $room['SALLE_KAPACITET'],
-                'SALLE_LLOJ'      => 'A',
+                'SALLE_LLOJ' => 'A',
             ]);
 
             DB::table('AUDITOR')->insert([
                 'SALL_ID' => $salleId,
-                'AUD_Y'   => $room['floor'],
+                'AUD_Y' => $room['floor'],
                 'AUD_TIP' => 'L',
             ]);
 
             DB::table('LABORATOR')->insert([
-                'SALLE_ID'    => $salleId,
-                'LAB_PC_NR'   => $room['pc_nr'],
+                'SALLE_ID' => $salleId,
+                'LAB_PC_NR' => $room['pc_nr'],
                 'LAB_PAJISJE' => $room['pajisje'],
             ]);
         }

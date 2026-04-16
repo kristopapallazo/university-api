@@ -29,8 +29,8 @@ class PedagogSeeder extends Seeder
                 ['PED_EM' => 'Klaudia', 'PED_MB' => 'Tafa',    'PED_GJINI' => 'F', 'PED_TITULLI' => 'Dr.',       'PED_EMAIL' => 'klaudia.tafa@uamd.edu.al',   'PED_DT_PUNESIM' => '2016-09-01'],
             ],
             'Departamenti i Inxhinierisë Civile' => [
-                ['PED_EM' => 'Erion',   'PED_MB' => 'Krasniqi','PED_GJINI' => 'M', 'PED_TITULLI' => 'Prof. Dr.', 'PED_EMAIL' => 'erion.krasniqi@uamd.edu.al', 'PED_DT_PUNESIM' => '2007-09-01'],
-                ['PED_EM' => 'Gentiana','PED_MB' => 'Ukaj',    'PED_GJINI' => 'F', 'PED_TITULLI' => 'Dr.',       'PED_EMAIL' => 'gentiana.ukaj@uamd.edu.al',  'PED_DT_PUNESIM' => '2014-09-01'],
+                ['PED_EM' => 'Erion',   'PED_MB' => 'Krasniqi', 'PED_GJINI' => 'M', 'PED_TITULLI' => 'Prof. Dr.', 'PED_EMAIL' => 'erion.krasniqi@uamd.edu.al', 'PED_DT_PUNESIM' => '2007-09-01'],
+                ['PED_EM' => 'Gentiana', 'PED_MB' => 'Ukaj',    'PED_GJINI' => 'F', 'PED_TITULLI' => 'Dr.',       'PED_EMAIL' => 'gentiana.ukaj@uamd.edu.al',  'PED_DT_PUNESIM' => '2014-09-01'],
             ],
             'Departamenti i Inxhinierisë Mekanike' => [
                 ['PED_EM' => 'Lorenc',  'PED_MB' => 'Cela',    'PED_GJINI' => 'M', 'PED_TITULLI' => 'Prof. Dr.', 'PED_EMAIL' => 'lorenc.cela@uamd.edu.al',    'PED_DT_PUNESIM' => '2011-09-01'],

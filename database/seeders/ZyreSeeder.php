@@ -20,6 +20,7 @@ class ZyreSeeder extends Seeder
             // Skip if this pedagog already has an office
             if (DB::table('ZYRE')->where('PED_ID', $pedagog->PED_ID)->exists()) {
                 $officeNumber++;
+
                 continue;
             }
 
@@ -28,19 +29,20 @@ class ZyreSeeder extends Seeder
             // Skip if room number already exists
             if (DB::table('SALLE')->where('SALLE_NR', $nr)->exists()) {
                 $officeNumber++;
+
                 continue;
             }
 
             $salleId = DB::table('SALLE')->insertGetId([
-                'SALLE_NR'        => $nr,
+                'SALLE_NR' => $nr,
                 'SALLE_KAPACITET' => 4,
-                'SALLE_LLOJ'      => 'Z',
+                'SALLE_LLOJ' => 'Z',
             ]);
 
             DB::table('ZYRE')->insert([
                 'SALL_ID' => $salleId,
-                'ZYR_NR'  => $nr,
-                'PED_ID'  => $pedagog->PED_ID,
+                'ZYR_NR' => $nr,
+                'PED_ID' => $pedagog->PED_ID,
             ]);
 
             $officeNumber++;

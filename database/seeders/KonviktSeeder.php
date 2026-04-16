@@ -11,16 +11,16 @@ class KonviktSeeder extends Seeder
     {
         $konviktet = [
             [
-                'KONV_EMER'      => 'Konvikti i Studentëve Nr. 1',
-                'KONV_ADRESE'    => 'Rruga Aleksander Moisiu, Durrës',
+                'KONV_EMER' => 'Konvikti i Studentëve Nr. 1',
+                'KONV_ADRESE' => 'Rruga Aleksander Moisiu, Durrës',
                 'KONV_KAPACITET' => 160,
-                'dhomat'         => 40, // 4 students per room
+                'dhomat' => 40, // 4 students per room
             ],
             [
-                'KONV_EMER'      => 'Konvikti i Studentëve Nr. 2',
-                'KONV_ADRESE'    => 'Lagjia Shkozë, Durrës',
+                'KONV_EMER' => 'Konvikti i Studentëve Nr. 2',
+                'KONV_ADRESE' => 'Lagjia Shkozë, Durrës',
                 'KONV_KAPACITET' => 120,
-                'dhomat'         => 30,
+                'dhomat' => 30,
             ],
         ];
 
@@ -31,8 +31,8 @@ class KonviktSeeder extends Seeder
 
             if (! $konvId) {
                 $konvId = DB::table('KONVIKT')->insertGetId([
-                    'KONV_EMER'      => $k['KONV_EMER'],
-                    'KONV_ADRESE'    => $k['KONV_ADRESE'],
+                    'KONV_EMER' => $k['KONV_EMER'],
+                    'KONV_ADRESE' => $k['KONV_ADRESE'],
                     'KONV_KAPACITET' => $k['KONV_KAPACITET'],
                 ]);
             }
@@ -47,9 +47,9 @@ class KonviktSeeder extends Seeder
 
                 if (! $exists) {
                     DB::table('DHOME')->insert([
-                        'DHOM_NR'         => $nr,
-                        'DHOM_KAPACITET'  => 4,
-                        'KONV_ID'         => $konvId,
+                        'DHOM_NR' => $nr,
+                        'DHOM_KAPACITET' => 4,
+                        'KONV_ID' => $konvId,
                     ]);
                 }
             }
