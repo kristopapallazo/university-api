@@ -36,11 +36,15 @@ class SectionGradeController extends Controller
      */
     public function index(int $sectionId): JsonResponse
     {
+        $pedagog = Auth::user()->pedagog;
+
+        if (! $pedagog) {
+            return $this->error('Nuk keni leje për këtë seksion.', 403);
+        }
+
         $section = Seksion::findOrFail($sectionId);
 
-        $pedagogId = Auth::user()->pedagog->PED_ID;
-
-        if ($section->PED_ID !== $pedagogId) {
+        if ($section->PED_ID !== $pedagog->PED_ID) {
             return $this->error('Nuk keni leje për këtë seksion.', 403);
         }
 
