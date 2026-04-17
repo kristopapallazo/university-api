@@ -13,7 +13,6 @@
 /.zed
 /auth.json
 /node_modules
-/storage/app/private/scribe/
 /public/build
 /public/hot
 /public/storage
