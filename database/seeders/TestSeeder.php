@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\Hash;
  *
  *  Role     | Email                          | Password     | Login method
  *  ---------|--------------------------------|--------------|----------------
- *  admin    | test.admin@uamd.edu.al         | Test@1234!   | email + password
- *  pedagog  | test.pedagog@uamd.edu.al       | Test@1234!   | email + password
+ *  admin    | test.admin@uamd.edu.al         | Testtest1!   | email + password
+ *  pedagog  | test.pedagog@uamd.edu.al       | Testtest1!   | email + password
  *  student  | test.student@students.uamd.edu.al | (OAuth)  | Google OAuth ONLY
  *
  * NOTE: The student row exists in the STUDENT table so Google OAuth can resolve
@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Hash;
  */
 class TestSeeder extends Seeder
 {
-    private const PASSWORD = 'Test@1234!';
+    private const PASSWORD = 'Testtest1!';
 
     public function run(): void
     {
