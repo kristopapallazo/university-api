@@ -8,13 +8,14 @@ Run the seeder to get these users in your local DB:
 php artisan db:seed --class=TestSeeder
 ```
 
-| Role    | Email                          | Password   | Login method       |
-| ------- | ------------------------------ | ---------- | ------------------ |
-| Admin   | test.admin@uamd.edu.al         | Testtest1! | Email + password   |
-| Pedagog | test.pedagog@uamd.edu.al       | Testtest1! | Email + password   |
-| Student | test.student@students.uamd.edu.al | —       | Google OAuth only  |
+| Role    | Email                             | Password   | Login method                  |
+| ------- | --------------------------------- | ---------- | ----------------------------- |
+| Admin   | test.admin@uamd.edu.al            | Testtest1! | Email + password or Google OAuth |
+| Pedagog | test.pedagog@uamd.edu.al          | Testtest1! | Email + password or Google OAuth |
+| Student | test.student@students.uamd.edu.al | —          | Google OAuth only             |
 
-> Students can only log in via Google OAuth — there is no password login for the student role.
+> All roles support Google OAuth. Students have no password — OAuth is their only option.
+> For OAuth to work, the email must exist in the `users` table (admin/pedagog) or `STUDENT` table (students).
 > The `test.student@...` email is a placeholder; see below to add your own.
 
 ---
