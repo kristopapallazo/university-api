@@ -31,7 +31,6 @@ class SocialAuthController extends Controller
         $driver = Socialite::driver('google');
 
         return $driver
-            ->with(['hd' => 'uamd.edu.al'])
             ->stateless()
             ->redirect();
     }
