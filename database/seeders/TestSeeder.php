@@ -19,11 +19,11 @@ use Illuminate\Support\Facades\Hash;
  *
  *  Role     | Email                          | Password     | Login method
  *  ---------|--------------------------------|--------------|----------------
- *  admin    | test.admin@uamd.edu.al         | Testtest1!   | email + password
- *  pedagog  | test.pedagog@uamd.edu.al       | Testtest1!   | email + password
- *  student  | test.student@students.uamd.edu.al      | (OAuth) | Google OAuth ONLY
- *  student  | kristopapallazo@students.uamd.edu.al   | (OAuth) | Google OAuth ONLY
- *  student  | papallazo.dev@gmail.com                | (OAuth) | Google OAuth ONLY (dev override)
+ *  admin    | test.admin@uamd.edu.al                  | Testtest1! | email + password or OAuth
+ *  admin    | papallazo.dev@gmail.com                 | —          | Google OAuth (dev override)
+ *  pedagog  | test.pedagog@uamd.edu.al                | Testtest1! | email + password or OAuth
+ *  student  | test.student@students.uamd.edu.al       | (OAuth)    | Google OAuth ONLY
+ *  student  | kristopapallazo@students.uamd.edu.al    | (OAuth)    | Google OAuth ONLY
  *
  * NOTE: The student rows exist in the STUDENT table so Google OAuth can resolve
  * the role. Students cannot log in with a password — Sanctum only, via OAuth.
@@ -43,15 +43,22 @@ class TestSeeder extends Seeder
 
     private function seedAdmin(): void
     {
-        User::updateOrCreate(
-            ['email' => 'test.admin@uamd.edu.al'],
-            [
-                'name' => 'Test Admin',
-                'password' => Hash::make(self::PASSWORD),
-                'role' => 'admin',
-                'email_verified_at' => now(),
-            ]
-        );
+        $admins = [
+            ['email' => 'test.admin@uamd.edu.al', 'name' => 'Test Admin',   'password' => Hash::make(self::PASSWORD)],
+            ['email' => 'papallazo.dev@gmail.com', 'name' => 'Kristo Dev',  'password' => null],
+        ];
+
+        foreach ($admins as $a) {
+            User::updateOrCreate(
+                ['email' => $a['email']],
+                [
+                    'name' => $a['name'],
+                    'password' => $a['password'],
+                    'role' => 'admin',
+                    'email_verified_at' => now(),
+                ]
+            );
+        }
     }
 
     private function seedPedagog(): void
@@ -89,9 +96,8 @@ class TestSeeder extends Seeder
         // Each entry lets Google OAuth resolveRole() identify the email as a student.
         // No users row is created here — auto-created on first OAuth login.
         $students = [
-            ['email' => 'test.student@students.uamd.edu.al', 'em' => 'Test',  'mb' => 'Student',    'matrikull' => 'TEST-001'],
+            ['email' => 'test.student@students.uamd.edu.al',    'em' => 'Test',   'mb' => 'Student',    'matrikull' => 'TEST-001'],
             ['email' => 'kristopapallazo@students.uamd.edu.al', 'em' => 'Kristo', 'mb' => 'Papallazo', 'matrikull' => 'TEST-002'],
-            ['email' => 'papallazo.dev@gmail.com',           'em' => 'Kristo', 'mb' => 'Dev',        'matrikull' => 'TEST-003'],
         ];
 
         foreach ($students as $s) {
