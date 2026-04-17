@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "UAMD Portal API",
-        "_postman_id": "19ee79b5-041e-4886-a012-e974c9f0cf86",
+        "_postman_id": "1606bb0b-7802-4e19-b87c-af07bed3a028",
         "description": "REST API p\u00ebr Portalin e Universitetit Aleksander Moisiu Durr\u00ebs (UAMD). T\u00eb gjitha endpoint-et jan\u00eb t\u00eb prefixuara me \/api\/v1\/.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -104,7 +104,7 @@
                                 },
                                 {
                                     "key": "location",
-                                    "value": "https:\/\/accounts.google.com\/o\/oauth2\/auth?scope=openid+profile+email&response_type=code&hd=uamd.edu.al"
+                                    "value": "https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=654902117091-i72uc243ah463bgqsumsvsc60640kp3i.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&scope=openid+profile+email&response_type=code"
                                 },
                                 {
                                     "key": "content-type",
@@ -119,12 +119,12 @@
                                     "value": "9"
                                 },
                                 {
-                                    "key": "access-control-allow-origin",
-                                    "value": "http:\/\/localhost:5173"
+                                    "key": "vary",
+                                    "value": "Origin"
                                 }
                             ],
                             "code": 302,
-                            "body": "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" \/>\n        <meta http-equiv=\"refresh\" content=\"0;url='https:\/\/accounts.google.com\/o\/oauth2\/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=uamd.edu.al'\" \/>\n\n        <title>Redirecting to https:\/\/accounts.google.com\/o\/oauth2\/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=uamd.edu.al<\/title>\n    <\/head>\n    <body>\n        Redirecting to <a href=\"https:\/\/accounts.google.com\/o\/oauth2\/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=uamd.edu.al\">https:\/\/accounts.google.com\/o\/oauth2\/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=uamd.edu.al<\/a>.\n    <\/body>\n<\/html>",
+                            "body": "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" \/>\n        <meta http-equiv=\"refresh\" content=\"0;url='https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=654902117091-i72uc243ah463bgqsumsvsc60640kp3i.apps.googleusercontent.com&amp;redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code'\" \/>\n\n        <title>Redirecting to https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=654902117091-i72uc243ah463bgqsumsvsc60640kp3i.apps.googleusercontent.com&amp;redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code<\/title>\n    <\/head>\n    <body>\n        Redirecting to <a href=\"https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=654902117091-i72uc243ah463bgqsumsvsc60640kp3i.apps.googleusercontent.com&amp;redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code\">https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=654902117091-i72uc243ah463bgqsumsvsc60640kp3i.apps.googleusercontent.com&amp;redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;scope=openid+profile+email&amp;response_type=code<\/a>.\n    <\/body>\n<\/html>",
                             "name": ""
                         }
                     ]
@@ -197,8 +197,8 @@
                                     "value": "9"
                                 },
                                 {
-                                    "key": "access-control-allow-origin",
-                                    "value": "http:\/\/localhost:5173"
+                                    "key": "vary",
+                                    "value": "Origin"
                                 }
                             ],
                             "code": 302,
@@ -602,6 +602,233 @@
                             "header": [],
                             "code": 501,
                             "body": "{\"data\": null, \"message\": \"Ende nuk \u00ebsht\u00eb implementuar.\", \"status\": 501}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Endpoints",
+            "description": "",
+            "item": [
+                {
+                    "name": "GET api\/v1\/notifications",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/notifications",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/notifications"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "vary",
+                                    "value": "Origin"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"data\":null,\"message\":\"Nuk jeni i autentikuar.\",\"status\":401}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "GET api\/v1\/notifications\/unread-count",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/notifications\/unread-count",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/notifications\/unread-count"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "vary",
+                                    "value": "Origin"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"data\":null,\"message\":\"Nuk jeni i autentikuar.\",\"status\":401}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "PUT api\/v1\/notifications\/{id}\/read",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/notifications\/:id\/read",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/notifications\/:id\/read",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the notification."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PUT api\/v1\/notifications\/read-all",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/notifications\/read-all",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/notifications\/read-all"
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/v1\/admin\/notifications",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/admin\/notifications",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/admin\/notifications"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"b\",\"body\":\"architecto\",\"type\":\"architecto\",\"recipient_user_id\":16}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/v1\/pedagog\/sections",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/pedagog\/sections",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/pedagog\/sections"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "vary",
+                                    "value": "Origin"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"data\":null,\"message\":\"Nuk jeni i autentikuar.\",\"status\":401}",
                             "name": ""
                         }
                     ]

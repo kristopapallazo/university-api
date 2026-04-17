@@ -1,19 +1,19 @@
-name: Departments
+name: Faculties
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/departments
+    uri: api/v1/faculties
     metadata:
       custom: []
-      groupName: Departments
+      groupName: Faculties
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List departments'
-      description: 'Returns all departments. Pass `faculty_id` to filter by faculty.'
+      title: 'List faculties'
+      description: 'Returns all 6 UAMD faculties ordered by ID.'
       authenticated: true
       deprecated: false
     headers:
@@ -22,20 +22,8 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      facultyId:
-        custom: []
-        name: facultyId
-        description: 'optional Filter by faculty.'
-        required: false
-        example: 2
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      facultyId: 2
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -45,8 +33,8 @@ endpoints:
         status: 200
         content: |-
           {
-            "data": [{"id": 4, "name": "Departamenti i Informatik\u00ebs", "facultyId": 2}],
-            "message": "Departamentet u mor\u00ebn me sukses.",
+            "data": [{"id": 1, "name": "Fakulteti i Shkencave t\u00eb Biznesit"}, {"id": 2, "name": "Fakulteti i Shkencave Teknike"}],
+            "message": "Fakultetet u mor\u00ebn me sukses.",
             "status": 200
           }
         headers: []
@@ -63,15 +51,15 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: 'api/v1/departments/{id}'
+    uri: 'api/v1/faculties/{id}'
     metadata:
       custom: []
-      groupName: Departments
+      groupName: Faculties
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Get a department'
-      description: 'Returns a single department by its ID.'
+      title: 'Get a faculty'
+      description: 'Returns a single faculty by its ID.'
       authenticated: true
       deprecated: false
     headers:
@@ -82,7 +70,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the department.'
+        description: 'The ID of the faculty.'
         required: true
         example: architecto
         type: string
@@ -101,7 +89,7 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data": {"id": 4, "name": "Departamenti i Informatik\u00ebs", "facultyId": 2}, "message": "Departamenti u mor me sukses.", "status": 200}'
+        content: '{"data": {"id": 1, "name": "Fakulteti i Shkencave t\u00eb Biznesit"}, "message": "Fakulteti u mor me sukses.", "status": 200}'
         headers: []
         description: ''
       -
@@ -122,14 +110,14 @@ endpoints:
     custom: []
     httpMethods:
       - POST
-    uri: api/v1/departments
+    uri: api/v1/faculties
     metadata:
       custom: []
-      groupName: Departments
+      groupName: Faculties
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Create a department'
+      title: 'Create a faculty'
       description: ''
       authenticated: true
       deprecated: false
@@ -163,14 +151,14 @@ endpoints:
     custom: []
     httpMethods:
       - PUT
-    uri: 'api/v1/departments/{id}'
+    uri: 'api/v1/faculties/{id}'
     metadata:
       custom: []
-      groupName: Departments
+      groupName: Faculties
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Update a department'
+      title: 'Update a faculty'
       description: ''
       authenticated: true
       deprecated: false
@@ -182,7 +170,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the department.'
+        description: 'The ID of the faculty.'
         required: true
         example: architecto
         type: string
@@ -216,14 +204,14 @@ endpoints:
     custom: []
     httpMethods:
       - DELETE
-    uri: 'api/v1/departments/{id}'
+    uri: 'api/v1/faculties/{id}'
     metadata:
       custom: []
-      groupName: Departments
+      groupName: Faculties
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Delete a department'
+      title: 'Delete a faculty'
       description: ''
       authenticated: true
       deprecated: false
@@ -235,7 +223,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the department.'
+        description: 'The ID of the faculty.'
         required: true
         example: architecto
         type: string
