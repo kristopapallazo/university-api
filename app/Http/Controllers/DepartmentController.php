@@ -65,6 +65,7 @@ class DepartmentController extends Controller
      * Create a department
      *
      * @group Departments
+     *
      * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
      */
     public function store(Request $request): JsonResponse
@@ -76,6 +77,7 @@ class DepartmentController extends Controller
      * Update a department
      *
      * @group Departments
+     *
      * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
      */
     public function update(int $id): JsonResponse
@@ -87,6 +89,7 @@ class DepartmentController extends Controller
      * Delete a department
      *
      * @group Departments
+     *
      * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
      */
     public function destroy(int $id): JsonResponse

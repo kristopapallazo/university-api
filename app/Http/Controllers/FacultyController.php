@@ -59,6 +59,7 @@ class FacultyController extends Controller
      * Create a faculty
      *
      * @group Faculties
+     *
      * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
      */
     public function store(Request $request): JsonResponse
@@ -70,6 +71,7 @@ class FacultyController extends Controller
      * Update a faculty
      *
      * @group Faculties
+     *
      * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
      */
     public function update(int $id): JsonResponse
@@ -81,6 +83,7 @@ class FacultyController extends Controller
      * Delete a faculty
      *
      * @group Faculties
+     *
      * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
      */
     public function destroy(int $id): JsonResponse
