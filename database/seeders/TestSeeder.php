@@ -21,10 +21,12 @@ use Illuminate\Support\Facades\Hash;
  *  ---------|--------------------------------|--------------|----------------
  *  admin    | test.admin@uamd.edu.al         | Testtest1!   | email + password
  *  pedagog  | test.pedagog@uamd.edu.al       | Testtest1!   | email + password
- *  student  | test.student@students.uamd.edu.al | (OAuth)  | Google OAuth ONLY
+ *  student  | test.student@students.uamd.edu.al      | (OAuth) | Google OAuth ONLY
+ *  student  | kristopapallazo@students.uamd.edu.al   | (OAuth) | Google OAuth ONLY
+ *  student  | papallazo.dev@gmail.com                | (OAuth) | Google OAuth ONLY (dev override)
  *
- * NOTE: The student row exists in the STUDENT table so Google OAuth can resolve
- * the role. The student cannot log in with a password — Sanctum only, via OAuth.
+ * NOTE: The student rows exist in the STUDENT table so Google OAuth can resolve
+ * the role. Students cannot log in with a password — Sanctum only, via OAuth.
  *
  * Idempotent: safe to run multiple times (uses updateOrCreate on unique keys).
  */
@@ -84,20 +86,26 @@ class TestSeeder extends Seeder
 
     private function seedStudent(): void
     {
-        $email = 'test.student@students.uamd.edu.al';
+        // Each entry lets Google OAuth resolveRole() identify the email as a student.
+        // No users row is created here — auto-created on first OAuth login.
+        $students = [
+            ['email' => 'test.student@students.uamd.edu.al', 'em' => 'Test',  'mb' => 'Student',    'matrikull' => 'TEST-001'],
+            ['email' => 'kristopapallazo@students.uamd.edu.al', 'em' => 'Kristo', 'mb' => 'Papallazo', 'matrikull' => 'TEST-002'],
+            ['email' => 'papallazo.dev@gmail.com',           'em' => 'Kristo', 'mb' => 'Dev',        'matrikull' => 'TEST-003'],
+        ];
 
-        // STUDENT row lets Google OAuth resolveRole() identify this as a student.
-        // No users row is created here — it will be auto-created on first OAuth login.
-        Student::updateOrCreate(
-            ['STU_EMAIL' => $email],
-            [
-                'STU_EM' => 'Test',
-                'STU_MB' => 'Student',
-                'STU_GJINI' => 'M',
-                'STU_DTL' => '2000-01-01',
-                'STU_NR_MATRIKULL' => 'TEST-001',
-                'STU_STATUS' => 'Aktiv',
-            ]
-        );
+        foreach ($students as $s) {
+            Student::updateOrCreate(
+                ['STU_EMAIL' => $s['email']],
+                [
+                    'STU_EM' => $s['em'],
+                    'STU_MB' => $s['mb'],
+                    'STU_GJINI' => 'M',
+                    'STU_DTL' => '2000-01-01',
+                    'STU_NR_MATRIKULL' => $s['matrikull'],
+                    'STU_STATUS' => 'Aktiv',
+                ]
+            );
+        }
     }
 }
