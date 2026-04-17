@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Hash;
  *  admin    | test.admin@uamd.edu.al                  | Testtest1! | email + password or OAuth
  *  admin    | papallazo.dev@gmail.com                 | —          | Google OAuth (dev override)
  *  pedagog  | test.pedagog@uamd.edu.al                | Testtest1! | email + password or OAuth
+ *  pedagog  | papallazo.code@gmail.com                | —          | Google OAuth (dev override)
  *  student  | test.student@students.uamd.edu.al       | (OAuth)    | Google OAuth ONLY
  *  student  | kristopapallazo@students.uamd.edu.al    | (OAuth)    | Google OAuth ONLY
  *
@@ -63,32 +64,36 @@ class TestSeeder extends Seeder
 
     private function seedPedagog(): void
     {
-        $email = 'test.pedagog@uamd.edu.al';
-
-        // Ensure a matching PEDAGOG row exists so Auth::user()->pedagog works
         $depId = Department::where('DEP_EM', 'Departamenti i Informatikës')->value('DEP_ID');
 
-        Pedagog::updateOrCreate(
-            ['PED_EMAIL' => $email],
-            [
-                'PED_EM' => 'Test',
-                'PED_MB' => 'Pedagog',
-                'PED_GJINI' => 'M',
-                'PED_TITULLI' => 'Dr.',
-                'PED_DT_PUNESIM' => '2024-01-01',
-                'DEP_ID' => $depId,
-            ]
-        );
+        $pedagogues = [
+            ['email' => 'test.pedagog@uamd.edu.al',  'em' => 'Test',   'mb' => 'Pedagog',    'password' => Hash::make(self::PASSWORD)],
+            ['email' => 'papallazo.code@gmail.com',  'em' => 'Kristo', 'mb' => 'Code',       'password' => null],
+        ];
 
-        User::updateOrCreate(
-            ['email' => $email],
-            [
-                'name' => 'Test Pedagog',
-                'password' => Hash::make(self::PASSWORD),
-                'role' => 'pedagog',
-                'email_verified_at' => now(),
-            ]
-        );
+        foreach ($pedagogues as $p) {
+            Pedagog::updateOrCreate(
+                ['PED_EMAIL' => $p['email']],
+                [
+                    'PED_EM' => $p['em'],
+                    'PED_MB' => $p['mb'],
+                    'PED_GJINI' => 'M',
+                    'PED_TITULLI' => 'Dr.',
+                    'PED_DT_PUNESIM' => '2024-01-01',
+                    'DEP_ID' => $depId,
+                ]
+            );
+
+            User::updateOrCreate(
+                ['email' => $p['email']],
+                [
+                    'name' => $p['em'] . ' ' . $p['mb'],
+                    'password' => $p['password'],
+                    'role' => 'pedagog',
+                    'email_verified_at' => now(),
+                ]
+            );
+        }
     }
 
     private function seedStudent(): void
