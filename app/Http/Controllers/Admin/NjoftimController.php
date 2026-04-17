@@ -15,6 +15,26 @@ class NjoftimController extends Controller
 {
     use ApiResponse;
 
+    /**
+     * Send notification (Admin)
+     *
+     * Sends a notification to a specific user or to all users of a given role.
+     * If `recipient_user_id` is provided, only that user receives it.
+     * Otherwise, every user matching `recipient_role` (or all users if omitted) receives it.
+     *
+     * @group Notifications
+     *
+     * @authenticated
+     *
+     * @bodyParam title string required Notification title (max 200 chars). Example: "Rezultate provimi"
+     * @bodyParam body string required Notification body text. Example: "Rezultatet e provimit janë publikuar."
+     * @bodyParam type string required One of: info, sukses, paralajmerim. Example: "info"
+     * @bodyParam recipient_role string optional One of: student, pedagog, admin, all. Defaults to all. Example: "student"
+     * @bodyParam recipient_user_id integer optional Send to a single user by user ID. Example: 42
+     *
+     * @response 200 {"data": null, "message": "Njoftimet u d\u00ebrguan me sukses tek 120 p\u00ebrdorues.", "status": 200}
+     * @response 422 {"message": "The given data was invalid.", "errors": {}}
+     */
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([

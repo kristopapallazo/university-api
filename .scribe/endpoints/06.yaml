@@ -118,3 +118,57 @@ endpoints:
     controller: null
     method: null
     route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/pedagog/sections
+    metadata:
+      custom: []
+      groupName: Pedagogues
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List pedagog sections'
+      description: |-
+        Returns the list of class sections (teaching slots) assigned to the authenticated pedagog,
+        ordered by day and start time. Each entry includes the course, classroom, and schedule info.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [{"id": 3, "courseId": 7, "course": "Bazat e Programimit", "day": "E Hene", "timeStart": "08:00:00", "timeEnd": "09:30:00", "roomId": 2}],
+            "message": "Seksionet u mor\u00ebn me sukses.",
+            "status": 200
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"data": null, "message": "Nuk u gjet profili i pedagogut.", "status": 404}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

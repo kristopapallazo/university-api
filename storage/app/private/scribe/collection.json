@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "UAMD Portal API",
-        "_postman_id": "1606bb0b-7802-4e19-b87c-af07bed3a028",
+        "_postman_id": "c92e611c-7653-4975-ba85-88bec59a3ee7",
         "description": "REST API p\u00ebr Portalin e Universitetit Aleksander Moisiu Durr\u00ebs (UAMD). T\u00eb gjitha endpoint-et jan\u00eb t\u00eb prefixuara me \/api\/v1\/.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -609,233 +609,6 @@
             ]
         },
         {
-            "name": "Endpoints",
-            "description": "",
-            "item": [
-                {
-                    "name": "GET api\/v1\/notifications",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/notifications",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/notifications"
-                        },
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": [
-                        {
-                            "header": [
-                                {
-                                    "key": "cache-control",
-                                    "value": "no-cache, private"
-                                },
-                                {
-                                    "key": "content-type",
-                                    "value": "application\/json"
-                                },
-                                {
-                                    "key": "vary",
-                                    "value": "Origin"
-                                }
-                            ],
-                            "code": 401,
-                            "body": "{\"data\":null,\"message\":\"Nuk jeni i autentikuar.\",\"status\":401}",
-                            "name": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "GET api\/v1\/notifications\/unread-count",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/notifications\/unread-count",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/notifications\/unread-count"
-                        },
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": [
-                        {
-                            "header": [
-                                {
-                                    "key": "cache-control",
-                                    "value": "no-cache, private"
-                                },
-                                {
-                                    "key": "content-type",
-                                    "value": "application\/json"
-                                },
-                                {
-                                    "key": "vary",
-                                    "value": "Origin"
-                                }
-                            ],
-                            "code": 401,
-                            "body": "{\"data\":null,\"message\":\"Nuk jeni i autentikuar.\",\"status\":401}",
-                            "name": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "PUT api\/v1\/notifications\/{id}\/read",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/notifications\/:id\/read",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/notifications\/:id\/read",
-                            "variable": [
-                                {
-                                    "id": "id",
-                                    "key": "id",
-                                    "value": "architecto",
-                                    "description": "The ID of the notification."
-                                }
-                            ]
-                        },
-                        "method": "PUT",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "PUT api\/v1\/notifications\/read-all",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/notifications\/read-all",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/notifications\/read-all"
-                        },
-                        "method": "PUT",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "POST api\/v1\/admin\/notifications",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/admin\/notifications",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/admin\/notifications"
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"title\":\"b\",\"body\":\"architecto\",\"type\":\"architecto\",\"recipient_user_id\":16}"
-                        },
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "GET api\/v1\/pedagog\/sections",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/pedagog\/sections",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/pedagog\/sections"
-                        },
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": [
-                        {
-                            "header": [
-                                {
-                                    "key": "cache-control",
-                                    "value": "no-cache, private"
-                                },
-                                {
-                                    "key": "content-type",
-                                    "value": "application\/json"
-                                },
-                                {
-                                    "key": "vary",
-                                    "value": "Origin"
-                                }
-                            ],
-                            "code": 401,
-                            "body": "{\"data\":null,\"message\":\"Nuk jeni i autentikuar.\",\"status\":401}",
-                            "name": ""
-                        }
-                    ]
-                }
-            ]
-        },
-        {
             "name": "Faculties",
             "description": "",
             "item": [
@@ -1032,6 +805,195 @@
             ]
         },
         {
+            "name": "Notifications",
+            "description": "",
+            "item": [
+                {
+                    "name": "List notifications",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/notifications",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/notifications"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns all notifications for the authenticated user, ordered newest first."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [{\"id\": 1, \"title\": \"Njoftim i ri\", \"body\": \"Teksti i njoftimit.\", \"type\": \"info\", \"isRead\": false, \"readAt\": null, \"createdAt\": \"2026-04-17T10:00:00.000000Z\"}],\n  \"message\": \"Njoftimet u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Unread notification count",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/notifications\/unread-count",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/notifications\/unread-count"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the count of unread notifications for the authenticated user."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": {\"count\": 3}, \"message\": \"OK\", \"status\": 200}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Mark notification as read",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/notifications\/:id\/read",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/notifications\/:id\/read",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The notification ID."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Marks a single notification as read. Only the owning user can mark their own notifications."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": {\"id\": 1, \"title\": \"Njoftim i ri\", \"body\": \"Teksti i njoftimit.\", \"type\": \"info\", \"isRead\": true, \"readAt\": \"2026-04-17T10:05:00.000000Z\", \"createdAt\": \"2026-04-17T10:00:00.000000Z\"}, \"message\": \"Njoftimi u sh\\u00ebnua si i lexuar.\", \"status\": 200}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"data\": null, \"message\": \"Rekordi nuk u gjet.\", \"status\": 404}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Mark all notifications as read",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/notifications\/read-all",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/notifications\/read-all"
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Marks all unread notifications of the authenticated user as read."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": null, \"message\": \"T\\u00eb gjitha njoftimet u sh\\u00ebnuan si t\\u00eb lexuara.\", \"status\": 200}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Send notification (Admin)",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/admin\/notifications",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/admin\/notifications"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"\\\"Rezultate provimi\\\"\",\"body\":\"\\\"Rezultatet e provimit jan\u00eb publikuar.\\\"\",\"type\":\"\\\"info\\\"\",\"recipient_role\":\"\\\"student\\\"\",\"recipient_user_id\":42}"
+                        },
+                        "description": "Sends a notification to a specific user or to all users of a given role.\nIf `recipient_user_id` is provided, only that user receives it.\nOtherwise, every user matching `recipient_role` (or all users if omitted) receives it."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": null, \"message\": \"Njoftimet u d\\u00ebrguan me sukses tek 120 p\\u00ebrdorues.\", \"status\": 200}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\"message\": \"The given data was invalid.\", \"errors\": {}}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Pedagogues",
             "description": "",
             "item": [
@@ -1116,6 +1078,44 @@
                             "header": [],
                             "code": 404,
                             "body": "{\"data\": null, \"message\": \"Rekordi nuk u gjet.\", \"status\": 404}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List pedagog sections",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/pedagog\/sections",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/pedagog\/sections"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the list of class sections (teaching slots) assigned to the authenticated pedagog,\nordered by day and start time. Each entry includes the course, classroom, and schedule info."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [{\"id\": 3, \"courseId\": 7, \"course\": \"Bazat e Programimit\", \"day\": \"E Hene\", \"timeStart\": \"08:00:00\", \"timeEnd\": \"09:30:00\", \"roomId\": 2}],\n  \"message\": \"Seksionet u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"data\": null, \"message\": \"Nuk u gjet profili i pedagogut.\", \"status\": 404}",
                             "name": ""
                         }
                     ]

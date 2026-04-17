@@ -17,10 +17,10 @@ tags:
     name: Departments
     description: ''
   -
-    name: Endpoints
+    name: Faculties
     description: ''
   -
-    name: Faculties
+    name: Notifications
     description: ''
   -
     name: Pedagogues
@@ -709,165 +709,6 @@ paths:
         required: true
         schema:
           type: string
-  /api/v1/notifications:
-    get:
-      summary: ''
-      operationId: getApiV1Notifications
-      description: ''
-      parameters: []
-      responses:
-        401:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  data: null
-                  message: 'Nuk jeni i autentikuar.'
-                  status: 401
-                properties:
-                  data:
-                    type: string
-                    example: null
-                    nullable: true
-                  message:
-                    type: string
-                    example: 'Nuk jeni i autentikuar.'
-                  status:
-                    type: integer
-                    example: 401
-      tags:
-        - Endpoints
-  /api/v1/notifications/unread-count:
-    get:
-      summary: ''
-      operationId: getApiV1NotificationsUnreadCount
-      description: ''
-      parameters: []
-      responses:
-        401:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  data: null
-                  message: 'Nuk jeni i autentikuar.'
-                  status: 401
-                properties:
-                  data:
-                    type: string
-                    example: null
-                    nullable: true
-                  message:
-                    type: string
-                    example: 'Nuk jeni i autentikuar.'
-                  status:
-                    type: integer
-                    example: 401
-      tags:
-        - Endpoints
-  '/api/v1/notifications/{id}/read':
-    put:
-      summary: ''
-      operationId: putApiV1NotificationsIdRead
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-    parameters:
-      -
-        in: path
-        name: id
-        description: 'The ID of the notification.'
-        example: architecto
-        required: true
-        schema:
-          type: string
-  /api/v1/notifications/read-all:
-    put:
-      summary: ''
-      operationId: putApiV1NotificationsReadAll
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-  /api/v1/admin/notifications:
-    post:
-      summary: ''
-      operationId: postApiV1AdminNotifications
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                  description: 'Must not be greater than 200 characters.'
-                  example: b
-                body:
-                  type: string
-                  description: ''
-                  example: architecto
-                type:
-                  type: string
-                  description: ''
-                  example: architecto
-                recipient_role:
-                  type: string
-                  description: ''
-                  example: null
-                  nullable: true
-                recipient_user_id:
-                  type: integer
-                  description: 'The <code>id</code> of an existing record in the users table.'
-                  example: 16
-                  nullable: true
-              required:
-                - title
-                - body
-                - type
-  /api/v1/pedagog/sections:
-    get:
-      summary: ''
-      operationId: getApiV1PedagogSections
-      description: ''
-      parameters: []
-      responses:
-        401:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  data: null
-                  message: 'Nuk jeni i autentikuar.'
-                  status: 401
-                properties:
-                  data:
-                    type: string
-                    example: null
-                    nullable: true
-                  message:
-                    type: string
-                    example: 'Nuk jeni i autentikuar.'
-                  status:
-                    type: integer
-                    example: 401
-      tags:
-        - Endpoints
   /api/v1/faculties:
     get:
       summary: 'List faculties'
@@ -1072,6 +913,305 @@ paths:
         required: true
         schema:
           type: string
+  /api/v1/notifications:
+    get:
+      summary: 'List notifications'
+      operationId: listNotifications
+      description: 'Returns all notifications for the authenticated user, ordered newest first.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      title: 'Njoftim i ri'
+                      body: 'Teksti i njoftimit.'
+                      type: info
+                      isRead: false
+                      readAt: null
+                      createdAt: '2026-04-17T10:00:00.000000Z'
+                  message: 'Njoftimet u morën me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        title: 'Njoftim i ri'
+                        body: 'Teksti i njoftimit.'
+                        type: info
+                        isRead: false
+                        readAt: null
+                        createdAt: '2026-04-17T10:00:00.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        title:
+                          type: string
+                          example: 'Njoftim i ri'
+                        body:
+                          type: string
+                          example: 'Teksti i njoftimit.'
+                        type:
+                          type: string
+                          example: info
+                        isRead:
+                          type: boolean
+                          example: false
+                        readAt:
+                          type: string
+                          example: null
+                          nullable: true
+                        createdAt:
+                          type: string
+                          example: '2026-04-17T10:00:00.000000Z'
+                  message:
+                    type: string
+                    example: 'Njoftimet u morën me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+      tags:
+        - Notifications
+  /api/v1/notifications/unread-count:
+    get:
+      summary: 'Unread notification count'
+      operationId: unreadNotificationCount
+      description: 'Returns the count of unread notifications for the authenticated user.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    count: 3
+                  message: OK
+                  status: 200
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                        example: 3
+                  message:
+                    type: string
+                    example: OK
+                  status:
+                    type: integer
+                    example: 200
+      tags:
+        - Notifications
+  '/api/v1/notifications/{id}/read':
+    put:
+      summary: 'Mark notification as read'
+      operationId: markNotificationAsRead
+      description: 'Marks a single notification as read. Only the owning user can mark their own notifications.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    title: 'Njoftim i ri'
+                    body: 'Teksti i njoftimit.'
+                    type: info
+                    isRead: true
+                    readAt: '2026-04-17T10:05:00.000000Z'
+                    createdAt: '2026-04-17T10:00:00.000000Z'
+                  message: 'Njoftimi u shënua si i lexuar.'
+                  status: 200
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      title:
+                        type: string
+                        example: 'Njoftim i ri'
+                      body:
+                        type: string
+                        example: 'Teksti i njoftimit.'
+                      type:
+                        type: string
+                        example: info
+                      isRead:
+                        type: boolean
+                        example: true
+                      readAt:
+                        type: string
+                        example: '2026-04-17T10:05:00.000000Z'
+                      createdAt:
+                        type: string
+                        example: '2026-04-17T10:00:00.000000Z'
+                  message:
+                    type: string
+                    example: 'Njoftimi u shënua si i lexuar.'
+                  status:
+                    type: integer
+                    example: 200
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Rekordi nuk u gjet.'
+                  status: 404
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Rekordi nuk u gjet.'
+                  status:
+                    type: integer
+                    example: 404
+      tags:
+        - Notifications
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The notification ID.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/notifications/read-all:
+    put:
+      summary: 'Mark all notifications as read'
+      operationId: markAllNotificationsAsRead
+      description: 'Marks all unread notifications of the authenticated user as read.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Të gjitha njoftimet u shënuan si të lexuara.'
+                  status: 200
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Të gjitha njoftimet u shënuan si të lexuara.'
+                  status:
+                    type: integer
+                    example: 200
+      tags:
+        - Notifications
+  /api/v1/admin/notifications:
+    post:
+      summary: 'Send notification (Admin)'
+      operationId: sendNotificationAdmin
+      description: "Sends a notification to a specific user or to all users of a given role.\nIf `recipient_user_id` is provided, only that user receives it.\nOtherwise, every user matching `recipient_role` (or all users if omitted) receives it."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Njoftimet u dërguan me sukses tek 120 përdorues.'
+                  status: 200
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Njoftimet u dërguan me sukses tek 120 përdorues.'
+                  status:
+                    type: integer
+                    example: 200
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The given data was invalid.'
+                  errors: {  }
+                properties:
+                  message:
+                    type: string
+                    example: 'The given data was invalid.'
+                  errors:
+                    type: object
+                    properties: {  }
+      tags:
+        - Notifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Notification title (max 200 chars).'
+                  example: '"Rezultate provimi"'
+                body:
+                  type: string
+                  description: 'Notification body text.'
+                  example: '"Rezultatet e provimit janë publikuar."'
+                type:
+                  type: string
+                  description: 'One of: info, sukses, paralajmerim.'
+                  example: '"info"'
+                recipient_role:
+                  type: string
+                  description: 'optional One of: student, pedagog, admin, all. Defaults to all.'
+                  example: '"student"'
+                  nullable: true
+                recipient_user_id:
+                  type: integer
+                  description: 'optional Send to a single user by user ID.'
+                  example: 42
+                  nullable: true
+              required:
+                - title
+                - body
+                - type
   /api/v1/pedagogues:
     get:
       summary: 'List pedagogues'
@@ -1238,6 +1378,96 @@ paths:
         required: true
         schema:
           type: string
+  /api/v1/pedagog/sections:
+    get:
+      summary: 'List pedagog sections'
+      operationId: listPedagogSections
+      description: "Returns the list of class sections (teaching slots) assigned to the authenticated pedagog,\nordered by day and start time. Each entry includes the course, classroom, and schedule info."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 3
+                      courseId: 7
+                      course: 'Bazat e Programimit'
+                      day: 'E Hene'
+                      timeStart: '08:00:00'
+                      timeEnd: '09:30:00'
+                      roomId: 2
+                  message: 'Seksionet u morën me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 3
+                        courseId: 7
+                        course: 'Bazat e Programimit'
+                        day: 'E Hene'
+                        timeStart: '08:00:00'
+                        timeEnd: '09:30:00'
+                        roomId: 2
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 3
+                        courseId:
+                          type: integer
+                          example: 7
+                        course:
+                          type: string
+                          example: 'Bazat e Programimit'
+                        day:
+                          type: string
+                          example: 'E Hene'
+                        timeStart:
+                          type: string
+                          example: '08:00:00'
+                        timeEnd:
+                          type: string
+                          example: '09:30:00'
+                        roomId:
+                          type: integer
+                          example: 2
+                  message:
+                    type: string
+                    example: 'Seksionet u morën me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Nuk u gjet profili i pedagogut.'
+                  status: 404
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Nuk u gjet profili i pedagogut.'
+                  status:
+                    type: integer
+                    example: 404
+      tags:
+        - Pedagogues
   /api/v1/programs:
     get:
       summary: 'List study programs'
