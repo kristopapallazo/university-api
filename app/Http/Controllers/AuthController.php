@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Traits\ApiResponse;
@@ -29,20 +30,20 @@ class AuthController extends Controller
      *   "status": 200
      * }
      * @response 401 scenario="Wrong credentials" {"data": null, "message": "Email ose fjal\u00ebkalimi i gab\u00fear.", "status": 401}
-     * @response 403 scenario="Student tried email login" {"data": null, "message": "Studen\u00ebtët p\u00ebrdorin Google.", "status": 403}
+     * @response 403 scenario="Student tried email login" {"data": null, "message": "Student\u00ebt hyjn\u00eb vet\u00ebm me Google OAuth.", "status": 403}
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        if (! Auth::attempt($request->only('email', 'password'))) {
+        if (! Auth::guard('web')->attempt($request->only('email', 'password'))) {
             return $this->error('Email ose fjalëkalimi i gabuar.', 401);
         }
 
-        $user = Auth::user();
+        $user = Auth::guard('web')->user();
 
-        if (! in_array($user->role, ['pedagog', 'admin'])) {
+        if ($user->role === 'student') {
             Auth::guard('web')->logout();
 
-            return $this->error('Pedagogët dhe adminët hyjnë me email/fjalëkalim. Studentët përdorin Google.', 403);
+            return $this->error('Studentët hyjnë vetëm me Google OAuth.', 403);
         }
 
         $token = $user->createToken('spa')->plainTextToken;
@@ -88,5 +89,25 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return $this->success(null, 'Dalja u krye me sukses.');
+    }
+
+    /**
+     * Change password
+     *
+     * Updates the password for the authenticated user.
+     * Only available for users who have a password (pedagog / admin).
+     *
+     * @group Authentication
+     *
+     * @response 200 {"data": null, "message": "Fjal\u00ebkalimi u ndryshua me sukses.", "status": 200}
+     * @response 422 scenario="Wrong current password" {"data": null, "message": "T\u00eb dh\u00ebnat nuk jan\u00eb t\u00eb sakta.", "status": 422}
+     */
+    public function changePassword(ChangePasswordRequest $request): JsonResponse
+    {
+        $request->user()->update([
+            'password' => $request->validated()['new_password'],
+        ]);
+
+        return $this->success(null, 'Fjalëkalimi u ndryshua me sukses.');
     }
 }

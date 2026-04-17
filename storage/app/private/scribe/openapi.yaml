@@ -118,7 +118,7 @@ paths:
                 type: object
                 example:
                   data: null
-                  message: 'Studenëtët përdorin Google.'
+                  message: 'Studentët hyjnë vetëm me Google OAuth.'
                   status: 403
                 properties:
                   data:
@@ -127,7 +127,7 @@ paths:
                     nullable: true
                   message:
                     type: string
-                    example: 'Studenëtët përdorin Google.'
+                    example: 'Studentët hyjnë vetëm me Google OAuth.'
                   status:
                     type: integer
                     example: 403
@@ -156,7 +156,7 @@ paths:
     get:
       summary: 'Google OAuth — redirect'
       operationId: googleOAuthRedirect
-      description: "Redirects the browser to Google's consent screen.\nOpen this URL directly in the browser; **do not** call it via fetch/axios.\nOnly @students.uamd.edu.al accounts are accepted."
+      description: "Redirects the browser to Google's consent screen.\nOpen this URL directly in the browser; **do not** call it via fetch/axios.\nAccepts university emails: `@uamd.edu.al` (staff) and `@students.uamd.edu.al` (students)."
       parameters: []
       responses:
         302:
@@ -165,7 +165,7 @@ paths:
             text/plain:
               schema:
                 type: string
-                example: "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" />\n        <meta http-equiv=\"refresh\" content=\"0;url='https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al'\" />\n\n        <title>Redirecting to https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al</title>\n    </head>\n    <body>\n        Redirecting to <a href=\"https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al\">https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al</a>.\n    </body>\n</html>"
+                example: "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" />\n        <meta http-equiv=\"refresh\" content=\"0;url='https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=uamd.edu.al'\" />\n\n        <title>Redirecting to https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=uamd.edu.al</title>\n    </head>\n    <body>\n        Redirecting to <a href=\"https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=uamd.edu.al\">https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=uamd.edu.al</a>.\n    </body>\n</html>"
       tags:
         - Authentication
       security: []
@@ -173,74 +173,31 @@ paths:
     get:
       summary: 'Google OAuth — callback'
       operationId: googleOAuthCallback
-      description: "Handles Google's redirect back. Verifies the `@students.uamd.edu.al` domain,\ncreates or retrieves the user, and returns a Sanctum token."
+      description: "Handles Google's redirect back. Looks up the email in the system to determine\nthe user's role (student, pedagog, or admin). Unknown emails are rejected.\nOn success, redirects to the SPA with a token in the URL."
       parameters: []
       responses:
-        200:
+        302:
           description: ''
           content:
-            application/json:
+            text/plain:
               schema:
-                type: object
-                example:
-                  data:
-                    user:
-                      id: 5
-                      name: 'Ana Koci'
-                      email: a.koci@students.uamd.edu.al
-                      role: student
-                    token: 2|xyz...
-                  message: 'Hyrja me Google u krye me sukses.'
-                  status: 200
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      user:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                            example: 5
-                          name:
-                            type: string
-                            example: 'Ana Koci'
-                          email:
-                            type: string
-                            example: a.koci@students.uamd.edu.al
-                          role:
-                            type: string
-                            example: student
-                      token:
-                        type: string
-                        example: 2|xyz...
-                  message:
+                oneOf:
+                  -
+                    description: Success
                     type: string
-                    example: 'Hyrja me Google u krye me sukses.'
-                  status:
-                    type: integer
-                    example: 200
-        403:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  data: null
-                  message: 'Vetëm studentët e UAMD...'
-                  status: 403
-                properties:
-                  data:
+                    example: 'Redirects to FRONTEND_URL/auth/callback?token=...'
+                  -
+                    description: 'Unknown email'
                     type: string
-                    example: null
-                    nullable: true
-                  message:
+                    example: 'Redirects to FRONTEND_URL/login?error=oauth_unknown_email'
+                  -
+                    description: 'OAuth error'
                     type: string
-                    example: 'Vetëm studentët e UAMD...'
-                  status:
-                    type: integer
-                    example: 403
+                    example: 'Redirects to FRONTEND_URL/login?error=oauth_failed'
+                  -
+                    description: ''
+                    type: string
+                    example: "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" />\n        <meta http-equiv=\"refresh\" content=\"0;url='http://localhost:5173/login?error=oauth_failed'\" />\n\n        <title>Redirecting to http://localhost:5173/login?error=oauth_failed</title>\n    </head>\n    <body>\n        Redirecting to <a href=\"http://localhost:5173/login?error=oauth_failed\">http://localhost:5173/login?error=oauth_failed</a>.\n    </body>\n</html>"
       tags:
         - Authentication
       security: []
@@ -324,6 +281,75 @@ paths:
                     example: 200
       tags:
         - Authentication
+  /api/v1/auth/password:
+    put:
+      summary: 'Change password'
+      operationId: changePassword
+      description: "Updates the password for the authenticated user.\nOnly available for users who have a password (pedagog / admin)."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Fjalëkalimi u ndryshua me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Fjalëkalimi u ndryshua me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+        422:
+          description: 'Wrong current password'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Të dhënat nuk janë të sakta.'
+                  status: 422
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Të dhënat nuk janë të sakta.'
+                  status:
+                    type: integer
+                    example: 422
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                current_password:
+                  type: string
+                  description: ''
+                  example: architecto
+                new_password:
+                  type: string
+                  description: 'Must be at least 8 characters.'
+                  example: ngzmiyvdljnikhwaykcmyuwpwl
+              required:
+                - current_password
+                - new_password
   /api/v1/courses:
     get:
       summary: 'List courses'

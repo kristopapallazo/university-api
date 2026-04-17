@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Department;
 use App\Models\Pedagog;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class PedagogSeeder extends Seeder
 {
@@ -87,6 +89,21 @@ class PedagogSeeder extends Seeder
                     array_merge($data, ['DEP_ID' => $department->DEP_ID])
                 );
             }
+        }
+
+        // Create a users table row for each pedagog so they can log in.
+        // In production, the user row is created on first Google OAuth login.
+        // This seeder is for testing/dev only.
+        foreach (Pedagog::all() as $ped) {
+            User::firstOrCreate(
+                ['email' => $ped->PED_EMAIL],
+                [
+                    'name' => "{$ped->PED_EM} {$ped->PED_MB}",
+                    'role' => 'pedagog',
+                    'password' => Hash::make('Testtest1!'),
+                    'email_verified_at' => now(),
+                ]
+            );
         }
     }
 }

@@ -75,7 +75,7 @@ endpoints:
       -
         custom: []
         status: 403
-        content: '{"data": null, "message": "Studen\u00ebtët p\u00ebrdorin Google.", "status": 403}'
+        content: '{"data": null, "message": "Student\u00ebt hyjn\u00eb vet\u00ebm me Google OAuth.", "status": 403}'
         headers: []
         description: 'Student tried email login'
     responseFields: []
@@ -98,7 +98,7 @@ endpoints:
       description: |-
         Redirects the browser to Google's consent screen.
         Open this URL directly in the browser; **do not** call it via fetch/axios.
-        Only @students.uamd.edu.al accounts are accepted.
+        Accepts university emails: `@uamd.edu.al` (staff) and `@students.uamd.edu.al` (students).
       authenticated: false
       deprecated: false
     headers:
@@ -120,18 +120,20 @@ endpoints:
           <html>
               <head>
                   <meta charset="UTF-8" />
-                  <meta http-equiv="refresh" content="0;url='https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al'" />
+                  <meta http-equiv="refresh" content="0;url='https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=uamd.edu.al'" />
 
-                  <title>Redirecting to https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al</title>
+                  <title>Redirecting to https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=uamd.edu.al</title>
               </head>
               <body>
-                  Redirecting to <a href="https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al">https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=students.uamd.edu.al</a>.
+                  Redirecting to <a href="https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=uamd.edu.al">https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&amp;response_type=code&amp;hd=uamd.edu.al</a>.
               </body>
           </html>
         headers:
           cache-control: 'no-cache, private'
-          location: 'https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&response_type=code&hd=students.uamd.edu.al'
+          location: 'https://accounts.google.com/o/oauth2/auth?scope=openid+profile+email&response_type=code&hd=uamd.edu.al'
           content-type: 'text/html; charset=utf-8'
+          x-ratelimit-limit: '10'
+          x-ratelimit-remaining: '9'
           access-control-allow-origin: 'http://localhost:5173'
         description: null
     responseFields: []
@@ -152,8 +154,9 @@ endpoints:
       subgroupDescription: ''
       title: 'Google OAuth — callback'
       description: |-
-        Handles Google's redirect back. Verifies the `@students.uamd.edu.al` domain,
-        creates or retrieves the user, and returns a Sanctum token.
+        Handles Google's redirect back. Looks up the email in the system to determine
+        the user's role (student, pedagog, or admin). Unknown emails are rejected.
+        On success, redirects to the SPA with a token in the URL.
       authenticated: false
       deprecated: false
     headers:
@@ -169,21 +172,46 @@ endpoints:
     responses:
       -
         custom: []
-        status: 200
-        content: |-
-          {
-            "data": {"user": {"id": 5, "name": "Ana Koci", "email": "a.koci@students.uamd.edu.al", "role": "student"}, "token": "2|xyz..."},
-            "message": "Hyrja me Google u krye me sukses.",
-            "status": 200
-          }
+        status: 302
+        content: 'Redirects to FRONTEND_URL/auth/callback?token=...'
         headers: []
-        description: ''
+        description: Success
       -
         custom: []
-        status: 403
-        content: '{"data": null, "message": "Vet\u00ebm student\u00ebt e UAMD...", "status": 403}'
+        status: 302
+        content: 'Redirects to FRONTEND_URL/login?error=oauth_unknown_email'
         headers: []
-        description: ''
+        description: 'Unknown email'
+      -
+        custom: []
+        status: 302
+        content: 'Redirects to FRONTEND_URL/login?error=oauth_failed'
+        headers: []
+        description: 'OAuth error'
+      -
+        custom: []
+        status: 302
+        content: |-
+          <!DOCTYPE html>
+          <html>
+              <head>
+                  <meta charset="UTF-8" />
+                  <meta http-equiv="refresh" content="0;url='http://localhost:5173/login?error=oauth_failed'" />
+
+                  <title>Redirecting to http://localhost:5173/login?error=oauth_failed</title>
+              </head>
+              <body>
+                  Redirecting to <a href="http://localhost:5173/login?error=oauth_failed">http://localhost:5173/login?error=oauth_failed</a>.
+              </body>
+          </html>
+        headers:
+          cache-control: 'no-cache, private'
+          location: 'http://localhost:5173/login?error=oauth_failed'
+          content-type: 'text/html; charset=utf-8'
+          x-ratelimit-limit: '10'
+          x-ratelimit-remaining: '9'
+          access-control-allow-origin: 'http://localhost:5173'
+        description: null
     responseFields: []
     auth: []
     controller: null
@@ -268,6 +296,79 @@ endpoints:
         content: '{"data": null, "message": "Dalja u krye me sukses.", "status": 200}'
         headers: []
         description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: api/v1/auth/password
+    metadata:
+      custom: []
+      groupName: Authentication
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Change password'
+      description: |-
+        Updates the password for the authenticated user.
+        Only available for users who have a password (pedagog / admin).
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      current_password:
+        custom: []
+        name: current_password
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      new_password:
+        custom: []
+        name: new_password
+        description: 'Must be at least 8 characters.'
+        required: true
+        example: ngzmiyvdljnikhwaykcmyuwpwl
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      current_password: architecto
+      new_password: ngzmiyvdljnikhwaykcmyuwpwl
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": null, "message": "Fjal\u00ebkalimi u ndryshua me sukses.", "status": 200}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: '{"data": null, "message": "T\u00eb dh\u00ebnat nuk jan\u00eb t\u00eb sakta.", "status": 422}'
+        headers: []
+        description: 'Wrong current password'
     responseFields: []
     auth:
       - headers

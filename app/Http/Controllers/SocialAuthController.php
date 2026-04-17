@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
 use App\Http\Traits\ApiResponse;
+use App\Models\Pedagog;
+use App\Models\Student;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\AbstractProvider;
@@ -19,7 +19,7 @@ class SocialAuthController extends Controller
      *
      * Redirects the browser to Google's consent screen.
      * Open this URL directly in the browser; **do not** call it via fetch/axios.
-     * Only @students.uamd.edu.al accounts are accepted.
+     * Accepts university emails: `@uamd.edu.al` (staff) and `@students.uamd.edu.al` (students).
      *
      * @group Authentication
      *
@@ -31,7 +31,7 @@ class SocialAuthController extends Controller
         $driver = Socialite::driver('google');
 
         return $driver
-            ->with(['hd' => 'students.uamd.edu.al'])
+            ->with(['hd' => 'uamd.edu.al'])
             ->stateless()
             ->redirect();
     }
@@ -39,52 +39,78 @@ class SocialAuthController extends Controller
     /**
      * Google OAuth — callback
      *
-     * Handles Google's redirect back. Verifies the `@students.uamd.edu.al` domain,
-     * creates or retrieves the user, and returns a Sanctum token.
+     * Handles Google's redirect back. Looks up the email in the system to determine
+     * the user's role (student, pedagog, or admin). Unknown emails are rejected.
+     * On success, redirects to the SPA with a token in the URL.
      *
      * @group Authentication
      *
      * @unauthenticated
      *
-     * @response 200 {
-     *   "data": {"user": {"id": 5, "name": "Ana Koci", "email": "a.koci@students.uamd.edu.al", "role": "student"}, "token": "2|xyz..."},
-     *   "message": "Hyrja me Google u krye me sukses.",
-     *   "status": 200
-     * }
-     * @response 403 {"data": null, "message": "Vet\u00ebm student\u00ebt e UAMD...", "status": 403}
+     * @response 302 scenario="Success" Redirects to FRONTEND_URL/auth/callback?token=...
+     * @response 302 scenario="Unknown email" Redirects to FRONTEND_URL/login?error=oauth_unknown_email
+     * @response 302 scenario="OAuth error" Redirects to FRONTEND_URL/login?error=oauth_failed
      */
-    public function callback(): JsonResponse
+    public function callback(): RedirectResponse
     {
-        /** @var AbstractProvider $driver */
-        $driver = Socialite::driver('google');
+        $frontendUrl = config('app.frontend_url');
 
-        $googleUser = $driver->stateless()->user();
+        try {
+            /** @var AbstractProvider $driver */
+            $driver = Socialite::driver('google');
 
-        // Server-side domain check — never trust the hd hint alone
-        if (! str_ends_with($googleUser->getEmail(), '@students.uamd.edu.al')) {
-            return $this->error(
-                'Vetëm studentët e UAMD mund të hyjnë me Google. Adresa juaj duhet të mbarojë me @students.uamd.edu.al.',
-                403
-            );
+            $googleUser = $driver->stateless()->user();
+        } catch (\Exception) {
+            return redirect("{$frontendUrl}/login?error=oauth_failed");
         }
 
-        $user = User::firstOrCreate(
-            ['email' => $googleUser->getEmail()],
-            [
+        $email = $googleUser->getEmail();
+
+        // If user already exists, log them in directly
+        $user = User::where('email', $email)->first();
+
+        if (! $user) {
+            // Derive role from domain tables
+            $role = $this->resolveRole($email);
+
+            if (! $role) {
+                return redirect("{$frontendUrl}/login?error=oauth_unknown_email");
+            }
+
+            $user = User::create([
                 'name' => $googleUser->getName(),
-                'role' => 'student',
+                'email' => $email,
+                'role' => $role,
                 'provider' => 'google',
                 'provider_id' => $googleUser->getId(),
                 'avatar_url' => $googleUser->getAvatar(),
                 'password' => null,
-            ]
-        );
+            ]);
+        }
 
         $token = $user->createToken('spa')->plainTextToken;
 
-        return $this->success([
-            'user' => new UserResource($user),
-            'token' => $token,
-        ], 'Hyrja u krye me sukses.');
+        return redirect("{$frontendUrl}/auth/callback?token={$token}");
+    }
+
+    /**
+     * Determine the role for a given email by checking domain entity tables.
+     *
+     * Priority: existing admin (users table) → pedagog table → student table.
+     */
+    private function resolveRole(string $email): ?string
+    {
+        // Admin is only in the users table (seeded) — already handled by the caller.
+        // Check pedagog table
+        if (Pedagog::where('PED_EMAIL', $email)->exists()) {
+            return 'pedagog';
+        }
+
+        // Check student table
+        if (Student::where('STU_EMAIL', $email)->exists()) {
+            return 'student';
+        }
+
+        return null;
     }
 }

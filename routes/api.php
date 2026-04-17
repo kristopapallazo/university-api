@@ -24,14 +24,17 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/login', [AuthController::class, 'login'])
     ->middleware('throttle:6,1');
 
-// Google OAuth (students only — @students.uamd.edu.al)
-Route::get('/auth/google/redirect', [SocialAuthController::class, 'redirect']);
-Route::get('/auth/google/callback', [SocialAuthController::class, 'callback']);
+// Google OAuth (all roles — email must exist in university domain tables)
+Route::middleware('throttle:10,1')->group(function () {
+    Route::get('/auth/google/redirect', [SocialAuthController::class, 'redirect']);
+    Route::get('/auth/google/callback', [SocialAuthController::class, 'callback']);
+});
 
 // ── Protected ───────────────────────────────────────────────────
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/me', [AuthController::class, 'me']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::put('/auth/password', [AuthController::class, 'changePassword']);
 
     // Reference data — reads (any authenticated role)
     Route::get('/faculties', [FacultyController::class, 'index']);
