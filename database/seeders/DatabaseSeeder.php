@@ -11,11 +11,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             // ── Core auth ──────────────────────────
             AdminSeeder::class,
-            TestSeeder::class,           // static test users (admin/pedagog/student)
 
             // ── Academic structure ─────────────────
             FacultySeeder::class,
             DepartmentSeeder::class,
+            TestSeeder::class,           // static test users (needs departments for pedagog DEP_ID)
             PedagogSeeder::class,        // needs departments
             ProgramStudimSeeder::class,  // needs departments
             LendaSeeder::class,          // needs departments
