@@ -18,7 +18,7 @@ class FatureController extends Controller
      *
      * Returns all invoices for the authenticated student, sorted by issue date desc.
      *
-     * @group Student Reports
+     * @group Reports
      *
      * @authenticated
      *

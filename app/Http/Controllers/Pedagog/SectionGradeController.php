@@ -20,7 +20,7 @@ class SectionGradeController extends Controller
      * Returns grades for all students in the given section. The authenticated
      * pedagog must teach that section — otherwise 403 is returned.
      *
-     * @group Pedagog Reports
+     * @group Reports
      *
      * @authenticated
      *

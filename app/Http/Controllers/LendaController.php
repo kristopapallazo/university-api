@@ -17,7 +17,7 @@ class LendaController extends Controller
      *
      * Returns all courses. Pass `department_id` to filter by department.
      *
-     * @group Reference Data
+     * @group Courses
      *
      * @queryParam departmentId integer optional Filter by department. Example: 4
      *
@@ -46,7 +46,7 @@ class LendaController extends Controller
      *
      * Returns a single course by its ID.
      *
-     * @group Reference Data
+     * @group Courses
      *
      * @response 200 {"data": {"id": 1, "name": "Algoritmika", "code": "INF101", "departmentId": 4}, "message": "L\u00ebnda u mor me sukses.", "status": 200}
      * @response 404 {"data": null, "message": "Rekordi nuk u gjet.", "status": 404}

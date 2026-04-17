@@ -17,7 +17,7 @@ class DepartmentController extends Controller
      *
      * Returns all departments. Pass `faculty_id` to filter by faculty.
      *
-     * @group Reference Data
+     * @group Departments
      *
      * @queryParam facultyId integer optional Filter by faculty. Example: 2
      *
@@ -46,7 +46,7 @@ class DepartmentController extends Controller
      *
      * Returns a single department by its ID.
      *
-     * @group Reference Data
+     * @group Departments
      *
      * @response 200 {"data": {"id": 4, "name": "Departamenti i Informatik\u00ebs", "facultyId": 2}, "message": "Departamenti u mor me sukses.", "status": 200}
      * @response 404 {"data": null, "message": "Not Found", "status": 404}
@@ -61,19 +61,34 @@ class DepartmentController extends Controller
         );
     }
 
-    /** @group Departments */
+    /**
+     * Create a department
+     *
+     * @group Departments
+     * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
+     */
     public function store(Request $request): JsonResponse
     {
         return $this->success(null, 'Ende nuk është implementuar.', 501);
     }
 
-    /** @group Departments */
+    /**
+     * Update a department
+     *
+     * @group Departments
+     * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
+     */
     public function update(int $id): JsonResponse
     {
         return $this->success(null, 'Ende nuk është implementuar.', 501);
     }
 
-    /** @group Departments */
+    /**
+     * Delete a department
+     *
+     * @group Departments
+     * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
+     */
     public function destroy(int $id): JsonResponse
     {
         return $this->success(null, 'Ende nuk është implementuar.', 501);

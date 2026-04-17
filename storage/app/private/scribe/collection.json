@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "UAMD Portal API",
-        "_postman_id": "5b41a25b-6620-48ad-9c06-e9ba6eaa63ba",
+        "_postman_id": "6c393b8b-7d10-4a90-87c2-2d8a4fc289d5",
         "description": "REST API p\u00ebr Portalin e Universitetit Aleksander Moisiu Durr\u00ebs (UAMD). T\u00eb gjitha endpoint-et jan\u00eb t\u00eb prefixuara me \/api\/v1\/.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -229,339 +229,100 @@
             ]
         },
         {
+            "name": "Courses",
+            "description": "",
+            "item": [
+                {
+                    "name": "List courses",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/courses",
+                            "query": [
+                                {
+                                    "key": "departmentId",
+                                    "value": "4",
+                                    "description": "optional Filter by department.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/courses?departmentId=4"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns all courses. Pass `department_id` to filter by department."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [{\"id\": 1, \"name\": \"Algoritmika\", \"code\": \"INF101\", \"departmentId\": 4}],\n  \"message\": \"L\\u00ebnd\\u00ebt u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get a course",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/courses\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/courses\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the course."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a single course by its ID."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": {\"id\": 1, \"name\": \"Algoritmika\", \"code\": \"INF101\", \"departmentId\": 4}, \"message\": \"L\\u00ebnda u mor me sukses.\", \"status\": 200}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"data\": null, \"message\": \"Rekordi nuk u gjet.\", \"status\": 404}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Departments",
             "description": "",
             "item": [
-                {
-                    "name": "POST api\/v1\/departments",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/departments",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/departments"
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "PUT api\/v1\/departments\/{id}",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/departments\/:id",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/departments\/:id",
-                            "variable": [
-                                {
-                                    "id": "id",
-                                    "key": "id",
-                                    "value": "architecto",
-                                    "description": "The ID of the department."
-                                }
-                            ]
-                        },
-                        "method": "PUT",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "DELETE api\/v1\/departments\/{id}",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/departments\/:id",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/departments\/:id",
-                            "variable": [
-                                {
-                                    "id": "id",
-                                    "key": "id",
-                                    "value": "architecto",
-                                    "description": "The ID of the department."
-                                }
-                            ]
-                        },
-                        "method": "DELETE",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
-            "name": "Faculties",
-            "description": "",
-            "item": [
-                {
-                    "name": "POST api\/v1\/faculties",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/faculties",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/faculties"
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "PUT api\/v1\/faculties\/{id}",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/faculties\/:id",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/faculties\/:id",
-                            "variable": [
-                                {
-                                    "id": "id",
-                                    "key": "id",
-                                    "value": "architecto",
-                                    "description": "The ID of the faculty."
-                                }
-                            ]
-                        },
-                        "method": "PUT",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": []
-                },
-                {
-                    "name": "DELETE api\/v1\/faculties\/{id}",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/faculties\/:id",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/faculties\/:id",
-                            "variable": [
-                                {
-                                    "id": "id",
-                                    "key": "id",
-                                    "value": "architecto",
-                                    "description": "The ID of the faculty."
-                                }
-                            ]
-                        },
-                        "method": "DELETE",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": ""
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
-            "name": "Pedagog Reports",
-            "description": "",
-            "item": [
-                {
-                    "name": "List grades for a section",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/pedagog\/sections\/:sectionId\/grades",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/pedagog\/sections\/:sectionId\/grades",
-                            "variable": [
-                                {
-                                    "id": "sectionId",
-                                    "key": "sectionId",
-                                    "value": "5",
-                                    "description": "The section ID."
-                                }
-                            ]
-                        },
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": "Returns grades for all students in the given section. The authenticated\npedagog must teach that section \u2014 otherwise 403 is returned."
-                    },
-                    "response": [
-                        {
-                            "header": [],
-                            "code": 200,
-                            "body": "{\n  \"data\": [{\"gradeId\": 1, \"value\": 9.0, \"date\": \"2026-01-15\", \"examType\": \"Final\", \"student\": {\"id\": 12, \"firstName\": \"Arta\", \"lastName\": \"Hoxha\", \"matriculationNumber\": \"2021001234\"}}],\n  \"message\": \"Notat u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
-                            "name": ""
-                        },
-                        {
-                            "header": [],
-                            "code": 403,
-                            "body": "{\"data\": null, \"message\": \"Nuk keni leje p\\u00ebr k\\u00ebt\\u00eb seksion.\", \"status\": 403}",
-                            "name": ""
-                        },
-                        {
-                            "header": [],
-                            "code": 404,
-                            "body": "{\"data\": null, \"message\": \"Seksioni nuk u gjet.\", \"status\": 404}",
-                            "name": ""
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Reference Data",
-            "description": "",
-            "item": [
-                {
-                    "name": "List faculties",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/faculties",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/faculties"
-                        },
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": "Returns all 6 UAMD faculties ordered by ID."
-                    },
-                    "response": [
-                        {
-                            "header": [],
-                            "code": 200,
-                            "body": "{\n  \"data\": [{\"id\": 1, \"name\": \"Fakulteti i Shkencave t\\u00eb Biznesit\"}, {\"id\": 2, \"name\": \"Fakulteti i Shkencave Teknike\"}],\n  \"message\": \"Fakultetet u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
-                            "name": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "Get a faculty",
-                    "request": {
-                        "url": {
-                            "host": "{{baseUrl}}",
-                            "path": "api\/v1\/faculties\/:id",
-                            "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/faculties\/:id",
-                            "variable": [
-                                {
-                                    "id": "id",
-                                    "key": "id",
-                                    "value": "architecto",
-                                    "description": "The ID of the faculty."
-                                }
-                            ]
-                        },
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": null,
-                        "description": "Returns a single faculty by its ID."
-                    },
-                    "response": [
-                        {
-                            "header": [],
-                            "code": 200,
-                            "body": "{\"data\": {\"id\": 1, \"name\": \"Fakulteti i Shkencave t\\u00eb Biznesit\"}, \"message\": \"Fakulteti u mor me sukses.\", \"status\": 200}",
-                            "name": ""
-                        },
-                        {
-                            "header": [],
-                            "code": 404,
-                            "body": "{\"data\": null, \"message\": \"Not Found\", \"status\": 404}",
-                            "name": ""
-                        }
-                    ]
-                },
                 {
                     "name": "List departments",
                     "request": {
@@ -648,20 +409,131 @@
                     ]
                 },
                 {
-                    "name": "List study programs",
+                    "name": "Create a department",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/v1\/programs",
-                            "query": [
+                            "path": "api\/v1\/departments",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/departments"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 501,
+                            "body": "{\"data\": null, \"message\": \"Ende nuk \u00ebsht\u00eb implementuar.\", \"status\": 501}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update a department",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/departments\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/departments\/:id",
+                            "variable": [
                                 {
-                                    "key": "departmentId",
-                                    "value": "4",
-                                    "description": "optional Filter by department.",
-                                    "disabled": false
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the department."
                                 }
-                            ],
-                            "raw": "{{baseUrl}}\/api\/v1\/programs?departmentId=4"
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 501,
+                            "body": "{\"data\": null, \"message\": \"Ende nuk \u00ebsht\u00eb implementuar.\", \"status\": 501}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete a department",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/departments\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/departments\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the department."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 501,
+                            "body": "{\"data\": null, \"message\": \"Ende nuk \u00ebsht\u00eb implementuar.\", \"status\": 501}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Faculties",
+            "description": "",
+            "item": [
+                {
+                    "name": "List faculties",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/faculties",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/faculties"
                         },
                         "method": "GET",
                         "header": [
@@ -675,31 +547,31 @@
                             }
                         ],
                         "body": null,
-                        "description": "Returns all study programs. Pass `department_id` to filter by department."
+                        "description": "Returns all 6 UAMD faculties ordered by ID."
                     },
                     "response": [
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n  \"data\": [{\"id\": 1, \"name\": \"Informatik\\u00eb\", \"level\": \"Bachelor\", \"credits\": 180, \"departmentId\": 4}],\n  \"message\": \"Programet e studimit u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
+                            "body": "{\n  \"data\": [{\"id\": 1, \"name\": \"Fakulteti i Shkencave t\\u00eb Biznesit\"}, {\"id\": 2, \"name\": \"Fakulteti i Shkencave Teknike\"}],\n  \"message\": \"Fakultetet u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
                             "name": ""
                         }
                     ]
                 },
                 {
-                    "name": "Get a study program",
+                    "name": "Get a faculty",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/v1\/programs\/:id",
+                            "path": "api\/v1\/faculties\/:id",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/programs\/:id",
+                            "raw": "{{baseUrl}}\/api\/v1\/faculties\/:id",
                             "variable": [
                                 {
                                     "id": "id",
                                     "key": "id",
                                     "value": "architecto",
-                                    "description": "The ID of the program."
+                                    "description": "The ID of the faculty."
                                 }
                             ]
                         },
@@ -715,40 +587,33 @@
                             }
                         ],
                         "body": null,
-                        "description": "Returns a single study program by its ID."
+                        "description": "Returns a single faculty by its ID."
                     },
                     "response": [
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\"data\": {\"id\": 1, \"name\": \"Informatik\\u00eb\", \"level\": \"Bachelor\", \"credits\": 180, \"departmentId\": 4}, \"message\": \"Programi i studimit u mor me sukses.\", \"status\": 200}",
+                            "body": "{\"data\": {\"id\": 1, \"name\": \"Fakulteti i Shkencave t\\u00eb Biznesit\"}, \"message\": \"Fakulteti u mor me sukses.\", \"status\": 200}",
                             "name": ""
                         },
                         {
                             "header": [],
                             "code": 404,
-                            "body": "{\"data\": null, \"message\": \"Rekordi nuk u gjet.\", \"status\": 404}",
+                            "body": "{\"data\": null, \"message\": \"Not Found\", \"status\": 404}",
                             "name": ""
                         }
                     ]
                 },
                 {
-                    "name": "List courses",
+                    "name": "Create a faculty",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/v1\/courses",
-                            "query": [
-                                {
-                                    "key": "departmentId",
-                                    "value": "4",
-                                    "description": "optional Filter by department.",
-                                    "disabled": false
-                                }
-                            ],
-                            "raw": "{{baseUrl}}\/api\/v1\/courses?departmentId=4"
+                            "path": "api\/v1\/faculties",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/faculties"
                         },
-                        "method": "GET",
+                        "method": "POST",
                         "header": [
                             {
                                 "key": "Content-Type",
@@ -760,35 +625,35 @@
                             }
                         ],
                         "body": null,
-                        "description": "Returns all courses. Pass `department_id` to filter by department."
+                        "description": ""
                     },
                     "response": [
                         {
                             "header": [],
-                            "code": 200,
-                            "body": "{\n  \"data\": [{\"id\": 1, \"name\": \"Algoritmika\", \"code\": \"INF101\", \"departmentId\": 4}],\n  \"message\": \"L\\u00ebnd\\u00ebt u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
+                            "code": 501,
+                            "body": "{\"data\": null, \"message\": \"Ende nuk \u00ebsht\u00eb implementuar.\", \"status\": 501}",
                             "name": ""
                         }
                     ]
                 },
                 {
-                    "name": "Get a course",
+                    "name": "Update a faculty",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/v1\/courses\/:id",
+                            "path": "api\/v1\/faculties\/:id",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/v1\/courses\/:id",
+                            "raw": "{{baseUrl}}\/api\/v1\/faculties\/:id",
                             "variable": [
                                 {
                                     "id": "id",
                                     "key": "id",
                                     "value": "architecto",
-                                    "description": "The ID of the course."
+                                    "description": "The ID of the faculty."
                                 }
                             ]
                         },
-                        "method": "GET",
+                        "method": "PUT",
                         "header": [
                             {
                                 "key": "Content-Type",
@@ -800,23 +665,63 @@
                             }
                         ],
                         "body": null,
-                        "description": "Returns a single course by its ID."
+                        "description": ""
                     },
                     "response": [
                         {
                             "header": [],
-                            "code": 200,
-                            "body": "{\"data\": {\"id\": 1, \"name\": \"Algoritmika\", \"code\": \"INF101\", \"departmentId\": 4}, \"message\": \"L\\u00ebnda u mor me sukses.\", \"status\": 200}",
-                            "name": ""
-                        },
-                        {
-                            "header": [],
-                            "code": 404,
-                            "body": "{\"data\": null, \"message\": \"Rekordi nuk u gjet.\", \"status\": 404}",
+                            "code": 501,
+                            "body": "{\"data\": null, \"message\": \"Ende nuk \u00ebsht\u00eb implementuar.\", \"status\": 501}",
                             "name": ""
                         }
                     ]
                 },
+                {
+                    "name": "Delete a faculty",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/faculties\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/faculties\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the faculty."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 501,
+                            "body": "{\"data\": null, \"message\": \"Ende nuk \u00ebsht\u00eb implementuar.\", \"status\": 501}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Pedagogues",
+            "description": "",
+            "item": [
                 {
                     "name": "List pedagogues",
                     "request": {
@@ -905,7 +810,98 @@
             ]
         },
         {
-            "name": "Student Reports",
+            "name": "Programs",
+            "description": "",
+            "item": [
+                {
+                    "name": "List study programs",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/programs",
+                            "query": [
+                                {
+                                    "key": "departmentId",
+                                    "value": "4",
+                                    "description": "optional Filter by department.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/programs?departmentId=4"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns all study programs. Pass `department_id` to filter by department."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [{\"id\": 1, \"name\": \"Informatik\\u00eb\", \"level\": \"Bachelor\", \"credits\": 180, \"departmentId\": 4}],\n  \"message\": \"Programet e studimit u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get a study program",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/programs\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/programs\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "architecto",
+                                    "description": "The ID of the program."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a single study program by its ID."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": {\"id\": 1, \"name\": \"Informatik\\u00eb\", \"level\": \"Bachelor\", \"credits\": 180, \"departmentId\": 4}, \"message\": \"Programi i studimit u mor me sukses.\", \"status\": 200}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"data\": null, \"message\": \"Rekordi nuk u gjet.\", \"status\": 404}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Reports",
             "description": "",
             "item": [
                 {
@@ -968,6 +964,58 @@
                             "header": [],
                             "code": 200,
                             "body": "{\n  \"data\": [{\"invoiceId\": 3, \"amount\": 25000.0, \"status\": \"E papaguar\", \"issuedDate\": \"2026-09-01\", \"description\": \"Tarif\\u00eb vjetore 2025-2026\"}],\n  \"message\": \"Faturat u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List grades for a section",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/pedagog\/sections\/:sectionId\/grades",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/pedagog\/sections\/:sectionId\/grades",
+                            "variable": [
+                                {
+                                    "id": "sectionId",
+                                    "key": "sectionId",
+                                    "value": "5",
+                                    "description": "The section ID."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns grades for all students in the given section. The authenticated\npedagog must teach that section \u2014 otherwise 403 is returned."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [{\"gradeId\": 1, \"value\": 9.0, \"date\": \"2026-01-15\", \"examType\": \"Final\", \"student\": {\"id\": 12, \"firstName\": \"Arta\", \"lastName\": \"Hoxha\", \"matriculationNumber\": \"2021001234\"}}],\n  \"message\": \"Notat u mor\\u00ebn me sukses.\",\n  \"status\": 200\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\"data\": null, \"message\": \"Nuk keni leje p\\u00ebr k\\u00ebt\\u00eb seksion.\", \"status\": 403}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"data\": null, \"message\": \"Seksioni nuk u gjet.\", \"status\": 404}",
                             "name": ""
                         }
                     ]

@@ -1,4 +1,4 @@
-name: 'Reference Data'
+name: Faculties
 description: ''
 endpoints:
   -
@@ -8,7 +8,7 @@ endpoints:
     uri: api/v1/faculties
     metadata:
       custom: []
-      groupName: 'Reference Data'
+      groupName: Faculties
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
@@ -54,7 +54,7 @@ endpoints:
     uri: 'api/v1/faculties/{id}'
     metadata:
       custom: []
-      groupName: 'Reference Data'
+      groupName: Faculties
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
@@ -109,16 +109,16 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - GET
-    uri: api/v1/departments
+      - POST
+    uri: api/v1/faculties
     metadata:
       custom: []
-      groupName: 'Reference Data'
+      groupName: Faculties
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List departments'
-      description: 'Returns all departments. Pass `faculty_id` to filter by faculty.'
+      title: 'Create a faculty'
+      description: ''
       authenticated: true
       deprecated: false
     headers:
@@ -127,33 +127,16 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      facultyId:
-        custom: []
-        name: facultyId
-        description: 'optional Filter by faculty.'
-        required: false
-        example: 2
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      facultyId: 2
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
     responses:
       -
         custom: []
-        status: 200
-        content: |-
-          {
-            "data": [{"id": 4, "name": "Departamenti i Informatik\u00ebs", "facultyId": 2}],
-            "message": "Departamentet u mor\u00ebn me sukses.",
-            "status": 200
-          }
+        status: 501
+        content: '{"data": null, "message": "Ende nuk është implementuar.", "status": 501}'
         headers: []
         description: ''
     responseFields: []
@@ -167,16 +150,16 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - GET
-    uri: 'api/v1/departments/{id}'
+      - PUT
+    uri: 'api/v1/faculties/{id}'
     metadata:
       custom: []
-      groupName: 'Reference Data'
+      groupName: Faculties
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Get a department'
-      description: 'Returns a single department by its ID.'
+      title: 'Update a faculty'
+      description: ''
       authenticated: true
       deprecated: false
     headers:
@@ -187,7 +170,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the department.'
+        description: 'The ID of the faculty.'
         required: true
         example: architecto
         type: string
@@ -205,14 +188,8 @@ endpoints:
     responses:
       -
         custom: []
-        status: 200
-        content: '{"data": {"id": 4, "name": "Departamenti i Informatik\u00ebs", "facultyId": 2}, "message": "Departamenti u mor me sukses.", "status": 200}'
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: '{"data": null, "message": "Not Found", "status": 404}'
+        status: 501
+        content: '{"data": null, "message": "Ende nuk është implementuar.", "status": 501}'
         headers: []
         description: ''
     responseFields: []
@@ -226,74 +203,16 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - GET
-    uri: api/v1/programs
+      - DELETE
+    uri: 'api/v1/faculties/{id}'
     metadata:
       custom: []
-      groupName: 'Reference Data'
+      groupName: Faculties
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List study programs'
-      description: 'Returns all study programs. Pass `department_id` to filter by department.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters:
-      departmentId:
-        custom: []
-        name: departmentId
-        description: 'optional Filter by department.'
-        required: false
-        example: 4
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      departmentId: 4
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": [{"id": 1, "name": "Informatik\u00eb", "level": "Bachelor", "credits": 180, "departmentId": 4}],
-            "message": "Programet e studimit u mor\u00ebn me sukses.",
-            "status": 200
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/programs/{id}'
-    metadata:
-      custom: []
-      groupName: 'Reference Data'
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get a study program'
-      description: 'Returns a single study program by its ID.'
+      title: 'Delete a faculty'
+      description: ''
       authenticated: true
       deprecated: false
     headers:
@@ -304,7 +223,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the program.'
+        description: 'The ID of the faculty.'
         required: true
         example: architecto
         type: string
@@ -322,248 +241,8 @@ endpoints:
     responses:
       -
         custom: []
-        status: 200
-        content: '{"data": {"id": 1, "name": "Informatik\u00eb", "level": "Bachelor", "credits": 180, "departmentId": 4}, "message": "Programi i studimit u mor me sukses.", "status": 200}'
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: '{"data": null, "message": "Rekordi nuk u gjet.", "status": 404}'
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/courses
-    metadata:
-      custom: []
-      groupName: 'Reference Data'
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'List courses'
-      description: 'Returns all courses. Pass `department_id` to filter by department.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters:
-      departmentId:
-        custom: []
-        name: departmentId
-        description: 'optional Filter by department.'
-        required: false
-        example: 4
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      departmentId: 4
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": [{"id": 1, "name": "Algoritmika", "code": "INF101", "departmentId": 4}],
-            "message": "L\u00ebnd\u00ebt u mor\u00ebn me sukses.",
-            "status": 200
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/courses/{id}'
-    metadata:
-      custom: []
-      groupName: 'Reference Data'
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get a course'
-      description: 'Returns a single course by its ID.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the course.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: '{"data": {"id": 1, "name": "Algoritmika", "code": "INF101", "departmentId": 4}, "message": "L\u00ebnda u mor me sukses.", "status": 200}'
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: '{"data": null, "message": "Rekordi nuk u gjet.", "status": 404}'
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/pedagogues
-    metadata:
-      custom: []
-      groupName: 'Reference Data'
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'List pedagogues'
-      description: 'Returns all pedagogues. Pass `department_id` to filter by department.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters:
-      departmentId:
-        custom: []
-        name: departmentId
-        description: 'optional Filter by department.'
-        required: false
-        example: 4
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      departmentId: 4
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": [{"id": 1, "firstName": "Arben", "lastName": "Hoxha", "title": "Prof. Dr.", "email": "ahoxha@uamd.edu.al", "gender": "M", "departmentId": 4}],
-            "message": "Pedagog\u00ebt u mor\u00ebn me sukses.",
-            "status": 200
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/pedagogues/{id}'
-    metadata:
-      custom: []
-      groupName: 'Reference Data'
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get a pedagogue'
-      description: 'Returns a single pedagogue by their ID.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the pedagogue.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: '{"data": {"id": 1, "firstName": "Arben", "lastName": "Hoxha", "title": "Prof. Dr.", "email": "ahoxha@uamd.edu.al", "gender": "M", "departmentId": 4}, "message": "Pedagogu u mor me sukses.", "status": 200}'
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: '{"data": null, "message": "Rekordi nuk u gjet.", "status": 404}'
+        status: 501
+        content: '{"data": null, "message": "Ende nuk është implementuar.", "status": 501}'
         headers: []
         description: ''
     responseFields: []

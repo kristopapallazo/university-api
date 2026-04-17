@@ -1,19 +1,19 @@
-name: 'Student Reports'
+name: Courses
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/student/grades
+    uri: api/v1/courses
     metadata:
       custom: []
-      groupName: 'Student Reports'
+      groupName: Courses
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List my grades'
-      description: 'Returns all grades for the authenticated student, sorted by date desc.'
+      title: 'List courses'
+      description: 'Returns all courses. Pass `department_id` to filter by department.'
       authenticated: true
       deprecated: false
     headers:
@@ -22,8 +22,20 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
+    queryParameters:
+      departmentId:
+        custom: []
+        name: departmentId
+        description: 'optional Filter by department.'
+        required: false
+        example: 4
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      departmentId: 4
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -33,8 +45,8 @@ endpoints:
         status: 200
         content: |-
           {
-            "data": [{"gradeId": 1, "value": 8.5, "date": "2026-01-15", "examType": "Final", "examDate": "2026-01-14", "course": "Bazat e Programimit"}],
-            "message": "Notat u mor\u00ebn me sukses.",
+            "data": [{"id": 1, "name": "Algoritmika", "code": "INF101", "departmentId": 4}],
+            "message": "L\u00ebnd\u00ebt u mor\u00ebn me sukses.",
             "status": 200
           }
         headers: []
@@ -51,23 +63,35 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/student/invoices
+    uri: 'api/v1/courses/{id}'
     metadata:
       custom: []
-      groupName: 'Student Reports'
+      groupName: Courses
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List my invoices'
-      description: 'Returns all invoices for the authenticated student, sorted by issue date desc.'
+      title: 'Get a course'
+      description: 'Returns a single course by its ID.'
       authenticated: true
       deprecated: false
     headers:
       Authorization: 'Bearer {SANCTUM_TOKEN}'
       Content-Type: application/json
       Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the course.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -77,12 +101,13 @@ endpoints:
       -
         custom: []
         status: 200
-        content: |-
-          {
-            "data": [{"invoiceId": 3, "amount": 25000.0, "status": "E papaguar", "issuedDate": "2026-09-01", "description": "Tarif\u00eb vjetore 2025-2026"}],
-            "message": "Faturat u mor\u00ebn me sukses.",
-            "status": 200
-          }
+        content: '{"data": {"id": 1, "name": "Algoritmika", "code": "INF101", "departmentId": 4}, "message": "L\u00ebnda u mor me sukses.", "status": 200}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"data": null, "message": "Rekordi nuk u gjet.", "status": 404}'
         headers: []
         description: ''
     responseFields: []

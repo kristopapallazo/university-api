@@ -18,7 +18,7 @@ class GradeController extends Controller
      *
      * Returns all grades for the authenticated student, sorted by date desc.
      *
-     * @group Student Reports
+     * @group Reports
      *
      * @authenticated
      *

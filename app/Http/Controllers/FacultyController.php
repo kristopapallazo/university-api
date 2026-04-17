@@ -17,7 +17,7 @@ class FacultyController extends Controller
      *
      * Returns all 6 UAMD faculties ordered by ID.
      *
-     * @group Reference Data
+     * @group Faculties
      *
      * @response 200 {
      *   "data": [{"id": 1, "name": "Fakulteti i Shkencave t\u00eb Biznesit"}, {"id": 2, "name": "Fakulteti i Shkencave Teknike"}],
@@ -40,7 +40,7 @@ class FacultyController extends Controller
      *
      * Returns a single faculty by its ID.
      *
-     * @group Reference Data
+     * @group Faculties
      *
      * @response 200 {"data": {"id": 1, "name": "Fakulteti i Shkencave t\u00eb Biznesit"}, "message": "Fakulteti u mor me sukses.", "status": 200}
      * @response 404 {"data": null, "message": "Not Found", "status": 404}
@@ -55,19 +55,34 @@ class FacultyController extends Controller
         );
     }
 
-    /** @group Faculties */
+    /**
+     * Create a faculty
+     *
+     * @group Faculties
+     * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
+     */
     public function store(Request $request): JsonResponse
     {
         return $this->success(null, 'Ende nuk është implementuar.', 501);
     }
 
-    /** @group Faculties */
+    /**
+     * Update a faculty
+     *
+     * @group Faculties
+     * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
+     */
     public function update(int $id): JsonResponse
     {
         return $this->success(null, 'Ende nuk është implementuar.', 501);
     }
 
-    /** @group Faculties */
+    /**
+     * Delete a faculty
+     *
+     * @group Faculties
+     * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
+     */
     public function destroy(int $id): JsonResponse
     {
         return $this->success(null, 'Ende nuk është implementuar.', 501);

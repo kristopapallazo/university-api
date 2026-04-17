@@ -17,7 +17,7 @@ class PedagogController extends Controller
      *
      * Returns all pedagogues. Pass `department_id` to filter by department.
      *
-     * @group Reference Data
+     * @group Pedagogues
      *
      * @queryParam departmentId integer optional Filter by department. Example: 4
      *
@@ -46,7 +46,7 @@ class PedagogController extends Controller
      *
      * Returns a single pedagogue by their ID.
      *
-     * @group Reference Data
+     * @group Pedagogues
      *
      * @response 200 {"data": {"id": 1, "firstName": "Arben", "lastName": "Hoxha", "title": "Prof. Dr.", "email": "ahoxha@uamd.edu.al", "gender": "M", "departmentId": 4}, "message": "Pedagogu u mor me sukses.", "status": 200}
      * @response 404 {"data": null, "message": "Rekordi nuk u gjet.", "status": 404}
