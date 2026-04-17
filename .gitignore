@@ -14,8 +14,6 @@
 /auth.json
 /node_modules
 /storage/app/private/scribe/
-/resources/views/scribe/
-/public/vendor/scribe/
 /public/build
 /public/hot
 /public/storage
