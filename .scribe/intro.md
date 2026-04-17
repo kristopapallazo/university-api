@@ -3,7 +3,7 @@
 REST API për Portalin e Universitetit Aleksander Moisiu Durrës (UAMD). Të gjitha endpoint-et janë të prefixuara me /api/v1/.
 
 <aside>
-    <strong>Base URL</strong>: <code>https://university-api-production.up.railway.app</code>
+    <strong>Base URL</strong>: <code>http://127.0.0.1:8000</code>
 </aside>
 
     Kjo dokumentacion synon të ofrojë të gjithë informacionin e nevojshëm për të punuar me API-in tonë.
