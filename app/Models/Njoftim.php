@@ -23,6 +23,7 @@ class Njoftim extends Model
     protected $primaryKey = 'NJOF_ID';
 
     const CREATED_AT = 'CREATED_AT';
+
     const UPDATED_AT = 'UPDATED_AT';
 
     protected $fillable = [

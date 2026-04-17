@@ -27,13 +27,13 @@ class SectionController extends Controller
             ->get();
 
         $data = $sections->map(fn ($s) => [
-            'id'        => $s->SEK_ID,
-            'courseId'  => $s->LEND_ID,
-            'course'    => $s->lenda->LEND_EMER ?? null,
-            'day'       => $s->DITA,
+            'id' => $s->SEK_ID,
+            'courseId' => $s->LEND_ID,
+            'course' => $s->lenda->LEND_EMER ?? null,
+            'day' => $s->DITA,
             'timeStart' => $s->ORE_FILLIMI,
-            'timeEnd'   => $s->ORE_MBARIMI,
-            'roomId'    => $s->SALL_ID,
+            'timeEnd' => $s->ORE_MBARIMI,
+            'roomId' => $s->SALL_ID,
         ]);
 
         return $this->success($data, 'Seksionet u morën me sukses.');

@@ -18,10 +18,10 @@ class NjoftimController extends Controller
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'title'             => 'required|string|max:200',
-            'body'              => 'required|string',
-            'type'              => ['required', Rule::in(['info', 'sukses', 'paralajmerim'])],
-            'recipient_role'    => ['nullable', Rule::in(['student', 'pedagog', 'admin', 'all'])],
+            'title' => 'required|string|max:200',
+            'body' => 'required|string',
+            'type' => ['required', Rule::in(['info', 'sukses', 'paralajmerim'])],
+            'recipient_role' => ['nullable', Rule::in(['student', 'pedagog', 'admin', 'all'])],
             'recipient_user_id' => 'nullable|integer|exists:users,id',
         ]);
 
@@ -29,10 +29,10 @@ class NjoftimController extends Controller
 
         if (! empty($data['recipient_user_id'])) {
             Njoftim::create([
-                'USER_ID'          => $data['recipient_user_id'],
-                'NJOF_TITULL'      => $data['title'],
-                'NJOF_TEKST'       => $data['body'],
-                'NJOF_TIPI'        => $data['type'],
+                'USER_ID' => $data['recipient_user_id'],
+                'NJOF_TITULL' => $data['title'],
+                'NJOF_TEKST' => $data['body'],
+                'NJOF_TIPI' => $data['type'],
                 'SENT_BY_ADMIN_ID' => $adminId,
             ]);
 
@@ -49,14 +49,14 @@ class NjoftimController extends Controller
         $users = $query->pluck('id');
 
         $rows = $users->map(fn ($userId) => [
-            'USER_ID'          => $userId,
-            'NJOF_TITULL'      => $data['title'],
-            'NJOF_TEKST'       => $data['body'],
-            'NJOF_TIPI'        => $data['type'],
+            'USER_ID' => $userId,
+            'NJOF_TITULL' => $data['title'],
+            'NJOF_TEKST' => $data['body'],
+            'NJOF_TIPI' => $data['type'],
             'SENT_BY_ADMIN_ID' => $adminId,
-            'NJOF_IS_READ'     => false,
-            'CREATED_AT'       => now(),
-            'UPDATED_AT'       => now(),
+            'NJOF_IS_READ' => false,
+            'CREATED_AT' => now(),
+            'UPDATED_AT' => now(),
         ])->toArray();
 
         foreach (array_chunk($rows, 500) as $chunk) {
