@@ -1,0 +1,75 @@
+name: 'Pedagog Reports'
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/pedagog/sections/{sectionId}/grades'
+    metadata:
+      custom: []
+      groupName: 'Pedagog Reports'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List grades for a section'
+      description: |-
+        Returns grades for all students in the given section. The authenticated
+        pedagog must teach that section — otherwise 403 is returned.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      sectionId:
+        custom: []
+        name: sectionId
+        description: 'The section ID.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      sectionId: 5
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [{"gradeId": 1, "value": 9.0, "date": "2026-01-15", "examType": "Final", "student": {"id": 12, "firstName": "Arta", "lastName": "Hoxha", "matriculationNumber": "2021001234"}}],
+            "message": "Notat u mor\u00ebn me sukses.",
+            "status": 200
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: '{"data": null, "message": "Nuk keni leje p\u00ebr k\u00ebt\u00eb seksion.", "status": 403}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"data": null, "message": "Seksioni nuk u gjet.", "status": 404}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

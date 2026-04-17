@@ -5,13 +5,25 @@ info:
   version: 1.0.0
 servers:
   -
-    url: 'http://localhost:8000'
+    url: 'https://university-api-production.up.railway.app'
 tags:
   -
     name: Authentication
     description: ''
   -
+    name: Departments
+    description: ''
+  -
+    name: Faculties
+    description: ''
+  -
+    name: 'Pedagog Reports'
+    description: ''
+  -
     name: 'Reference Data'
+    description: ''
+  -
+    name: 'Student Reports'
     description: ''
 components:
   securitySchemes:
@@ -309,124 +321,15 @@ paths:
                     example: 200
       tags:
         - Authentication
-  /api/v1/faculties:
-    get:
-      summary: 'List faculties'
-      operationId: listFaculties
-      description: 'Returns all 6 UAMD faculties ordered by ID.'
-      parameters: []
-      responses:
-        200:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  data:
-                    -
-                      id: 1
-                      name: 'Fakulteti i Shkencave të Biznesit'
-                    -
-                      id: 2
-                      name: 'Fakulteti i Shkencave Teknike'
-                  message: 'Fakultetet u morën me sukses.'
-                  status: 200
-                properties:
-                  data:
-                    type: array
-                    example:
-                      -
-                        id: 1
-                        name: 'Fakulteti i Shkencave të Biznesit'
-                      -
-                        id: 2
-                        name: 'Fakulteti i Shkencave Teknike'
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: 'Fakulteti i Shkencave të Biznesit'
-                  message:
-                    type: string
-                    example: 'Fakultetet u morën me sukses.'
-                  status:
-                    type: integer
-                    example: 200
-      tags:
-        - 'Reference Data'
-  '/api/v1/faculties/{id}':
-    get:
-      summary: 'Get a faculty'
-      operationId: getAFaculty
-      description: 'Returns a single faculty by its ID.'
-      parameters: []
-      responses:
-        200:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  data:
-                    id: 1
-                    name: 'Fakulteti i Shkencave të Biznesit'
-                  message: 'Fakulteti u mor me sukses.'
-                  status: 200
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      name:
-                        type: string
-                        example: 'Fakulteti i Shkencave të Biznesit'
-                  message:
-                    type: string
-                    example: 'Fakulteti u mor me sukses.'
-                  status:
-                    type: integer
-                    example: 200
-        404:
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  data: null
-                  message: 'Not Found'
-                  status: 404
-                properties:
-                  data:
-                    type: string
-                    example: null
-                    nullable: true
-                  message:
-                    type: string
-                    example: 'Not Found'
-                  status:
-                    type: integer
-                    example: 404
-      tags:
-        - 'Reference Data'
-    parameters:
-      -
-        in: path
-        name: id
-        description: 'The ID of the faculty.'
-        example: architecto
-        required: true
-        schema:
-          type: string
   /api/v1/departments:
+    post:
+      summary: ''
+      operationId: postApiV1Departments
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Departments
     get:
       summary: 'List departments'
       operationId: listDepartments
@@ -434,7 +337,7 @@ paths:
       parameters:
         -
           in: query
-          name: faculty_id
+          name: facultyId
           description: 'optional Filter by faculty.'
           example: 2
           required: false
@@ -486,6 +389,22 @@ paths:
       tags:
         - 'Reference Data'
   '/api/v1/departments/{id}':
+    put:
+      summary: ''
+      operationId: putApiV1DepartmentsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Departments
+    delete:
+      summary: ''
+      operationId: deleteApiV1DepartmentsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Departments
     get:
       summary: 'Get a department'
       operationId: getADepartment
@@ -556,6 +475,277 @@ paths:
         required: true
         schema:
           type: string
+  /api/v1/faculties:
+    post:
+      summary: ''
+      operationId: postApiV1Faculties
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Faculties
+    get:
+      summary: 'List faculties'
+      operationId: listFaculties
+      description: 'Returns all 6 UAMD faculties ordered by ID.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      name: 'Fakulteti i Shkencave të Biznesit'
+                    -
+                      id: 2
+                      name: 'Fakulteti i Shkencave Teknike'
+                  message: 'Fakultetet u morën me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Fakulteti i Shkencave të Biznesit'
+                      -
+                        id: 2
+                        name: 'Fakulteti i Shkencave Teknike'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Fakulteti i Shkencave të Biznesit'
+                  message:
+                    type: string
+                    example: 'Fakultetet u morën me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+      tags:
+        - 'Reference Data'
+  '/api/v1/faculties/{id}':
+    put:
+      summary: ''
+      operationId: putApiV1FacultiesId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Faculties
+    delete:
+      summary: ''
+      operationId: deleteApiV1FacultiesId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Faculties
+    get:
+      summary: 'Get a faculty'
+      operationId: getAFaculty
+      description: 'Returns a single faculty by its ID.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    name: 'Fakulteti i Shkencave të Biznesit'
+                  message: 'Fakulteti u mor me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Fakulteti i Shkencave të Biznesit'
+                  message:
+                    type: string
+                    example: 'Fakulteti u mor me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Not Found'
+                  status: 404
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Not Found'
+                  status:
+                    type: integer
+                    example: 404
+      tags:
+        - 'Reference Data'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the faculty.'
+        example: architecto
+        required: true
+        schema:
+          type: string
+  '/api/v1/pedagog/sections/{sectionId}/grades':
+    get:
+      summary: 'List grades for a section'
+      operationId: listGradesForASection
+      description: "Returns grades for all students in the given section. The authenticated\npedagog must teach that section — otherwise 403 is returned."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      gradeId: 1
+                      value: 9.0
+                      date: '2026-01-15'
+                      examType: Final
+                      student:
+                        id: 12
+                        firstName: Arta
+                        lastName: Hoxha
+                        matriculationNumber: '2021001234'
+                  message: 'Notat u morën me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        gradeId: 1
+                        value: 9
+                        date: '2026-01-15'
+                        examType: Final
+                        student:
+                          id: 12
+                          firstName: Arta
+                          lastName: Hoxha
+                          matriculationNumber: '2021001234'
+                    items:
+                      type: object
+                      properties:
+                        gradeId:
+                          type: integer
+                          example: 1
+                        value:
+                          type: number
+                          example: 9.0
+                        date:
+                          type: string
+                          example: '2026-01-15'
+                        examType:
+                          type: string
+                          example: Final
+                        student:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 12
+                            firstName:
+                              type: string
+                              example: Arta
+                            lastName:
+                              type: string
+                              example: Hoxha
+                            matriculationNumber:
+                              type: string
+                              example: '2021001234'
+                  message:
+                    type: string
+                    example: 'Notat u morën me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Nuk keni leje për këtë seksion.'
+                  status: 403
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Nuk keni leje për këtë seksion.'
+                  status:
+                    type: integer
+                    example: 403
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Seksioni nuk u gjet.'
+                  status: 404
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Seksioni nuk u gjet.'
+                  status:
+                    type: integer
+                    example: 404
+      tags:
+        - 'Pedagog Reports'
+    parameters:
+      -
+        in: path
+        name: sectionId
+        description: 'The section ID.'
+        example: 5
+        required: true
+        schema:
+          type: integer
   /api/v1/programs:
     get:
       summary: 'List study programs'
@@ -564,7 +754,7 @@ paths:
       parameters:
         -
           in: query
-          name: department_id
+          name: departmentId
           description: 'optional Filter by department.'
           example: 4
           required: false
@@ -712,7 +902,7 @@ paths:
       parameters:
         -
           in: query
-          name: department_id
+          name: departmentId
           description: 'optional Filter by department.'
           example: 4
           required: false
@@ -851,7 +1041,7 @@ paths:
       parameters:
         -
           in: query
-          name: department_id
+          name: departmentId
           description: 'optional Filter by department.'
           example: 4
           required: false
@@ -1009,3 +1199,126 @@ paths:
         required: true
         schema:
           type: string
+  /api/v1/student/grades:
+    get:
+      summary: 'List my grades'
+      operationId: listMyGrades
+      description: 'Returns all grades for the authenticated student, sorted by date desc.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      gradeId: 1
+                      value: 8.5
+                      date: '2026-01-15'
+                      examType: Final
+                      examDate: '2026-01-14'
+                      course: 'Bazat e Programimit'
+                  message: 'Notat u morën me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        gradeId: 1
+                        value: 8.5
+                        date: '2026-01-15'
+                        examType: Final
+                        examDate: '2026-01-14'
+                        course: 'Bazat e Programimit'
+                    items:
+                      type: object
+                      properties:
+                        gradeId:
+                          type: integer
+                          example: 1
+                        value:
+                          type: number
+                          example: 8.5
+                        date:
+                          type: string
+                          example: '2026-01-15'
+                        examType:
+                          type: string
+                          example: Final
+                        examDate:
+                          type: string
+                          example: '2026-01-14'
+                        course:
+                          type: string
+                          example: 'Bazat e Programimit'
+                  message:
+                    type: string
+                    example: 'Notat u morën me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+      tags:
+        - 'Student Reports'
+  /api/v1/student/invoices:
+    get:
+      summary: 'List my invoices'
+      operationId: listMyInvoices
+      description: 'Returns all invoices for the authenticated student, sorted by issue date desc.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      invoiceId: 3
+                      amount: 25000.0
+                      status: 'E papaguar'
+                      issuedDate: '2026-09-01'
+                      description: 'Tarifë vjetore 2025-2026'
+                  message: 'Faturat u morën me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        invoiceId: 3
+                        amount: 25000
+                        status: 'E papaguar'
+                        issuedDate: '2026-09-01'
+                        description: 'Tarifë vjetore 2025-2026'
+                    items:
+                      type: object
+                      properties:
+                        invoiceId:
+                          type: integer
+                          example: 3
+                        amount:
+                          type: number
+                          example: 25000.0
+                        status:
+                          type: string
+                          example: 'E papaguar'
+                        issuedDate:
+                          type: string
+                          example: '2026-09-01'
+                        description:
+                          type: string
+                          example: 'Tarifë vjetore 2025-2026'
+                  message:
+                    type: string
+                    example: 'Faturat u morën me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+      tags:
+        - 'Student Reports'

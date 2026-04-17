@@ -130,9 +130,9 @@ endpoints:
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
-      faculty_id:
+      facultyId:
         custom: []
-        name: faculty_id
+        name: facultyId
         description: 'optional Filter by faculty.'
         required: false
         example: 2
@@ -142,7 +142,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanQueryParameters:
-      faculty_id: 2
+      facultyId: 2
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -247,9 +247,9 @@ endpoints:
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
-      department_id:
+      departmentId:
         custom: []
-        name: department_id
+        name: departmentId
         description: 'optional Filter by department.'
         required: false
         example: 4
@@ -259,7 +259,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanQueryParameters:
-      department_id: 4
+      departmentId: 4
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -364,9 +364,9 @@ endpoints:
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
-      department_id:
+      departmentId:
         custom: []
-        name: department_id
+        name: departmentId
         description: 'optional Filter by department.'
         required: false
         example: 4
@@ -376,7 +376,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanQueryParameters:
-      department_id: 4
+      departmentId: 4
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -481,9 +481,9 @@ endpoints:
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
-      department_id:
+      departmentId:
         custom: []
-        name: department_id
+        name: departmentId
         description: 'optional Filter by department.'
         required: false
         example: 4
@@ -493,7 +493,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanQueryParameters:
-      department_id: 4
+      departmentId: 4
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
