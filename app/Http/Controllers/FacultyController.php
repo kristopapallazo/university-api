@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\FacultyResource;
+use App\Http\Resources\PaginatedCollection;
 use App\Http\Traits\ApiResponse;
 use App\Models\Faculty;
 use Illuminate\Http\JsonResponse;
@@ -25,14 +26,13 @@ class FacultyController extends Controller
      *   "status": 200
      * }
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $faculties = Faculty::orderBy('FAK_ID')->get();
+        $perPage = min((int) $request->query('perPage', 15), 100);
 
-        return $this->success(
-            FacultyResource::collection($faculties),
-            'Fakultetet u morën me sukses.'
-        );
+        $faculties = Faculty::orderBy('FAK_ID')->paginate($perPage);
+
+        return (new PaginatedCollection($faculties->through(fn ($f) => new FacultyResource($f))))->response();
     }
 
     /**
