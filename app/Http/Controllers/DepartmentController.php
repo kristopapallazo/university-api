@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Resources\DepartmentResource;
 use App\Http\Resources\PaginatedCollection;
 use App\Http\Traits\ApiResponse;
+use App\Http\Traits\Sortable;
 use App\Models\Department;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
-    use ApiResponse;
+    use ApiResponse, Sortable;
 
     /**
      * List departments
@@ -32,13 +33,14 @@ class DepartmentController extends Controller
     {
         $perPage = min((int) $request->query('perPage', 15), 100);
 
-        $query = Department::query()->orderBy('DEP_ID');
+        $query = Department::query();
 
         if ($request->filled('facultyId')) {
             $query->where('FAK_ID', $request->integer('facultyId'));
         }
 
-        $departments = $query->paginate($perPage);
+        $departments = $this->applySorting($query, $request, ['DEP_EM', 'DEP_ID'])
+            ->paginate($perPage);
 
         return (new PaginatedCollection($departments->through(fn ($d) => new DepartmentResource($d))))->response();
     }

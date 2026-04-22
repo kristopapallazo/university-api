@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PaginatedCollection;
 use App\Http\Resources\PedagogResource;
 use App\Http\Traits\ApiResponse;
+use App\Http\Traits\Sortable;
 use App\Models\Pedagog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PedagogController extends Controller
 {
-    use ApiResponse;
+    use ApiResponse, Sortable;
 
     /**
      * List pedagogues
@@ -32,13 +33,14 @@ class PedagogController extends Controller
     {
         $perPage = min((int) $request->query('perPage', 15), 100);
 
-        $query = Pedagog::query()->orderBy('PED_ID');
+        $query = Pedagog::query();
 
         if ($request->filled('departmentId')) {
             $query->where('DEP_ID', $request->integer('departmentId'));
         }
 
-        $pedagogues = $query->paginate($perPage);
+        $pedagogues = $this->applySorting($query, $request, ['PED_EMER', 'PED_MBIEMER', 'PED_ID'])
+            ->paginate($perPage);
 
         return (new PaginatedCollection($pedagogues->through(fn ($p) => new PedagogResource($p))))->response();
     }

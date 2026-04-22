@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Resources\FacultyResource;
 use App\Http\Resources\PaginatedCollection;
 use App\Http\Traits\ApiResponse;
+use App\Http\Traits\Sortable;
 use App\Models\Faculty;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class FacultyController extends Controller
 {
-    use ApiResponse;
+    use ApiResponse, Sortable;
 
     /**
      * List faculties
@@ -30,7 +31,8 @@ class FacultyController extends Controller
     {
         $perPage = min((int) $request->query('perPage', 15), 100);
 
-        $faculties = Faculty::orderBy('FAK_ID')->paginate($perPage);
+        $faculties = $this->applySorting(Faculty::query(), $request, ['FAK_EM', 'FAK_ID'])
+            ->paginate($perPage);
 
         return (new PaginatedCollection($faculties->through(fn ($f) => new FacultyResource($f))))->response();
     }
