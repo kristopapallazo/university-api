@@ -1,12 +1,18 @@
 <?php
 
+use App\Http\Controllers\Admin\NjoftimController as AdminNjoftimController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\LendaController;
+use App\Http\Controllers\NjoftimController;
+use App\Http\Controllers\Pedagog\SectionController as PedagogSectionController;
+use App\Http\Controllers\Pedagog\SectionGradeController as PedagogSectionGradeController;
 use App\Http\Controllers\PedagogController;
 use App\Http\Controllers\ProgramStudimController;
 use App\Http\Controllers\SocialAuthController;
+use App\Http\Controllers\Student\FatureController as StudentFatureController;
+use App\Http\Controllers\Student\GradeController as StudentGradeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,14 +27,23 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/login', [AuthController::class, 'login'])
     ->middleware('throttle:6,1');
 
-// Google OAuth (students only — @students.uamd.edu.al)
-Route::get('/auth/google/redirect', [SocialAuthController::class, 'redirect']);
-Route::get('/auth/google/callback', [SocialAuthController::class, 'callback']);
+// Google OAuth (all roles — email must exist in university domain tables)
+Route::middleware('throttle:10,1')->group(function () {
+    Route::get('/auth/google/redirect', [SocialAuthController::class, 'redirect']);
+    Route::get('/auth/google/callback', [SocialAuthController::class, 'callback']);
+});
 
 // ── Protected ───────────────────────────────────────────────────
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/me', [AuthController::class, 'me']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::put('/auth/password', [AuthController::class, 'changePassword']);
+
+    // Notifications — any authenticated user
+    Route::get('/notifications', [NjoftimController::class, 'index']);
+    Route::get('/notifications/unread-count', [NjoftimController::class, 'unreadCount']);
+    Route::put('/notifications/{id}/read', [NjoftimController::class, 'markAsRead']);
+    Route::put('/notifications/read-all', [NjoftimController::class, 'markAllAsRead']);
 
     // Reference data — reads (any authenticated role)
     Route::get('/faculties', [FacultyController::class, 'index']);
@@ -45,6 +60,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/departments', [DepartmentController::class, 'store']);
         Route::put('/departments/{id}', [DepartmentController::class, 'update']);
         Route::delete('/departments/{id}', [DepartmentController::class, 'destroy']);
+
+        // Admin sends notifications
+        Route::post('/admin/notifications', [AdminNjoftimController::class, 'store']);
     });
 
     Route::get('/programs', [ProgramStudimController::class, 'index']);
@@ -55,4 +73,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/pedagogues', [PedagogController::class, 'index']);
     Route::get('/pedagogues/{id}', [PedagogController::class, 'show']);
+
+    // Student routes (student role only)
+    Route::middleware('role:student')->group(function () {
+        Route::get('/student/grades', [StudentGradeController::class, 'index']);
+        Route::get('/student/invoices', [StudentFatureController::class, 'index']);
+    });
+
+    // Pedagog routes (pedagog role only)
+    Route::middleware('role:pedagog')->group(function () {
+        Route::get('/pedagog/sections', [PedagogSectionController::class, 'index']);
+        Route::get('/pedagog/sections/{sectionId}/grades', [PedagogSectionGradeController::class, 'index']);
+    });
 });

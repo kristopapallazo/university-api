@@ -1,19 +1,19 @@
-name: 'Reference Data'
+name: Notifications
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/faculties
+    uri: api/v1/notifications
     metadata:
       custom: []
-      groupName: 'Reference Data'
+      groupName: Notifications
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List faculties'
-      description: 'Returns all 6 UAMD faculties ordered by ID.'
+      title: 'List notifications'
+      description: 'Returns all notifications for the authenticated user, ordered newest first.'
       authenticated: true
       deprecated: false
     headers:
@@ -33,8 +33,8 @@ endpoints:
         status: 200
         content: |-
           {
-            "data": [{"id": 1, "name": "Fakulteti i Shkencave t\u00eb Biznesit"}, {"id": 2, "name": "Fakulteti i Shkencave Teknike"}],
-            "message": "Fakultetet u mor\u00ebn me sukses.",
+            "data": [{"id": 1, "title": "Njoftim i ri", "body": "Teksti i njoftimit.", "type": "info", "isRead": false, "readAt": null, "createdAt": "2026-04-17T10:00:00.000000Z"}],
+            "message": "Njoftimet u mor\u00ebn me sukses.",
             "status": 200
           }
         headers: []
@@ -51,35 +51,23 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: 'api/v1/faculties/{id}'
+    uri: api/v1/notifications/unread-count
     metadata:
       custom: []
-      groupName: 'Reference Data'
+      groupName: Notifications
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Get a faculty'
-      description: 'Returns a single faculty by its ID.'
+      title: 'Unread notification count'
+      description: 'Returns the count of unread notifications for the authenticated user.'
       authenticated: true
       deprecated: false
     headers:
       Authorization: 'Bearer {SANCTUM_TOKEN}'
       Content-Type: application/json
       Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the faculty.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
+    urlParameters: []
+    cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -89,13 +77,7 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data": {"id": 1, "name": "Fakulteti i Shkencave t\u00eb Biznesit"}, "message": "Fakulteti u mor me sukses.", "status": 200}'
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: '{"data": null, "message": "Not Found", "status": 404}'
+        content: '{"data": {"count": 3}, "message": "OK", "status": 200}'
         headers: []
         description: ''
     responseFields: []
@@ -109,94 +91,36 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - GET
-    uri: api/v1/departments
+      - PUT
+    uri: 'api/v1/notifications/{id}/read'
     metadata:
       custom: []
-      groupName: 'Reference Data'
+      groupName: Notifications
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List departments'
-      description: 'Returns all departments. Pass `faculty_id` to filter by faculty.'
+      title: 'Mark notification as read'
+      description: 'Marks a single notification as read. Only the owning user can mark their own notifications.'
       authenticated: true
       deprecated: false
     headers:
       Authorization: 'Bearer {SANCTUM_TOKEN}'
       Content-Type: application/json
       Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters:
-      faculty_id:
+    urlParameters:
+      id:
         custom: []
-        name: faculty_id
-        description: 'optional Filter by faculty.'
-        required: false
-        example: 2
+        name: id
+        description: 'The notification ID.'
+        required: true
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-    cleanQueryParameters:
-      faculty_id: 2
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": [{"id": 4, "name": "Departamenti i Informatik\u00ebs", "facultyId": 2}],
-            "message": "Departamentet u mor\u00ebn me sukses.",
-            "status": 200
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/departments/{id}'
-    metadata:
-      custom: []
-      groupName: 'Reference Data'
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get a department'
-      description: 'Returns a single department by its ID.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the department.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
     cleanUrlParameters:
-      id: architecto
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -206,124 +130,7 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data": {"id": 4, "name": "Departamenti i Informatik\u00ebs", "facultyId": 2}, "message": "Departamenti u mor me sukses.", "status": 200}'
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: '{"data": null, "message": "Not Found", "status": 404}'
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/programs
-    metadata:
-      custom: []
-      groupName: 'Reference Data'
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'List study programs'
-      description: 'Returns all study programs. Pass `department_id` to filter by department.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters:
-      department_id:
-        custom: []
-        name: department_id
-        description: 'optional Filter by department.'
-        required: false
-        example: 4
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      department_id: 4
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": [{"id": 1, "name": "Informatik\u00eb", "level": "Bachelor", "credits": 180, "departmentId": 4}],
-            "message": "Programet e studimit u mor\u00ebn me sukses.",
-            "status": 200
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/programs/{id}'
-    metadata:
-      custom: []
-      groupName: 'Reference Data'
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get a study program'
-      description: 'Returns a single study program by its ID.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the program.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: '{"data": {"id": 1, "name": "Informatik\u00eb", "level": "Bachelor", "credits": 180, "departmentId": 4}, "message": "Programi i studimit u mor me sukses.", "status": 200}'
+        content: '{"data": {"id": 1, "title": "Njoftim i ri", "body": "Teksti i njoftimit.", "type": "info", "isRead": true, "readAt": "2026-04-17T10:05:00.000000Z", "createdAt": "2026-04-17T10:00:00.000000Z"}, "message": "Njoftimi u sh\u00ebnua si i lexuar.", "status": 200}'
         headers: []
         description: ''
       -
@@ -343,16 +150,16 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - GET
-    uri: api/v1/courses
+      - PUT
+    uri: api/v1/notifications/read-all
     metadata:
       custom: []
-      groupName: 'Reference Data'
+      groupName: Notifications
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List courses'
-      description: 'Returns all courses. Pass `department_id` to filter by department.'
+      title: 'Mark all notifications as read'
+      description: 'Marks all unread notifications of the authenticated user as read.'
       authenticated: true
       deprecated: false
     headers:
@@ -361,76 +168,6 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      department_id:
-        custom: []
-        name: department_id
-        description: 'optional Filter by department.'
-        required: false
-        example: 4
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      department_id: 4
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": [{"id": 1, "name": "Algoritmika", "code": "INF101", "departmentId": 4}],
-            "message": "L\u00ebnd\u00ebt u mor\u00ebn me sukses.",
-            "status": 200
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/courses/{id}'
-    metadata:
-      custom: []
-      groupName: 'Reference Data'
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get a course'
-      description: 'Returns a single course by its ID.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the course.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -440,13 +177,7 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data": {"id": 1, "name": "Algoritmika", "code": "INF101", "departmentId": 4}, "message": "L\u00ebnda u mor me sukses.", "status": 200}'
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: '{"data": null, "message": "Rekordi nuk u gjet.", "status": 404}'
+        content: '{"data": null, "message": "T\u00eb gjitha njoftimet u sh\u00ebnuan si t\u00eb lexuara.", "status": 200}'
         headers: []
         description: ''
     responseFields: []
@@ -460,16 +191,19 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - GET
-    uri: api/v1/pedagogues
+      - POST
+    uri: api/v1/admin/notifications
     metadata:
       custom: []
-      groupName: 'Reference Data'
+      groupName: Notifications
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List pedagogues'
-      description: 'Returns all pedagogues. Pass `department_id` to filter by department.'
+      title: 'Send notification (Admin)'
+      description: |-
+        Sends a notification to a specific user or to all users of a given role.
+        If `recipient_user_id` is provided, only that user receives it.
+        Otherwise, every user matching `recipient_role` (or all users if omitted) receives it.
       authenticated: true
       deprecated: false
     headers:
@@ -478,92 +212,82 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      department_id:
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
         custom: []
-        name: department_id
-        description: 'optional Filter by department.'
-        required: false
-        example: 4
-        type: integer
+        name: title
+        description: 'Notification title (max 200 chars).'
+        required: true
+        example: '"Rezultate provimi"'
+        type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-    cleanQueryParameters:
-      department_id: 4
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
+      body:
         custom: []
-        status: 200
-        content: |-
-          {
-            "data": [{"id": 1, "firstName": "Arben", "lastName": "Hoxha", "title": "Prof. Dr.", "email": "ahoxha@uamd.edu.al", "gender": "M", "departmentId": 4}],
-            "message": "Pedagog\u00ebt u mor\u00ebn me sukses.",
-            "status": 200
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/pedagogues/{id}'
-    metadata:
-      custom: []
-      groupName: 'Reference Data'
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get a pedagogue'
-      description: 'Returns a single pedagogue by their ID.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the pedagogue.'
+        name: body
+        description: 'Notification body text.'
         required: true
-        example: architecto
+        example: '"Rezultatet e provimit janë publikuar."'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
+      type:
+        custom: []
+        name: type
+        description: 'One of: info, sukses, paralajmerim.'
+        required: true
+        example: '"info"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      recipient_role:
+        custom: []
+        name: recipient_role
+        description: 'optional One of: student, pedagog, admin, all. Defaults to all.'
+        required: false
+        example: '"student"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      recipient_user_id:
+        custom: []
+        name: recipient_user_id
+        description: 'optional Send to a single user by user ID.'
+        required: false
+        example: 42
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      title: '"Rezultate provimi"'
+      body: '"Rezultatet e provimit janë publikuar."'
+      type: '"info"'
+      recipient_role: '"student"'
+      recipient_user_id: 42
     fileParameters: []
     responses:
       -
         custom: []
         status: 200
-        content: '{"data": {"id": 1, "firstName": "Arben", "lastName": "Hoxha", "title": "Prof. Dr.", "email": "ahoxha@uamd.edu.al", "gender": "M", "departmentId": 4}, "message": "Pedagogu u mor me sukses.", "status": 200}'
+        content: '{"data": null, "message": "Njoftimet u d\u00ebrguan me sukses tek 120 p\u00ebrdorues.", "status": 200}'
         headers: []
         description: ''
       -
         custom: []
-        status: 404
-        content: '{"data": null, "message": "Rekordi nuk u gjet.", "status": 404}'
+        status: 422
+        content: '{"message": "The given data was invalid.", "errors": {}}'
         headers: []
         description: ''
     responseFields: []

@@ -24,6 +24,22 @@
                 SwaggerUIBundle.SwaggerUIStandalonePreset,
             ],
             layout: "BaseLayout",
+            responseInterceptor: function (response) {
+                if (response.url && response.url.endsWith('/docs.openapi')) {
+                    try {
+                        var spec = typeof response.text === 'string' ? response.text : response.body;
+                        if (spec) {
+                            spec = spec.replace(
+                                /url:\s*'[^']*'/,
+                                "url: '" + window.location.origin + "'"
+                            );
+                            response.text = spec;
+                            response.body = spec;
+                        }
+                    } catch (e) {}
+                }
+                return response;
+            },
         });
     </script>
 </body>

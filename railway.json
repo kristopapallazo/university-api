@@ -1,6 +1,6 @@
 {
-  "$schema": "https://railway.com/railway.schema.json",
-  "deploy": {
-    "releaseCommand": "php artisan migrate --force && php artisan scribe:generate"
-  }
+    "$schema": "https://railway.com/railway.schema.json",
+    "deploy": {
+        "releaseCommand": "php artisan migrate --force && php artisan db:seed --force && php artisan config:clear"
+    }
 }

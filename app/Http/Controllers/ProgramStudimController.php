@@ -17,7 +17,7 @@ class ProgramStudimController extends Controller
      *
      * Returns all study programs. Pass `department_id` to filter by department.
      *
-     * @group Reference Data
+     * @group Programs
      *
      * @queryParam departmentId integer optional Filter by department. Example: 4
      *
@@ -46,7 +46,7 @@ class ProgramStudimController extends Controller
      *
      * Returns a single study program by its ID.
      *
-     * @group Reference Data
+     * @group Programs
      *
      * @response 200 {"data": {"id": 1, "name": "Informatik\u00eb", "level": "Bachelor", "credits": 180, "departmentId": 4}, "message": "Programi i studimit u mor me sukses.", "status": 200}
      * @response 404 {"data": null, "message": "Rekordi nuk u gjet.", "status": 404}
