@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PaginatedCollection;
 use App\Http\Resources\PedagogResource;
 use App\Http\Traits\ApiResponse;
 use App\Models\Pedagog;
@@ -29,16 +30,17 @@ class PedagogController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        $perPage = min((int) $request->query('perPage', 15), 100);
+
         $query = Pedagog::query()->orderBy('PED_ID');
 
         if ($request->filled('departmentId')) {
             $query->where('DEP_ID', $request->integer('departmentId'));
         }
 
-        return $this->success(
-            PedagogResource::collection($query->get()),
-            'Pedagogët u morën me sukses.'
-        );
+        $pedagogues = $query->paginate($perPage);
+
+        return (new PaginatedCollection($pedagogues->through(fn ($p) => new PedagogResource($p))))->response();
     }
 
     /**

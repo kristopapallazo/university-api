@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\LendaResource;
+use App\Http\Resources\PaginatedCollection;
 use App\Http\Traits\ApiResponse;
 use App\Models\Lenda;
 use Illuminate\Http\JsonResponse;
@@ -29,16 +30,17 @@ class LendaController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        $perPage = min((int) $request->query('perPage', 15), 100);
+
         $query = Lenda::query()->orderBy('LEND_ID');
 
         if ($request->filled('departmentId')) {
             $query->where('DEP_ID', $request->integer('departmentId'));
         }
 
-        return $this->success(
-            LendaResource::collection($query->get()),
-            'Lëndët u morën me sukses.'
-        );
+        $courses = $query->paginate($perPage);
+
+        return (new PaginatedCollection($courses->through(fn ($l) => new LendaResource($l))))->response();
     }
 
     /**

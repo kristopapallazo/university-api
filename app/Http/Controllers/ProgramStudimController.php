@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PaginatedCollection;
 use App\Http\Resources\ProgramStudimResource;
 use App\Http\Traits\ApiResponse;
 use App\Models\ProgramStudim;
@@ -29,16 +30,17 @@ class ProgramStudimController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        $perPage = min((int) $request->query('perPage', 15), 100);
+
         $query = ProgramStudim::query()->orderBy('PROG_ID');
 
         if ($request->filled('departmentId')) {
             $query->where('DEP_ID', $request->integer('departmentId'));
         }
 
-        return $this->success(
-            ProgramStudimResource::collection($query->get()),
-            'Programet e studimit u morën me sukses.'
-        );
+        $programs = $query->paginate($perPage);
+
+        return (new PaginatedCollection($programs->through(fn ($p) => new ProgramStudimResource($p))))->response();
     }
 
     /**
