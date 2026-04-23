@@ -21,4 +21,9 @@ class PaginatedCollection extends ResourceCollection
             'status' => 200,
         ];
     }
+
+    public function paginationInformation($request, $paginated, $default): array
+    {
+        return [];
+    }
 }
