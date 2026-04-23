@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Resources\LendaResource;
 use App\Http\Resources\PaginatedCollection;
 use App\Http\Traits\ApiResponse;
+use App\Http\Traits\Sortable;
 use App\Models\Lenda;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class LendaController extends Controller
 {
-    use ApiResponse;
+    use ApiResponse, Sortable;
 
     /**
      * List courses
@@ -32,13 +33,14 @@ class LendaController extends Controller
     {
         $perPage = min((int) $request->query('perPage', 15), 100);
 
-        $query = Lenda::query()->orderBy('LEND_ID');
+        $query = Lenda::query();
 
         if ($request->filled('departmentId')) {
             $query->where('DEP_ID', $request->integer('departmentId'));
         }
 
-        $courses = $query->paginate($perPage);
+        $courses = $this->applySorting($query, $request, ['LEND_EM', 'LEND_KOD', 'LEND_ID'])
+            ->paginate($perPage);
 
         return (new PaginatedCollection($courses->through(fn ($l) => new LendaResource($l))))->response();
     }

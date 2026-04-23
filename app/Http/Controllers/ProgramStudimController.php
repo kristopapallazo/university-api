@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PaginatedCollection;
 use App\Http\Resources\ProgramStudimResource;
 use App\Http\Traits\ApiResponse;
+use App\Http\Traits\Sortable;
 use App\Models\ProgramStudim;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProgramStudimController extends Controller
 {
-    use ApiResponse;
+    use ApiResponse, Sortable;
 
     /**
      * List study programs
@@ -32,13 +33,14 @@ class ProgramStudimController extends Controller
     {
         $perPage = min((int) $request->query('perPage', 15), 100);
 
-        $query = ProgramStudim::query()->orderBy('PROG_ID');
+        $query = ProgramStudim::query();
 
         if ($request->filled('departmentId')) {
             $query->where('DEP_ID', $request->integer('departmentId'));
         }
 
-        $programs = $query->paginate($perPage);
+        $programs = $this->applySorting($query, $request, ['PROG_EM', 'PROG_LLOJI', 'PROG_ID'])
+            ->paginate($perPage);
 
         return (new PaginatedCollection($programs->through(fn ($p) => new ProgramStudimResource($p))))->response();
     }
