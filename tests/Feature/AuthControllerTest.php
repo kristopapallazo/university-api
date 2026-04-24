@@ -114,4 +114,22 @@ class AuthControllerTest extends TestCase
         // Token should be deleted from DB
         $this->assertCount(0, $user->fresh()->tokens);
     }
+
+    public function test_me_returns_401_after_logout(): void
+    {
+        $user = User::factory()->admin()->create();
+        $token = $user->createToken('test')->plainTextToken;
+
+        $this->withToken($token)
+            ->postJson('/api/v1/auth/logout')
+            ->assertOk();
+
+        // Reset guard state between requests so the second call
+        // re-resolves the user from the (now-deleted) token.
+        $this->app['auth']->forgetGuards();
+
+        $this->withToken($token)
+            ->getJson('/api/v1/auth/me')
+            ->assertStatus(401);
+    }
 }
