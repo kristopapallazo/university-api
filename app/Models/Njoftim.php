@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * @property int $NJOF_ID
@@ -47,5 +48,15 @@ class Njoftim extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'USER_ID', 'id');
+    }
+
+    // Called automatically by Laravel after every Njoftim::create()
+    protected static function booted(): void
+    {
+        static::created(function (Njoftim $njoftim) {
+            // Write a short-lived flag so the user's SSE stream knows to wake up.
+            // Key format: sse_notify_{userId} — each user has their own flag.
+            Cache::put("sse_notify_{$njoftim->USER_ID}", true, now()->addMinutes(5));
+        });
     }
 }

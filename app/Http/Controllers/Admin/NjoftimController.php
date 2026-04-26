@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 
 class NjoftimController extends Controller
@@ -81,6 +82,11 @@ class NjoftimController extends Controller
 
         foreach (array_chunk($rows, 500) as $chunk) {
             Njoftim::insert($chunk);
+        }
+
+        // insert() bypasses model events, so signal each user's SSE stream manually
+        foreach ($users as $userId) {
+            Cache::put("sse_notify_{$userId}", true, now()->addMinutes(5));
         }
 
         return $this->success(null, 'Njoftimet u dërguan me sukses tek ' . count($rows) . ' përdorues.');
