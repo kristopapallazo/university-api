@@ -21,14 +21,21 @@ class NotificationStreamController extends Controller
     {
         $user = Auth::user();
 
-        return new StreamedResponse(function () use ($user) {
+        // Honor the standard SSE Last-Event-ID header so reconnecting clients
+        // don't get a flood of notifications they've already seen. If absent,
+        // start from the user's current max ID so we only stream new arrivals.
+        $initialLastId = (int) ($request->header('Last-Event-ID')
+            ?? Njoftim::where('USER_ID', $user->id)->max('NJOF_ID')
+            ?? 0);
+
+        return new StreamedResponse(function () use ($user, $initialLastId) {
             // Turn off output buffering so events reach the client immediately
             if (ob_get_level()) {
                 ob_end_clean();
             }
 
             $startedAt = time();
-            $lastEventId = 0; // tracks the last notification ID we already sent
+            $lastEventId = $initialLastId; // tracks the last notification ID we already sent
 
             while (true) {
                 // Stop after MAX_LIFETIME seconds — the frontend will reconnect automatically
@@ -62,7 +69,7 @@ class NotificationStreamController extends Controller
                             'type' => $notification->NJOF_TIPI,
                             'isRead' => (bool) $notification->NJOF_IS_READ,
                             'createdAt' => (string) $notification->CREATED_AT,
-                        ]);
+                        ], $notification->NJOF_ID);
                         $lastEventId = $notification->NJOF_ID;
                     }
                 } else {
@@ -84,9 +91,13 @@ class NotificationStreamController extends Controller
         ]);
     }
 
-    // Formats and echoes one SSE message
-    private function send(string $event, array $data): void
+    // Formats and echoes one SSE message. The optional id is sent as the SSE
+    // event id, which the browser auto-replays as Last-Event-ID on reconnect.
+    private function send(string $event, array $data, ?int $id = null): void
     {
+        if ($id !== null) {
+            echo "id: {$id}\n";
+        }
         echo "event: {$event}\n";
         echo 'data: ' . json_encode($data) . "\n\n";
     }
