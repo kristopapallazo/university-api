@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\LendaController;
 use App\Http\Controllers\NjoftimController;
+use App\Http\Controllers\NotificationStreamController;
 use App\Http\Controllers\Pedagog\SectionController as PedagogSectionController;
 use App\Http\Controllers\Pedagog\SectionGradeController as PedagogSectionGradeController;
 use App\Http\Controllers\PedagogController;
@@ -44,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/notifications/unread-count', [NjoftimController::class, 'unreadCount']);
     Route::put('/notifications/{id}/read', [NjoftimController::class, 'markAsRead']);
     Route::put('/notifications/read-all', [NjoftimController::class, 'markAllAsRead']);
+    Route::get('/notifications/stream', [NotificationStreamController::class, 'stream']);
 
     // Reference data — reads (any authenticated role)
     Route::get('/faculties', [FacultyController::class, 'index']);
