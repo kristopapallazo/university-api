@@ -27,8 +27,8 @@ class NotificationStreamController extends Controller
                 ob_end_clean();
             }
 
-            $startedAt   = time();
-            $lastEventId = 0;  // tracks the last notification ID we already sent
+            $startedAt = time();
+            $lastEventId = 0; // tracks the last notification ID we already sent
 
             while (true) {
                 // Stop after MAX_LIFETIME seconds — the frontend will reconnect automatically
@@ -56,11 +56,11 @@ class NotificationStreamController extends Controller
 
                     foreach ($notifications as $notification) {
                         $this->send('notification', [
-                            'id'        => $notification->NJOF_ID,
-                            'title'     => $notification->NJOF_TITULL,
-                            'body'      => $notification->NJOF_TEKST,
-                            'type'      => $notification->NJOF_TIPI,
-                            'isRead'    => (bool) $notification->NJOF_IS_READ,
+                            'id' => $notification->NJOF_ID,
+                            'title' => $notification->NJOF_TITULL,
+                            'body' => $notification->NJOF_TEKST,
+                            'type' => $notification->NJOF_TIPI,
+                            'isRead' => (bool) $notification->NJOF_IS_READ,
                             'createdAt' => (string) $notification->CREATED_AT,
                         ]);
                         $lastEventId = $notification->NJOF_ID;
@@ -77,10 +77,10 @@ class NotificationStreamController extends Controller
             }
         }, 200, [
             // These headers tell the browser this is an SSE stream, not a normal response
-            'Content-Type'      => 'text/event-stream',
-            'Cache-Control'     => 'no-cache',
-            'X-Accel-Buffering' => 'no',   // disables Nginx buffering (Railway uses Nginx)
-            'Connection'        => 'keep-alive',
+            'Content-Type' => 'text/event-stream',
+            'Cache-Control' => 'no-cache',
+            'X-Accel-Buffering' => 'no', // disables Nginx buffering (Railway uses Nginx)
+            'Connection' => 'keep-alive',
         ]);
     }
 

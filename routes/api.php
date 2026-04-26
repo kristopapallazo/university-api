@@ -3,10 +3,10 @@
 use App\Http\Controllers\Admin\NjoftimController as AdminNjoftimController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\NotificationStreamController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\LendaController;
 use App\Http\Controllers\NjoftimController;
+use App\Http\Controllers\NotificationStreamController;
 use App\Http\Controllers\Pedagog\SectionController as PedagogSectionController;
 use App\Http\Controllers\Pedagog\SectionGradeController as PedagogSectionGradeController;
 use App\Http\Controllers\PedagogController;
