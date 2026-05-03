@@ -42,7 +42,7 @@ class RoleMiddlewareTest extends TestCase
     {
         $this->actingAsRole('admin')
             ->postJson('/api/v1/faculties')
-            ->assertStatus(501); // stub — not implemented yet, but middleware passed
+            ->assertStatus(422); // validation fails (no body), but middleware passed
     }
 
     // ── PUT /faculties/{id} ──────────────────────────────────────
@@ -58,7 +58,7 @@ class RoleMiddlewareTest extends TestCase
     {
         $this->actingAsRole('admin')
             ->putJson('/api/v1/faculties/1')
-            ->assertStatus(501);
+            ->assertStatus(404); // record not found, but middleware passed
     }
 
     // ── DELETE /faculties/{id} ───────────────────────────────────
@@ -81,7 +81,7 @@ class RoleMiddlewareTest extends TestCase
     {
         $this->actingAsRole('admin')
             ->deleteJson('/api/v1/faculties/1')
-            ->assertStatus(501);
+            ->assertStatus(404); // record not found, but middleware passed
     }
 
     // ── POST /departments ────────────────────────────────────────
@@ -104,7 +104,7 @@ class RoleMiddlewareTest extends TestCase
     {
         $this->actingAsRole('admin')
             ->postJson('/api/v1/departments')
-            ->assertStatus(501);
+            ->assertStatus(422); // validation fails (no body), but middleware passed
     }
 
     // ── DELETE /departments/{id} ─────────────────────────────────
@@ -120,7 +120,7 @@ class RoleMiddlewareTest extends TestCase
     {
         $this->actingAsRole('admin')
             ->deleteJson('/api/v1/departments/1')
-            ->assertStatus(501);
+            ->assertStatus(404); // record not found, but middleware passed
     }
 
     // ── GET reads stay open to all authenticated ─────────────────
