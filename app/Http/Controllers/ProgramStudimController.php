@@ -64,4 +64,73 @@ class ProgramStudimController extends Controller
             'Programi i studimit u mor me sukses.'
         );
     }
+
+    /**
+     * Create a study program
+     *
+     * @group Programs
+     *
+     * @response 201 {"data": {"id": 10, "name": "Programi i Ri", "level": "Bachelor", "credits": 180, "departmentId": 4}, "message": "Programi i studimit u krijua me sukses.", "status": 201}
+     */
+    public function store(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'level' => 'required|in:Bachelor,Master,Doktorature',
+            'credits' => 'required|integer|min:1',
+            'departmentId' => 'required|integer|exists:DEPARTAMENT,DEP_ID',
+        ]);
+
+        $program = ProgramStudim::create([
+            'PROG_EM' => $data['name'],
+            'PROG_NIV' => $data['level'],
+            'PROG_KRD' => $data['credits'],
+            'DEP_ID' => $data['departmentId'],
+        ]);
+
+        return $this->success(new ProgramStudimResource($program), 'Programi i studimit u krijua me sukses.', 201);
+    }
+
+    /**
+     * Update a study program
+     *
+     * @group Programs
+     *
+     * @response 200 {"data": {"id": 1, "name": "Emër i ri", "level": "Master", "credits": 120, "departmentId": 4}, "message": "Programi i studimit u përditësua me sukses.", "status": 200}
+     */
+    public function update(Request $request, int $id): JsonResponse
+    {
+        $program = ProgramStudim::findOrFail($id);
+
+        $data = $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'level' => 'sometimes|required|in:Bachelor,Master,Doktorature',
+            'credits' => 'sometimes|required|integer|min:1',
+            'departmentId' => 'sometimes|required|integer|exists:DEPARTAMENT,DEP_ID',
+        ]);
+
+        $program->update([
+            'PROG_EM' => $data['name'] ?? $program->PROG_EM,
+            'PROG_NIV' => $data['level'] ?? $program->PROG_NIV,
+            'PROG_KRD' => $data['credits'] ?? $program->PROG_KRD,
+            'DEP_ID' => $data['departmentId'] ?? $program->DEP_ID,
+        ]);
+
+        return $this->success(new ProgramStudimResource($program->fresh()), 'Programi i studimit u përditësua me sukses.');
+    }
+
+    /**
+     * Delete a study program
+     *
+     * @group Programs
+     *
+     * @response 200 {"data": null, "message": "Programi i studimit u fshi me sukses.", "status": 200}
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        $program = ProgramStudim::findOrFail($id);
+        $program->delete();
+
+        return $this->success(null, 'Programi i studimit u fshi me sukses.');
+    }
 }
