@@ -75,6 +75,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/pedagogues', [PedagogController::class, 'store']);
         Route::put('/pedagogues/{id}', [PedagogController::class, 'update']);
         Route::delete('/pedagogues/{id}', [PedagogController::class, 'destroy']);
+
+        // Courses (admin write)
+        Route::post('/courses', [LendaController::class, 'store']);
+        Route::put('/courses/{id}', [LendaController::class, 'update']);
+        Route::delete('/courses/{id}', [LendaController::class, 'destroy']);
     });
 
     Route::get('/programs', [ProgramStudimController::class, 'index']);

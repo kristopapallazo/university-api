@@ -64,4 +64,69 @@ class LendaController extends Controller
             'Lënda u mor me sukses.'
         );
     }
+
+    /**
+     * Create a course
+     *
+     * @group Courses
+     *
+     * @response 201 {"data": {"id": 10, "name": "Algoritmika", "code": "INF101", "departmentId": 4}, "message": "Lënda u krijua me sukses.", "status": 201}
+     */
+    public function store(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:150',
+            'code' => 'required|string|max:20|unique:LENDA,LEND_KOD',
+            'departmentId' => 'required|integer|exists:DEPARTAMENT,DEP_ID',
+        ]);
+
+        $lenda = Lenda::create([
+            'LEND_EMER' => $data['name'],
+            'LEND_KOD' => strtoupper($data['code']),
+            'DEP_ID' => $data['departmentId'],
+        ]);
+
+        return $this->success(new LendaResource($lenda), 'Lënda u krijua me sukses.', 201);
+    }
+
+    /**
+     * Update a course
+     *
+     * @group Courses
+     *
+     * @response 200 {"data": {"id": 1, "name": "Algoritmika e Avancuar", "code": "INF101", "departmentId": 4}, "message": "Lënda u përditësua me sukses.", "status": 200}
+     */
+    public function update(Request $request, int $id): JsonResponse
+    {
+        $lenda = Lenda::findOrFail($id);
+
+        $data = $request->validate([
+            'name' => 'sometimes|required|string|max:150',
+            'code' => 'sometimes|required|string|max:20|unique:LENDA,LEND_KOD,' . $id . ',LEND_ID',
+            'departmentId' => 'sometimes|required|integer|exists:DEPARTAMENT,DEP_ID',
+        ]);
+
+        $lenda->update([
+            'LEND_EMER' => $data['name'] ?? $lenda->LEND_EMER,
+            'LEND_KOD' => isset($data['code']) ? strtoupper($data['code']) : $lenda->LEND_KOD,
+            'DEP_ID' => $data['departmentId'] ?? $lenda->DEP_ID,
+        ]);
+
+        return $this->success(new LendaResource($lenda->fresh()), 'Lënda u përditësua me sukses.');
+    }
+
+    /**
+     * Delete a course
+     *
+     * @group Courses
+     *
+     * @response 200 {"data": null, "message": "Lënda u fshi me sukses.", "status": 200}
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        $lenda = Lenda::findOrFail($id);
+        $lenda->delete();
+
+        return $this->success(null, 'Lënda u fshi me sukses.');
+    }
 }
