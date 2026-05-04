@@ -70,11 +70,23 @@ class DepartmentController extends Controller
      *
      * @group Departments
      *
-     * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
+     * @response 201 {"data": {"id": 10, "name": "Departamenti i Ri", "facultyId": 2}, "message": "Departamenti u krijua me sukses.", "status": 201}
      */
     public function store(Request $request): JsonResponse
     {
-        return $this->success(null, 'Ende nuk është implementuar.', 501);
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'facultyId' => 'required|integer|exists:FAKULTET,FAK_ID',
+            'headId' => 'nullable|integer|exists:PEDAGOG,PED_ID',
+        ]);
+
+        $department = Department::create([
+            'DEP_EM' => $data['name'],
+            'FAK_ID' => $data['facultyId'],
+            'PED_ID' => $data['headId'] ?? null,
+        ]);
+
+        return $this->success(new DepartmentResource($department), 'Departamenti u krijua me sukses.', 201);
     }
 
     /**
@@ -82,11 +94,25 @@ class DepartmentController extends Controller
      *
      * @group Departments
      *
-     * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
+     * @response 200 {"data": {"id": 4, "name": "Emër i ri", "facultyId": 2}, "message": "Departamenti u përditësua me sukses.", "status": 200}
      */
-    public function update(int $id): JsonResponse
+    public function update(Request $request, int $id): JsonResponse
     {
-        return $this->success(null, 'Ende nuk është implementuar.', 501);
+        $department = Department::findOrFail($id);
+
+        $data = $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'facultyId' => 'sometimes|required|integer|exists:FAKULTET,FAK_ID',
+            'headId' => 'nullable|integer|exists:PEDAGOG,PED_ID',
+        ]);
+
+        $department->update([
+            'DEP_EM' => $data['name'] ?? $department->DEP_EM,
+            'FAK_ID' => $data['facultyId'] ?? $department->FAK_ID,
+            'PED_ID' => array_key_exists('headId', $data) ? $data['headId'] : $department->PED_ID,
+        ]);
+
+        return $this->success(new DepartmentResource($department->fresh()), 'Departamenti u përditësua me sukses.');
     }
 
     /**
@@ -94,10 +120,13 @@ class DepartmentController extends Controller
      *
      * @group Departments
      *
-     * @response 501 {"data": null, "message": "Ende nuk është implementuar.", "status": 501}
+     * @response 200 {"data": null, "message": "Departamenti u fshi me sukses.", "status": 200}
      */
     public function destroy(int $id): JsonResponse
     {
-        return $this->success(null, 'Ende nuk është implementuar.', 501);
+        $department = Department::findOrFail($id);
+        $department->delete();
+
+        return $this->success(null, 'Departamenti u fshi me sukses.');
     }
 }
