@@ -65,6 +65,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Admin sends notifications
         Route::post('/admin/notifications', [AdminNjoftimController::class, 'store']);
+
+        // Programs (admin write)
+        Route::post('/programs', [ProgramStudimController::class, 'store']);
+        Route::put('/programs/{id}', [ProgramStudimController::class, 'update']);
+        Route::delete('/programs/{id}', [ProgramStudimController::class, 'destroy']);
+
+        // Pedagogues (admin write)
+        Route::post('/pedagogues', [PedagogController::class, 'store']);
+        Route::put('/pedagogues/{id}', [PedagogController::class, 'update']);
+        Route::delete('/pedagogues/{id}', [PedagogController::class, 'destroy']);
     });
 
     Route::get('/programs', [ProgramStudimController::class, 'index']);
