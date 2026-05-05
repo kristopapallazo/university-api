@@ -27,4 +27,3 @@ Thumbs.db
 # Scribe
 .scribe/endpoints.cache/
 .scribe/.filehashes
-storage/app/private/scribe/

@@ -98,7 +98,7 @@ endpoints:
         name: birthDate
         description: 'Must be a valid date.'
         required: false
-        example: '2026-05-05T15:45:49'
+        example: '2026-05-05T16:24:55'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -109,7 +109,7 @@ endpoints:
         name: hireDate
         description: 'Must be a valid date.'
         required: false
-        example: '2026-05-05T15:45:49'
+        example: '2026-05-05T16:24:55'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -133,8 +133,8 @@ endpoints:
       title: g
       email: rowan.gulgowski@example.com
       phone: dljnikhwaykcmyuw
-      birthDate: '2026-05-05T15:45:49'
-      hireDate: '2026-05-05T15:45:49'
+      birthDate: '2026-05-05T16:24:55'
+      hireDate: '2026-05-05T16:24:55'
       departmentId: 16
     fileParameters: []
     responses:
@@ -261,7 +261,7 @@ endpoints:
         name: birthDate
         description: 'Must be a valid date.'
         required: false
-        example: '2026-05-05T15:45:49'
+        example: '2026-05-05T16:24:55'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -272,7 +272,7 @@ endpoints:
         name: hireDate
         description: 'Must be a valid date.'
         required: false
-        example: '2026-05-05T15:45:49'
+        example: '2026-05-05T16:24:55'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -295,8 +295,8 @@ endpoints:
       gender: M
       title: g
       phone: zmiyvdljnikhwayk
-      birthDate: '2026-05-05T15:45:49'
-      hireDate: '2026-05-05T15:45:49'
+      birthDate: '2026-05-05T16:24:55'
+      hireDate: '2026-05-05T16:24:55'
       departmentId: 16
     fileParameters: []
     responses:
