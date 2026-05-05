@@ -1,0 +1,538 @@
+name: Students
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/admin/students
+    metadata:
+      custom: []
+      groupName: Students
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List students'
+      description: 'Returns paginated students with optional status filter and sorting.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      perPage:
+        custom: []
+        name: perPage
+        description: 'optional Items per page (max 100, default 15).'
+        required: false
+        example: 20
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: "optional Filter by status: Aktiv, Pezulluar, I diplomuar, Ç'regjistruar."
+        required: false
+        example: Aktiv
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort:
+        custom: []
+        name: sort
+        description: 'optional Field to sort by (STU_MB, STU_EM, STU_ID).'
+        required: false
+        example: STU_MB
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      perPage: 20
+      status: Aktiv
+      sort: STU_MB
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [{"id": 1, "firstName": "Arta", "lastName": "Hoxha", "email": "ahoxha@students.uamd.edu.al", "status": "Aktiv"}],
+            "meta": {"currentPage": 1, "perPage": 15, "total": 1, "lastPage": 1},
+            "message": "OK",
+            "status": 200
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/admin/students/{id}'
+    metadata:
+      custom: []
+      groupName: Students
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get a student'
+      description: 'Returns a single student by ID.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the student.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "firstName": "Arta", "lastName": "Hoxha", "email": "ahoxha@students.uamd.edu.al", "status": "Aktiv"}, "message": "Studenti u mor me sukses.", "status": 200}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"data": null, "message": "Not Found", "status": 404}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/admin/students
+    metadata:
+      custom: []
+      groupName: Students
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create a student'
+      description: |-
+        Creates a STUDENT row and a users (auth) row in a single transaction.
+        Students authenticate via Google OAuth — no password is set.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      firstName:
+        custom: []
+        name: firstName
+        description: ''
+        required: true
+        example: Arta
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      lastName:
+        custom: []
+        name: lastName
+        description: ''
+        required: true
+        example: Hoxha
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      fathersName:
+        custom: []
+        name: fathersName
+        description: optional
+        required: false
+        example: Ilir
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      gender:
+        custom: []
+        name: gender
+        description: 'One of: M, F.'
+        required: true
+        example: F
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      birthDate:
+        custom: []
+        name: birthDate
+        description: ''
+        required: true
+        example: '2003-05-12'
+        type: date
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      matriculation:
+        custom: []
+        name: matriculation
+        description: Unique.
+        required: true
+        example: 23.1.1.001
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      email:
+        custom: []
+        name: email
+        description: Unique.
+        required: true
+        example: ahoxha@students.uamd.edu.al
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: optional
+        required: false
+        example: '+355691234567'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      enrolledAt:
+        custom: []
+        name: enrolledAt
+        description: 'optional Defaults to today.'
+        required: false
+        example: '2024-10-01'
+        type: date
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      dormRoomId:
+        custom: []
+        name: dormRoomId
+        description: optional
+        required: false
+        example: 12
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      firstName: Arta
+      lastName: Hoxha
+      fathersName: Ilir
+      gender: F
+      birthDate: '2003-05-12'
+      matriculation: 23.1.1.001
+      email: ahoxha@students.uamd.edu.al
+      phone: '+355691234567'
+      enrolledAt: '2024-10-01'
+      dormRoomId: 12
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: '{"data": {"id": 1, "firstName": "Arta", "lastName": "Hoxha", "email": "ahoxha@students.uamd.edu.al", "status": "Aktiv"}, "message": "Studenti u regjistrua me sukses.", "status": 201}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: '{"message": "The given data was invalid.", "errors": {}}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/v1/admin/students/{id}'
+    metadata:
+      custom: []
+      groupName: Students
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update a student'
+      description: |-
+        Updates profile fields only. Email is intentionally excluded —
+        it is the link to the users (auth) row and changing it would break login.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the student.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      firstName:
+        custom: []
+        name: firstName
+        description: 'Must not be greater than 100 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      lastName:
+        custom: []
+        name: lastName
+        description: 'Must not be greater than 100 characters.'
+        required: false
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      fathersName:
+        custom: []
+        name: fathersName
+        description: 'Must not be greater than 100 characters.'
+        required: false
+        example: g
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      gender:
+        custom: []
+        name: gender
+        description: ''
+        required: false
+        example: F
+        type: string
+        enumValues:
+          - M
+          - F
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      birthDate:
+        custom: []
+        name: birthDate
+        description: 'Must be a valid date.'
+        required: false
+        example: '2026-05-05T15:45:49'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      phone:
+        custom: []
+        name: phone
+        description: 'Must not be greater than 20 characters.'
+        required: false
+        example: zmiyvdljnikhwayk
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: ''
+        required: false
+        example: Aktiv
+        type: string
+        enumValues:
+          - Aktiv
+          - Pezulluar
+          - 'I diplomuar'
+          - "Ç'regjistruar"
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      dormRoomId:
+        custom: []
+        name: dormRoomId
+        description: 'The <code>DHOM_ID</code> of an existing record in the DHOME table.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      firstName: b
+      lastName: 'n'
+      fathersName: g
+      gender: F
+      birthDate: '2026-05-05T15:45:49'
+      phone: zmiyvdljnikhwayk
+      status: Aktiv
+      dormRoomId: 16
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "firstName": "Arta", "lastName": "Hoxha", "status": "Aktiv"}, "message": "Studenti u përditësua me sukses.", "status": 200}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"data": null, "message": "Not Found", "status": 404}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/admin/students/{id}'
+    metadata:
+      custom: []
+      groupName: Students
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Deactivate a student'
+      description: |-
+        Sets STU_STATUS to "Ç'regjistruar". Does not hard-delete because the
+        student may have linked grades, invoices, or registrations (FK constraints).
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the student.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": null, "message": "Studenti u çregjistrua me sukses.", "status": 200}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"data": null, "message": "Not Found", "status": 404}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

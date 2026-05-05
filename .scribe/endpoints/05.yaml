@@ -1,19 +1,268 @@
-name: Courses
+name: Programs
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
-      - GET
-    uri: api/v1/courses
+      - POST
+    uri: api/v1/programs
     metadata:
       custom: []
-      groupName: Courses
+      groupName: Programs
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List courses'
-      description: 'Returns all courses. Pass `department_id` to filter by department.'
+      title: 'Create a study program'
+      description: ''
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Must not be greater than 255 characters.'
+        required: true
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      level:
+        custom: []
+        name: level
+        description: ''
+        required: true
+        example: Bachelor
+        type: string
+        enumValues:
+          - Bachelor
+          - Master
+          - Doktorature
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      credits:
+        custom: []
+        name: credits
+        description: 'Must be at least 1.'
+        required: true
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      departmentId:
+        custom: []
+        name: departmentId
+        description: 'The <code>DEP_ID</code> of an existing record in the DEPARTAMENT table.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: b
+      level: Bachelor
+      credits: 22
+      departmentId: 16
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: '{"data": {"id": 10, "name": "Programi i Ri", "level": "Bachelor", "credits": 180, "departmentId": 4}, "message": "Programi i studimit u krijua me sukses.", "status": 201}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/v1/programs/{id}'
+    metadata:
+      custom: []
+      groupName: Programs
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update a study program'
+      description: ''
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the program.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      level:
+        custom: []
+        name: level
+        description: ''
+        required: false
+        example: Bachelor
+        type: string
+        enumValues:
+          - Bachelor
+          - Master
+          - Doktorature
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      credits:
+        custom: []
+        name: credits
+        description: 'Must be at least 1.'
+        required: false
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      departmentId:
+        custom: []
+        name: departmentId
+        description: 'The <code>DEP_ID</code> of an existing record in the DEPARTAMENT table.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: b
+      level: Bachelor
+      credits: 22
+      departmentId: 16
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "name": "Emër i ri", "level": "Master", "credits": 120, "departmentId": 4}, "message": "Programi i studimit u përditësua me sukses.", "status": 200}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/programs/{id}'
+    metadata:
+      custom: []
+      groupName: Programs
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete a study program'
+      description: ''
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the program.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": null, "message": "Programi i studimit u fshi me sukses.", "status": 200}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/programs
+    metadata:
+      custom: []
+      groupName: Programs
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List study programs'
+      description: 'Returns all study programs. Pass `department_id` to filter by department.'
       authenticated: true
       deprecated: false
     headers:
@@ -45,8 +294,8 @@ endpoints:
         status: 200
         content: |-
           {
-            "data": [{"id": 1, "name": "Algoritmika", "code": "INF101", "departmentId": 4}],
-            "message": "L\u00ebnd\u00ebt u mor\u00ebn me sukses.",
+            "data": [{"id": 1, "name": "Informatik\u00eb", "level": "Bachelor", "credits": 180, "departmentId": 4}],
+            "message": "Programet e studimit u mor\u00ebn me sukses.",
             "status": 200
           }
         headers: []
@@ -63,15 +312,15 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: 'api/v1/courses/{id}'
+    uri: 'api/v1/programs/{id}'
     metadata:
       custom: []
-      groupName: Courses
+      groupName: Programs
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Get a course'
-      description: 'Returns a single course by its ID.'
+      title: 'Get a study program'
+      description: 'Returns a single study program by its ID.'
       authenticated: true
       deprecated: false
     headers:
@@ -82,7 +331,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the course.'
+        description: 'The ID of the program.'
         required: true
         example: architecto
         type: string
@@ -101,7 +350,7 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data": {"id": 1, "name": "Algoritmika", "code": "INF101", "departmentId": 4}, "message": "L\u00ebnda u mor me sukses.", "status": 200}'
+        content: '{"data": {"id": 1, "name": "Informatik\u00eb", "level": "Bachelor", "credits": 180, "departmentId": 4}, "message": "Programi i studimit u mor me sukses.", "status": 200}'
         headers: []
         description: ''
       -
