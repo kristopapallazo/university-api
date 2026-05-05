@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $STU_ID
@@ -14,11 +15,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $STU_MB
  * @property string|null $STU_ATESI
  * @property string $STU_GJINI
- * @property \Illuminate\Support\Carbon|null $STU_DTL
+ * @property Carbon|null $STU_DTL
  * @property string $STU_NR_MATRIKULL
  * @property string $STU_EMAIL
  * @property string|null $STU_TEL
- * @property \Illuminate\Support\Carbon|null $STU_DAT_REGJISTRIM
+ * @property Carbon|null $STU_DAT_REGJISTRIM
  * @property string $STU_STATUS
  * @property int|null $DHOM_ID
  */
