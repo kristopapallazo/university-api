@@ -98,7 +98,7 @@ endpoints:
         name: birthDate
         description: 'Must be a valid date.'
         required: false
-        example: '2026-05-05T16:24:55'
+        example: '2026-05-05T16:37:04'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -109,7 +109,7 @@ endpoints:
         name: hireDate
         description: 'Must be a valid date.'
         required: false
-        example: '2026-05-05T16:24:55'
+        example: '2026-05-05T16:37:04'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -133,8 +133,8 @@ endpoints:
       title: g
       email: rowan.gulgowski@example.com
       phone: dljnikhwaykcmyuw
-      birthDate: '2026-05-05T16:24:55'
-      hireDate: '2026-05-05T16:24:55'
+      birthDate: '2026-05-05T16:37:04'
+      hireDate: '2026-05-05T16:37:04'
       departmentId: 16
     fileParameters: []
     responses:
@@ -215,7 +215,7 @@ endpoints:
         name: gender
         description: ''
         required: false
-        example: M
+        example: F
         type: string
         enumValues:
           - M
@@ -261,7 +261,7 @@ endpoints:
         name: birthDate
         description: 'Must be a valid date.'
         required: false
-        example: '2026-05-05T16:24:55'
+        example: '2026-05-05T16:37:04'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -272,7 +272,7 @@ endpoints:
         name: hireDate
         description: 'Must be a valid date.'
         required: false
-        example: '2026-05-05T16:24:55'
+        example: '2026-05-05T16:37:04'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -292,11 +292,11 @@ endpoints:
     cleanBodyParameters:
       firstName: b
       lastName: 'n'
-      gender: M
+      gender: F
       title: g
       phone: zmiyvdljnikhwayk
-      birthDate: '2026-05-05T16:24:55'
-      hireDate: '2026-05-05T16:24:55'
+      birthDate: '2026-05-05T16:37:04'
+      hireDate: '2026-05-05T16:37:04'
       departmentId: 16
     fileParameters: []
     responses:

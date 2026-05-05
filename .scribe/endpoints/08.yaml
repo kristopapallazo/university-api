@@ -388,7 +388,7 @@ endpoints:
         name: gender
         description: ''
         required: false
-        example: F
+        example: M
         type: string
         enumValues:
           - M
@@ -401,7 +401,7 @@ endpoints:
         name: birthDate
         description: 'Must be a valid date.'
         required: false
-        example: '2026-05-05T16:24:55'
+        example: '2026-05-05T16:37:04'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -423,7 +423,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: "Ç'regjistruar"
+        example: 'I diplomuar'
         type: string
         enumValues:
           - Aktiv
@@ -448,10 +448,10 @@ endpoints:
       firstName: b
       lastName: 'n'
       fathersName: g
-      gender: F
-      birthDate: '2026-05-05T16:24:55'
+      gender: M
+      birthDate: '2026-05-05T16:37:04'
       phone: zmiyvdljnikhwayk
-      status: "Ç'regjistruar"
+      status: 'I diplomuar'
       dormRoomId: 16
     fileParameters: []
     responses:

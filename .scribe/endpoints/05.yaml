@@ -41,7 +41,7 @@ endpoints:
         name: level
         description: ''
         required: true
-        example: Doktorature
+        example: Bachelor
         type: string
         enumValues:
           - Bachelor
@@ -74,7 +74,7 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       name: b
-      level: Doktorature
+      level: Bachelor
       credits: 22
       departmentId: 16
     fileParameters: []
@@ -145,7 +145,7 @@ endpoints:
         name: level
         description: ''
         required: false
-        example: Doktorature
+        example: Master
         type: string
         enumValues:
           - Bachelor
@@ -178,7 +178,7 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       name: b
-      level: Doktorature
+      level: Master
       credits: 22
       departmentId: 16
     fileParameters: []
