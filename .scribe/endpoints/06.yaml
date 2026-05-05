@@ -1,18 +1,18 @@
-name: Pedagogues
+name: Programs
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - POST
-    uri: api/v1/pedagogues
+    uri: api/v1/programs
     metadata:
       custom: []
-      groupName: Pedagogues
+      groupName: Programs
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Create a pedagogue'
+      title: 'Create a study program'
       description: ''
       authenticated: true
       deprecated: false
@@ -25,10 +25,10 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      firstName:
+      name:
         custom: []
-        name: firstName
-        description: 'Must not be greater than 100 characters.'
+        name: name
+        description: 'Must not be greater than 255 characters.'
         required: true
         example: b
         type: string
@@ -36,84 +36,30 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      lastName:
+      level:
         custom: []
-        name: lastName
-        description: 'Must not be greater than 100 characters.'
-        required: true
-        example: 'n'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      gender:
-        custom: []
-        name: gender
+        name: level
         description: ''
         required: true
-        example: F
+        example: Master
         type: string
         enumValues:
-          - M
-          - F
+          - Bachelor
+          - Master
+          - Doktorature
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      title:
+      credits:
         custom: []
-        name: title
-        description: 'Must not be greater than 100 characters.'
+        name: credits
+        description: 'Must be at least 1.'
         required: true
-        example: g
-        type: string
+        example: 22
+        type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
-        deprecated: false
-      email:
-        custom: []
-        name: email
-        description: 'Must be a valid email address.'
-        required: true
-        example: rowan.gulgowski@example.com
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      phone:
-        custom: []
-        name: phone
-        description: 'Must not be greater than 20 characters.'
-        required: false
-        example: dljnikhwaykcmyuw
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      birthDate:
-        custom: []
-        name: birthDate
-        description: 'Must be a valid date.'
-        required: false
-        example: '2026-05-05T16:37:04'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      hireDate:
-        custom: []
-        name: hireDate
-        description: 'Must be a valid date.'
-        required: false
-        example: '2026-05-05T16:37:04'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
         deprecated: false
       departmentId:
         custom: []
@@ -127,21 +73,16 @@ endpoints:
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      firstName: b
-      lastName: 'n'
-      gender: F
-      title: g
-      email: rowan.gulgowski@example.com
-      phone: dljnikhwaykcmyuw
-      birthDate: '2026-05-05T16:37:04'
-      hireDate: '2026-05-05T16:37:04'
+      name: b
+      level: Master
+      credits: 22
       departmentId: 16
     fileParameters: []
     responses:
       -
         custom: []
         status: 201
-        content: '{"data": {"id": 10, "firstName": "Arben", "lastName": "Hoxha", "title": "Prof. Dr.", "email": "ahoxha@uamd.edu.al", "gender": "M", "departmentId": 4}, "message": "Pedagogu u krijua me sukses.", "status": 201}'
+        content: '{"data": {"id": 10, "name": "Programi i Ri", "level": "Bachelor", "credits": 180, "departmentId": 4}, "message": "Programi i studimit u krijua me sukses.", "status": 201}'
         headers: []
         description: ''
     responseFields: []
@@ -156,14 +97,14 @@ endpoints:
     custom: []
     httpMethods:
       - PUT
-    uri: 'api/v1/pedagogues/{id}'
+    uri: 'api/v1/programs/{id}'
     metadata:
       custom: []
-      groupName: Pedagogues
+      groupName: Programs
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Update a pedagogue'
+      title: 'Update a study program'
       description: ''
       authenticated: true
       deprecated: false
@@ -175,7 +116,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the pedagogue.'
+        description: 'The ID of the program.'
         required: true
         example: architecto
         type: string
@@ -188,10 +129,10 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      firstName:
+      name:
         custom: []
-        name: firstName
-        description: 'Must not be greater than 100 characters.'
+        name: name
+        description: 'Must not be greater than 255 characters.'
         required: false
         example: b
         type: string
@@ -199,84 +140,30 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      lastName:
+      level:
         custom: []
-        name: lastName
-        description: 'Must not be greater than 100 characters.'
-        required: false
-        example: 'n'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      gender:
-        custom: []
-        name: gender
+        name: level
         description: ''
         required: false
-        example: F
+        example: Master
         type: string
         enumValues:
-          - M
-          - F
+          - Bachelor
+          - Master
+          - Doktorature
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      title:
+      credits:
         custom: []
-        name: title
-        description: 'Must not be greater than 100 characters.'
+        name: credits
+        description: 'Must be at least 1.'
         required: false
-        example: g
-        type: string
+        example: 22
+        type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
-        deprecated: false
-      email:
-        custom: []
-        name: email
-        description: ''
-        required: false
-        example: null
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      phone:
-        custom: []
-        name: phone
-        description: 'Must not be greater than 20 characters.'
-        required: false
-        example: zmiyvdljnikhwayk
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      birthDate:
-        custom: []
-        name: birthDate
-        description: 'Must be a valid date.'
-        required: false
-        example: '2026-05-05T16:37:04'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      hireDate:
-        custom: []
-        name: hireDate
-        description: 'Must be a valid date.'
-        required: false
-        example: '2026-05-05T16:37:04'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
         deprecated: false
       departmentId:
         custom: []
@@ -290,20 +177,16 @@ endpoints:
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      firstName: b
-      lastName: 'n'
-      gender: F
-      title: g
-      phone: zmiyvdljnikhwayk
-      birthDate: '2026-05-05T16:37:04'
-      hireDate: '2026-05-05T16:37:04'
+      name: b
+      level: Master
+      credits: 22
       departmentId: 16
     fileParameters: []
     responses:
       -
         custom: []
         status: 200
-        content: '{"data": {"id": 1, "firstName": "Arben", "lastName": "Hoxha", "title": "Prof. Dr.", "email": "ahoxha@uamd.edu.al", "gender": "M", "departmentId": 4}, "message": "Pedagogu u përditësua me sukses.", "status": 200}'
+        content: '{"data": {"id": 1, "name": "Emër i ri", "level": "Master", "credits": 120, "departmentId": 4}, "message": "Programi i studimit u përditësua me sukses.", "status": 200}'
         headers: []
         description: ''
     responseFields: []
@@ -318,14 +201,14 @@ endpoints:
     custom: []
     httpMethods:
       - DELETE
-    uri: 'api/v1/pedagogues/{id}'
+    uri: 'api/v1/programs/{id}'
     metadata:
       custom: []
-      groupName: Pedagogues
+      groupName: Programs
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Delete a pedagogue'
+      title: 'Delete a study program'
       description: ''
       authenticated: true
       deprecated: false
@@ -337,7 +220,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the pedagogue.'
+        description: 'The ID of the program.'
         required: true
         example: architecto
         type: string
@@ -356,7 +239,7 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data": null, "message": "Pedagogu u fshi me sukses.", "status": 200}'
+        content: '{"data": null, "message": "Programi i studimit u fshi me sukses.", "status": 200}'
         headers: []
         description: ''
     responseFields: []
@@ -371,15 +254,15 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/pedagogues
+    uri: api/v1/programs
     metadata:
       custom: []
-      groupName: Pedagogues
+      groupName: Programs
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List pedagogues'
-      description: 'Returns all pedagogues. Pass `department_id` to filter by department.'
+      title: 'List study programs'
+      description: 'Returns all study programs. Pass `department_id` to filter by department.'
       authenticated: true
       deprecated: false
     headers:
@@ -411,8 +294,8 @@ endpoints:
         status: 200
         content: |-
           {
-            "data": [{"id": 1, "firstName": "Arben", "lastName": "Hoxha", "title": "Prof. Dr.", "email": "ahoxha@uamd.edu.al", "gender": "M", "departmentId": 4}],
-            "message": "Pedagog\u00ebt u mor\u00ebn me sukses.",
+            "data": [{"id": 1, "name": "Informatik\u00eb", "level": "Bachelor", "credits": 180, "departmentId": 4}],
+            "message": "Programet e studimit u mor\u00ebn me sukses.",
             "status": 200
           }
         headers: []
@@ -429,15 +312,15 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: 'api/v1/pedagogues/{id}'
+    uri: 'api/v1/programs/{id}'
     metadata:
       custom: []
-      groupName: Pedagogues
+      groupName: Programs
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Get a pedagogue'
-      description: 'Returns a single pedagogue by their ID.'
+      title: 'Get a study program'
+      description: 'Returns a single study program by its ID.'
       authenticated: true
       deprecated: false
     headers:
@@ -448,7 +331,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'The ID of the pedagogue.'
+        description: 'The ID of the program.'
         required: true
         example: architecto
         type: string
@@ -467,67 +350,13 @@ endpoints:
       -
         custom: []
         status: 200
-        content: '{"data": {"id": 1, "firstName": "Arben", "lastName": "Hoxha", "title": "Prof. Dr.", "email": "ahoxha@uamd.edu.al", "gender": "M", "departmentId": 4}, "message": "Pedagogu u mor me sukses.", "status": 200}'
+        content: '{"data": {"id": 1, "name": "Informatik\u00eb", "level": "Bachelor", "credits": 180, "departmentId": 4}, "message": "Programi i studimit u mor me sukses.", "status": 200}'
         headers: []
         description: ''
       -
         custom: []
         status: 404
         content: '{"data": null, "message": "Rekordi nuk u gjet.", "status": 404}'
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/pedagog/sections
-    metadata:
-      custom: []
-      groupName: Pedagogues
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'List pedagog sections'
-      description: |-
-        Returns the list of class sections (teaching slots) assigned to the authenticated pedagog,
-        ordered by day and start time. Each entry includes the course, classroom, and schedule info.
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": [{"id": 3, "courseId": 7, "course": "Bazat e Programimit", "day": "E Hene", "timeStart": "08:00:00", "timeEnd": "09:30:00", "roomId": 2}],
-            "message": "Seksionet u mor\u00ebn me sukses.",
-            "status": 200
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: '{"data": null, "message": "Nuk u gjet profili i pedagogut.", "status": 404}'
         headers: []
         description: ''
     responseFields: []

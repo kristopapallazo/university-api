@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "UAMD Portal API",
-        "_postman_id": "ad674490-8699-4307-a332-58b0693c6d21",
+        "_postman_id": "40eb761b-7684-4abb-b2e2-b7151770f91d",
         "description": "REST API p\u00ebr Portalin e Universitetit Aleksander Moisiu Durr\u00ebs (UAMD). T\u00eb gjitha endpoint-et jan\u00eb t\u00eb prefixuara me \/api\/v1\/.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -986,6 +986,47 @@
             ]
         },
         {
+            "name": "General",
+            "description": "",
+            "item": [
+                {
+                    "name": "GET api\/v1\/ping",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/ping",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/ping"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"message\": \"pong\", \"status\": 200}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Notifications",
             "description": "",
             "item": [
@@ -1200,7 +1241,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"firstName\":\"b\",\"lastName\":\"n\",\"gender\":\"F\",\"title\":\"g\",\"email\":\"rowan.gulgowski@example.com\",\"phone\":\"dljnikhwaykcmyuw\",\"birthDate\":\"2026-05-05T16:37:04\",\"hireDate\":\"2026-05-05T16:37:04\",\"departmentId\":16}"
+                            "raw": "{\"firstName\":\"b\",\"lastName\":\"n\",\"gender\":\"F\",\"title\":\"g\",\"email\":\"rowan.gulgowski@example.com\",\"phone\":\"dljnikhwaykcmyuw\",\"birthDate\":\"2026-05-05T17:03:43\",\"hireDate\":\"2026-05-05T17:03:43\",\"departmentId\":16}"
                         },
                         "description": ""
                     },
@@ -1243,7 +1284,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"firstName\":\"b\",\"lastName\":\"n\",\"gender\":\"F\",\"title\":\"g\",\"phone\":\"zmiyvdljnikhwayk\",\"birthDate\":\"2026-05-05T16:37:04\",\"hireDate\":\"2026-05-05T16:37:04\",\"departmentId\":16}"
+                            "raw": "{\"firstName\":\"b\",\"lastName\":\"n\",\"gender\":\"F\",\"title\":\"g\",\"phone\":\"zmiyvdljnikhwayk\",\"birthDate\":\"2026-05-05T17:03:43\",\"hireDate\":\"2026-05-05T17:03:43\",\"departmentId\":16}"
                         },
                         "description": ""
                     },
@@ -1447,7 +1488,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"b\",\"level\":\"Bachelor\",\"credits\":22,\"departmentId\":16}"
+                            "raw": "{\"name\":\"b\",\"level\":\"Master\",\"credits\":22,\"departmentId\":16}"
                         },
                         "description": ""
                     },
@@ -1924,7 +1965,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"firstName\":\"b\",\"lastName\":\"n\",\"fathersName\":\"g\",\"gender\":\"M\",\"birthDate\":\"2026-05-05T16:37:04\",\"phone\":\"zmiyvdljnikhwayk\",\"status\":\"I diplomuar\",\"dormRoomId\":16}"
+                            "raw": "{\"firstName\":\"b\",\"lastName\":\"n\",\"fathersName\":\"g\",\"gender\":\"M\",\"birthDate\":\"2026-05-05T17:03:43\",\"phone\":\"zmiyvdljnikhwayk\",\"status\":\"Aktiv\",\"dormRoomId\":16}"
                         },
                         "description": "Updates profile fields only. Email is intentionally excluded \u2014\nit is the link to the users (auth) row and changing it would break login."
                     },
