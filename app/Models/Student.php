@@ -14,11 +14,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $STU_MB
  * @property string|null $STU_ATESI
  * @property string $STU_GJINI
- * @property string $STU_DTL
+ * @property \Illuminate\Support\Carbon|null $STU_DTL
  * @property string $STU_NR_MATRIKULL
  * @property string $STU_EMAIL
  * @property string|null $STU_TEL
- * @property string $STU_DAT_REGJISTRIM
+ * @property \Illuminate\Support\Carbon|null $STU_DAT_REGJISTRIM
  * @property string $STU_STATUS
  * @property int|null $DHOM_ID
  */

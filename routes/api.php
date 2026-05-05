@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\NjoftimController as AdminNjoftimController;
+use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
@@ -80,6 +81,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/courses', [LendaController::class, 'store']);
         Route::put('/courses/{id}', [LendaController::class, 'update']);
         Route::delete('/courses/{id}', [LendaController::class, 'destroy']);
+
+        // Students (admin CRUD)
+        Route::get('/admin/students', [AdminStudentController::class, 'index']);
+        Route::get('/admin/students/{id}', [AdminStudentController::class, 'show']);
+        Route::post('/admin/students', [AdminStudentController::class, 'store']);
+        Route::put('/admin/students/{id}', [AdminStudentController::class, 'update']);
+        Route::delete('/admin/students/{id}', [AdminStudentController::class, 'destroy']);
     });
 
     Route::get('/programs', [ProgramStudimController::class, 'index']);
