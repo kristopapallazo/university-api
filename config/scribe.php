@@ -231,11 +231,17 @@ return [
         'responses' => configureStrategy(
             Defaults::RESPONSES_STRATEGIES,
             Strategies\Responses\ResponseCalls::withSettings(
-                only: ['GET *'],
-                // Recommended: disable debug mode in response calls to avoid error stack traces in responses
-                config: [
-                    'app.debug' => false,
-                ]
+                // Set to ['GET *'] to re-enable live HTTP response calls during generation.
+                // Disabled because scribe:generate runs in Railway's release command where
+                // the web server isn't up yet, causing those calls to fail.
+
+                // All endpoints have @response annotations so no examples are lost.
+                //  only: ['GET *'],
+                // // Recommended: disable debug mode in response calls to avoid error stack traces in responses
+                // config: [
+                //     'app.debug' => false,
+                // ]
+                only: [],
             )
         ),
         'responseFields' => [

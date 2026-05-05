@@ -25,6 +25,17 @@ use Illuminate\Support\Facades\Route;
 | All routes here are automatically under /api/v1/.
 */
 
+// ── Health check ────────────────────────────────────────────────
+
+/**
+ * @group General
+ *
+ * @unauthenticated
+ *
+ * @response 200 {"message": "pong", "status": 200}
+ */
+Route::get('/ping', fn () => response()->json(['message' => 'pong', 'status' => 200]));
+
 // ── Public ──────────────────────────────────────────────────────
 Route::post('/auth/login', [AuthController::class, 'login'])
     ->middleware('throttle:6,1');
