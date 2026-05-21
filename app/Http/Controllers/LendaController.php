@@ -7,12 +7,15 @@ use App\Http\Resources\PaginatedCollection;
 use App\Http\Traits\ApiResponse;
 use App\Http\Traits\Sortable;
 use App\Models\Lenda;
+use App\Services\ValidationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class LendaController extends Controller
 {
     use ApiResponse, Sortable;
+
+    public function __construct(private readonly ValidationService $validation) {}
 
     /**
      * List courses
@@ -77,8 +80,10 @@ class LendaController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:150',
             'code' => 'required|string|max:20|unique:LENDA,LEND_KOD',
-            'departmentId' => 'required|integer|exists:DEPARTAMENT,DEP_ID',
+            'departmentId' => 'required|integer',
         ]);
+
+        $this->validation->validateDepartmentExists($data['departmentId']);
 
         $lenda = Lenda::create([
             'LEND_EMER' => $data['name'],
@@ -103,8 +108,12 @@ class LendaController extends Controller
         $data = $request->validate([
             'name' => 'sometimes|required|string|max:150',
             'code' => 'sometimes|required|string|max:20|unique:LENDA,LEND_KOD,' . $id . ',LEND_ID',
-            'departmentId' => 'sometimes|required|integer|exists:DEPARTAMENT,DEP_ID',
+            'departmentId' => 'sometimes|required|integer',
         ]);
+
+        if (isset($data['departmentId'])) {
+            $this->validation->validateDepartmentExists($data['departmentId']);
+        }
 
         $lenda->update([
             'LEND_EMER' => $data['name'] ?? $lenda->LEND_EMER,
