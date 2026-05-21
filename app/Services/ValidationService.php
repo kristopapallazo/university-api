@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\EntityNotFoundException;
+use App\Models\Department;
 use App\Models\Faculty;
 use App\Models\Lenda;
 use App\Models\Pedagog;
@@ -20,6 +21,20 @@ class ValidationService
     {
         if (! Faculty::find($facultyId)) {
             throw new EntityNotFoundException('Fakultet', $facultyId);
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate that a department exists by ID.
+     *
+     * @throws EntityNotFoundException if not found
+     */
+    public function validateDepartmentExists(int $departmentId): bool
+    {
+        if (! Department::find($departmentId)) {
+            throw new EntityNotFoundException('Departament', $departmentId);
         }
 
         return true;
