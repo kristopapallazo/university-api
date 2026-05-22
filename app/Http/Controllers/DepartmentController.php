@@ -7,12 +7,15 @@ use App\Http\Resources\PaginatedCollection;
 use App\Http\Traits\ApiResponse;
 use App\Http\Traits\Sortable;
 use App\Models\Department;
+use App\Services\ValidationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
     use ApiResponse, Sortable;
+
+    public function __construct(private readonly ValidationService $validation) {}
 
     /**
      * List departments
@@ -76,9 +79,11 @@ class DepartmentController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'facultyId' => 'required|integer|exists:FAKULTET,FAK_ID',
+            'facultyId' => 'required|integer',
             'headId' => 'nullable|integer|exists:PEDAGOG,PED_ID',
         ]);
+
+        $this->validation->validateFacultyExists($data['facultyId']);
 
         $department = Department::create([
             'DEP_EM' => $data['name'],
@@ -102,9 +107,13 @@ class DepartmentController extends Controller
 
         $data = $request->validate([
             'name' => 'sometimes|required|string|max:255',
-            'facultyId' => 'sometimes|required|integer|exists:FAKULTET,FAK_ID',
+            'facultyId' => 'sometimes|required|integer',
             'headId' => 'nullable|integer|exists:PEDAGOG,PED_ID',
         ]);
+
+        if (isset($data['facultyId'])) {
+            $this->validation->validateFacultyExists($data['facultyId']);
+        }
 
         $department->update([
             'DEP_EM' => $data['name'] ?? $department->DEP_EM,

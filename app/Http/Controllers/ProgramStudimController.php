@@ -7,12 +7,15 @@ use App\Http\Resources\ProgramStudimResource;
 use App\Http\Traits\ApiResponse;
 use App\Http\Traits\Sortable;
 use App\Models\ProgramStudim;
+use App\Services\ValidationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProgramStudimController extends Controller
 {
     use ApiResponse, Sortable;
+
+    public function __construct(private readonly ValidationService $validation) {}
 
     /**
      * List study programs
@@ -78,8 +81,10 @@ class ProgramStudimController extends Controller
             'name' => 'required|string|max:255',
             'level' => 'required|in:Bachelor,Master,Doktorature',
             'credits' => 'required|integer|min:1',
-            'departmentId' => 'required|integer|exists:DEPARTAMENT,DEP_ID',
+            'departmentId' => 'required|integer',
         ]);
+
+        $this->validation->validateDepartmentExists($data['departmentId']);
 
         $program = ProgramStudim::create([
             'PROG_EM' => $data['name'],
@@ -106,8 +111,12 @@ class ProgramStudimController extends Controller
             'name' => 'sometimes|required|string|max:255',
             'level' => 'sometimes|required|in:Bachelor,Master,Doktorature',
             'credits' => 'sometimes|required|integer|min:1',
-            'departmentId' => 'sometimes|required|integer|exists:DEPARTAMENT,DEP_ID',
+            'departmentId' => 'sometimes|required|integer',
         ]);
+
+        if (isset($data['departmentId'])) {
+            $this->validation->validateDepartmentExists($data['departmentId']);
+        }
 
         $program->update([
             'PROG_EM' => $data['name'] ?? $program->PROG_EM,
