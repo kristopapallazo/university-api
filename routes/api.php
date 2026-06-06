@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\NjoftimController as AdminNjoftimController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\LendaController;
@@ -46,6 +47,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/notifications/{id}/read', [NjoftimController::class, 'markAsRead']);
     Route::put('/notifications/read-all', [NjoftimController::class, 'markAllAsRead']);
     Route::get('/notifications/stream', [NotificationStreamController::class, 'stream']);
+
+    // ── Dija chat ────────────────────────────────────────────────────
+    Route::prefix('chat')->group(function () {
+        Route::get('/conversations', [ChatController::class, 'indexConversations']);
+        Route::post('/conversations', [ChatController::class, 'storeConversation']);
+        Route::get('/conversations/{id}', [ChatController::class, 'showConversation']);
+        Route::delete('/conversations/{id}', [ChatController::class, 'destroyConversation']);
+        Route::post('/conversations/{id}/messages', [ChatController::class, 'sendMessage']);
+        Route::get('/usage', [ChatController::class, 'usage']);
+    });
 
     // Reference data — reads (any authenticated role)
     Route::get('/faculties', [FacultyController::class, 'index']);

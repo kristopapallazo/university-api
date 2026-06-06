@@ -36,6 +36,9 @@ class ChatToolCall extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<ChatMessage, $this>
+     */
     public function message(): BelongsTo
     {
         return $this->belongsTo(ChatMessage::class, 'message_id');

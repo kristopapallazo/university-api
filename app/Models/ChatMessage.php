@@ -29,11 +29,17 @@ class ChatMessage extends Model
         return ['created_at' => 'datetime'];
     }
 
+    /**
+     * @return BelongsTo<ChatConversation, $this>
+     */
     public function conversation(): BelongsTo
     {
         return $this->belongsTo(ChatConversation::class, 'conversation_id');
     }
 
+    /**
+     * @return HasMany<ChatToolCall, $this>
+     */
     public function toolCalls(): HasMany
     {
         return $this->hasMany(ChatToolCall::class, 'message_id');

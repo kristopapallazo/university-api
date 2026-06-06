@@ -19,6 +19,9 @@ use Illuminate\Support\Carbon;
  */
 class ChatUsageDaily extends Model
 {
+    // Eloquent would pluralize this to "chat_usage_dailies"; the table is singular.
+    protected $table = 'chat_usage_daily';
+
     public $timestamps = false;
 
     public $incrementing = false;
@@ -32,6 +35,9 @@ class ChatUsageDaily extends Model
         return ['day' => 'date'];
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

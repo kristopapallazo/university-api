@@ -30,11 +30,17 @@ class ChatConversation extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return HasMany<ChatMessage, $this>
+     */
     public function messages(): HasMany
     {
         return $this->hasMany(ChatMessage::class, 'conversation_id');
