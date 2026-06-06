@@ -17,6 +17,12 @@ tags:
     name: Departments
     description: ''
   -
+    name: 'Dija Chat'
+    description: ''
+  -
+    name: Endpoints
+    description: ''
+  -
     name: Faculties
     description: ''
   -
@@ -709,6 +715,442 @@ paths:
         required: true
         schema:
           type: string
+  /api/v1/chat/conversations:
+    get:
+      summary: 'List conversations'
+      operationId: listConversations
+      description: "Returns the authenticated user's Dija conversations, newest activity first."
+      parameters:
+        -
+          in: query
+          name: perPage
+          description: 'optional Items per page (max 100).'
+          example: 20
+          required: false
+          schema:
+            type: integer
+            description: 'optional Items per page (max 100).'
+            example: 20
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 1
+                      title: 'Pyetje për orarin'
+                      lastMsgAt: '2026-06-07T09:12:00+00:00'
+                      startedAt: '2026-06-07T09:10:00+00:00'
+                  pagination:
+                    current: 1
+                    pageSize: 20
+                    total: 1
+                  message: OK
+                  status: 200
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        title: 'Pyetje për orarin'
+                        lastMsgAt: '2026-06-07T09:12:00+00:00'
+                        startedAt: '2026-06-07T09:10:00+00:00'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        title:
+                          type: string
+                          example: 'Pyetje për orarin'
+                        lastMsgAt:
+                          type: string
+                          example: '2026-06-07T09:12:00+00:00'
+                        startedAt:
+                          type: string
+                          example: '2026-06-07T09:10:00+00:00'
+                  pagination:
+                    type: object
+                    properties:
+                      current:
+                        type: integer
+                        example: 1
+                      pageSize:
+                        type: integer
+                        example: 20
+                      total:
+                        type: integer
+                        example: 1
+                  message:
+                    type: string
+                    example: OK
+                  status:
+                    type: integer
+                    example: 200
+      tags:
+        - 'Dija Chat'
+    post:
+      summary: 'Start a conversation'
+      operationId: startAConversation
+      description: 'Creates a new empty conversation for the authenticated user and returns its ID.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                  message: 'Biseda u krijua me sukses.'
+                  status: 201
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                  message:
+                    type: string
+                    example: 'Biseda u krijua me sukses.'
+                  status:
+                    type: integer
+                    example: 201
+      tags:
+        - 'Dija Chat'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'optional Conversation title (max 200 chars).'
+                  example: '"Pyetje për orarin"'
+                  nullable: true
+  '/api/v1/chat/conversations/{id}':
+    get:
+      summary: 'Get conversation history'
+      operationId: getConversationHistory
+      description: "Returns the full message list for a conversation, oldest first. Each assistant\nmessage includes a `toolCalls` array (empty until tool calling ships in task 15)."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    conversation:
+                      id: 1
+                      title: 'Pyetje për orarin'
+                      startedAt: '2026-06-07T09:10:00+00:00'
+                    messages:
+                      -
+                        id: 1
+                        role: user
+                        content: 'Kur e kam orën tjetër?'
+                        tokenCount: 5
+                        createdAt: '2026-06-07T09:10:01+00:00'
+                        toolCalls: []
+                      -
+                        id: 2
+                        role: assistant
+                        content: '[Dija (fake)] Echo: Kur e kam orën tjetër?'
+                        tokenCount: 10
+                        createdAt: '2026-06-07T09:10:01+00:00'
+                        toolCalls: []
+                  message: OK
+                  status: 200
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      conversation:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          title:
+                            type: string
+                            example: 'Pyetje për orarin'
+                          startedAt:
+                            type: string
+                            example: '2026-06-07T09:10:00+00:00'
+                      messages:
+                        type: array
+                        example:
+                          -
+                            id: 1
+                            role: user
+                            content: 'Kur e kam orën tjetër?'
+                            tokenCount: 5
+                            createdAt: '2026-06-07T09:10:01+00:00'
+                            toolCalls: []
+                          -
+                            id: 2
+                            role: assistant
+                            content: '[Dija (fake)] Echo: Kur e kam orën tjetër?'
+                            tokenCount: 10
+                            createdAt: '2026-06-07T09:10:01+00:00'
+                            toolCalls: []
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            role:
+                              type: string
+                              example: user
+                            content:
+                              type: string
+                              example: 'Kur e kam orën tjetër?'
+                            tokenCount:
+                              type: integer
+                              example: 5
+                            createdAt:
+                              type: string
+                              example: '2026-06-07T09:10:01+00:00'
+                            toolCalls:
+                              type: array
+                              example: []
+                  message:
+                    type: string
+                    example: OK
+                  status:
+                    type: integer
+                    example: 200
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Not Found'
+                  status: 404
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Not Found'
+                  status:
+                    type: integer
+                    example: 404
+      tags:
+        - 'Dija Chat'
+    delete:
+      summary: 'Delete a conversation'
+      operationId: deleteAConversation
+      description: 'Deletes the conversation and cascades to all its messages and tool-call logs.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Biseda u fshi me sukses.'
+                  status: 200
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Biseda u fshi me sukses.'
+                  status:
+                    type: integer
+                    example: 200
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Not Found'
+                  status: 404
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Not Found'
+                  status:
+                    type: integer
+                    example: 404
+      tags:
+        - 'Dija Chat'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The conversation ID.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/chat/conversations/{id}/messages':
+    post:
+      summary: 'Send a message (SSE stream)'
+      operationId: sendAMessageSSEStream
+      description: "Posts a user message and streams the assistant reply back as Server-Sent Events\n(`Content-Type: text/event-stream`) — this endpoint does NOT return JSON. Each\nevent is a `data:` line with one of these payloads:\n\n    data: {\"type\":\"token\",\"content\":\"...\"}   ← one per streamed token\n    data: {\"type\":\"done\"}                      ← stream finished successfully\n    data: {\"type\":\"error\",\"message\":\"...\"}    ← quota exceeded or failure\n\nAfter the stream closes, the user + assistant messages are persisted and the\ncaller's daily token usage is incremented. In Phase 1 the assistant is the echo\nprovider; the real LLM arrives in task 14."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "data: {\"type\":\"token\",\"content\":\"[Dija \"}\n\ndata: {\"type\":\"done\"}"
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Not Found'
+                  status: 404
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Not Found'
+                  status:
+                    type: integer
+                    example: 404
+      tags:
+        - 'Dija Chat'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  description: "The user's message (max 4000 chars)."
+                  example: 'Kur e kam orën tjetër?'
+              required:
+                - content
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The conversation ID.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/chat/usage:
+    get:
+      summary: "Get today's usage"
+      operationId: getTodaysUsage
+      description: "Returns the authenticated user's token usage for the current day and the\nconfigured daily limit (used for quota enforcement)."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    tokensIn: 120
+                    tokensOut: 340
+                    messages: 6
+                    dailyLimit: 50000
+                  message: OK
+                  status: 200
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      tokensIn:
+                        type: integer
+                        example: 120
+                      tokensOut:
+                        type: integer
+                        example: 340
+                      messages:
+                        type: integer
+                        example: 6
+                      dailyLimit:
+                        type: integer
+                        example: 50000
+                  message:
+                    type: string
+                    example: OK
+                  status:
+                    type: integer
+                    example: 200
+      tags:
+        - 'Dija Chat'
+  /api/v1/notifications/stream:
+    get:
+      summary: ''
+      operationId: getApiV1NotificationsStream
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data: null
+                  message: 'Nuk jeni i autentikuar.'
+                  status: 401
+                properties:
+                  data:
+                    type: string
+                    example: null
+                    nullable: true
+                  message:
+                    type: string
+                    example: 'Nuk jeni i autentikuar.'
+                  status:
+                    type: integer
+                    example: 401
+      tags:
+        - Endpoints
   /api/v1/faculties:
     get:
       summary: 'List faculties'

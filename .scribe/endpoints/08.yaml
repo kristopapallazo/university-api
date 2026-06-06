@@ -1,0 +1,174 @@
+name: Pedagogues
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/pedagogues
+    metadata:
+      custom: []
+      groupName: Pedagogues
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List pedagogues'
+      description: 'Returns all pedagogues. Pass `department_id` to filter by department.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      departmentId:
+        custom: []
+        name: departmentId
+        description: 'optional Filter by department.'
+        required: false
+        example: 4
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      departmentId: 4
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [{"id": 1, "firstName": "Arben", "lastName": "Hoxha", "title": "Prof. Dr.", "email": "ahoxha@uamd.edu.al", "gender": "M", "departmentId": 4}],
+            "message": "Pedagog\u00ebt u mor\u00ebn me sukses.",
+            "status": 200
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/pedagogues/{id}'
+    metadata:
+      custom: []
+      groupName: Pedagogues
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get a pedagogue'
+      description: 'Returns a single pedagogue by their ID.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the pedagogue.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "firstName": "Arben", "lastName": "Hoxha", "title": "Prof. Dr.", "email": "ahoxha@uamd.edu.al", "gender": "M", "departmentId": 4}, "message": "Pedagogu u mor me sukses.", "status": 200}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"data": null, "message": "Rekordi nuk u gjet.", "status": 404}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/pedagog/sections
+    metadata:
+      custom: []
+      groupName: Pedagogues
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List pedagog sections'
+      description: |-
+        Returns the list of class sections (teaching slots) assigned to the authenticated pedagog,
+        ordered by day and start time. Each entry includes the course, classroom, and schedule info.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [{"id": 3, "courseId": 7, "course": "Bazat e Programimit", "day": "E Hene", "timeStart": "08:00:00", "timeEnd": "09:30:00", "roomId": 2}],
+            "message": "Seksionet u mor\u00ebn me sukses.",
+            "status": 200
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"data": null, "message": "Nuk u gjet profili i pedagogut.", "status": 404}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

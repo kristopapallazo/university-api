@@ -1,123 +1,18 @@
-name: Faculties
+name: Endpoints
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/faculties
+    uri: api/v1/notifications/stream
     metadata:
       custom: []
-      groupName: Faculties
+      groupName: Endpoints
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'List faculties'
-      description: 'Returns all 6 UAMD faculties ordered by ID.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": [{"id": 1, "name": "Fakulteti i Shkencave t\u00eb Biznesit"}, {"id": 2, "name": "Fakulteti i Shkencave Teknike"}],
-            "message": "Fakultetet u mor\u00ebn me sukses.",
-            "status": 200
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/faculties/{id}'
-    metadata:
-      custom: []
-      groupName: Faculties
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get a faculty'
-      description: 'Returns a single faculty by its ID.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the faculty.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: '{"data": {"id": 1, "name": "Fakulteti i Shkencave t\u00eb Biznesit"}, "message": "Fakulteti u mor me sukses.", "status": 200}'
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: '{"data": null, "message": "Not Found", "status": 404}'
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: api/v1/faculties
-    metadata:
-      custom: []
-      groupName: Faculties
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Create a faculty'
+      title: ''
       description: ''
       authenticated: true
       deprecated: false
@@ -135,116 +30,13 @@ endpoints:
     responses:
       -
         custom: []
-        status: 501
-        content: '{"data": null, "message": "Ende nuk është implementuar.", "status": 501}'
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - PUT
-    uri: 'api/v1/faculties/{id}'
-    metadata:
-      custom: []
-      groupName: Faculties
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Update a faculty'
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the faculty.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 501
-        content: '{"data": null, "message": "Ende nuk është implementuar.", "status": 501}'
-        headers: []
-        description: ''
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - DELETE
-    uri: 'api/v1/faculties/{id}'
-    metadata:
-      custom: []
-      groupName: Faculties
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Delete a faculty'
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {SANCTUM_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the faculty.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 501
-        content: '{"data": null, "message": "Ende nuk është implementuar.", "status": 501}'
-        headers: []
-        description: ''
+        status: 401
+        content: '{"data":null,"message":"Nuk jeni i autentikuar.","status":401}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          vary: Origin
+        description: null
     responseFields: []
     auth:
       - headers
