@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\FatureController as AdminFatureController;
 use App\Http\Controllers\Admin\NjoftimController as AdminNjoftimController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\AuthController;
@@ -99,6 +100,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/admin/students', [AdminStudentController::class, 'store']);
         Route::put('/admin/students/{id}', [AdminStudentController::class, 'update']);
         Route::delete('/admin/students/{id}', [AdminStudentController::class, 'destroy']);
+
+        // Invoices (admin CRUD)
+        Route::post('/admin/invoices', [AdminFatureController::class, 'store']);
+        Route::get('/admin/invoices', [AdminFatureController::class, 'index']);
+        Route::get('/admin/invoices/{id}', [AdminFatureController::class, 'show']);
+        Route::put('/admin/invoices/{id}', [AdminFatureController::class, 'update']);
+        Route::delete('/admin/invoices/{id}', [AdminFatureController::class, 'destroy']);
     });
 
     Route::get('/programs', [ProgramStudimController::class, 'index']);
