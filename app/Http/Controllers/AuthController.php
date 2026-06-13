@@ -17,8 +17,7 @@ class AuthController extends Controller
     /**
      * Login (pedagog / admin)
      *
-     * Returns a Sanctum token for pedagog and admin users.
-     * Students must use the Google OAuth flow instead.
+     * Returns a Sanctum token for any authenticated user.
      *
      * @group Authentication
      *
@@ -30,7 +29,6 @@ class AuthController extends Controller
      *   "status": 200
      * }
      * @response 401 scenario="Wrong credentials" {"data": null, "message": "Email ose fjal\u00ebkalimi i gab\u00fear.", "status": 401}
-     * @response 403 scenario="Student tried email login" {"data": null, "message": "Student\u00ebt hyjn\u00eb vet\u00ebm me Google OAuth.", "status": 403}
      */
     public function login(LoginRequest $request): JsonResponse
     {
@@ -39,12 +37,6 @@ class AuthController extends Controller
         }
 
         $user = Auth::guard('web')->user();
-
-        if ($user->role === 'student') {
-            Auth::guard('web')->logout();
-
-            return $this->error('Studentët hyjnë vetëm me Google OAuth.', 403);
-        }
 
         $token = $user->createToken('spa')->plainTextToken;
 
