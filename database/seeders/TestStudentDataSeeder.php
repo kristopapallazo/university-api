@@ -77,7 +77,6 @@ class TestStudentDataSeeder extends Seeder
     private function resolveFaculty(): Faculty
     {
         return Faculty::firstOrCreate(
-            ['FAK_EM' => 'Fakulteti i Shkencave të Natyrës'],
             ['FAK_EM' => 'Fakulteti i Shkencave të Natyrës']
         );
     }
@@ -85,7 +84,7 @@ class TestStudentDataSeeder extends Seeder
     private function resolveDepartment(Faculty $faculty): Department
     {
         return Department::firstOrCreate(
-            ['DEP_EM' => 'Departamenti i Informatikës', 'FAK_ID' => $faculty->FAK_ID],
+            ['DEP_EM' => 'Departamenti i Informatikës'],
             ['DEP_EM' => 'Departamenti i Informatikës', 'FAK_ID' => $faculty->FAK_ID]
         );
     }
@@ -93,7 +92,7 @@ class TestStudentDataSeeder extends Seeder
     private function resolveProgram(Department $department): ProgramStudim
     {
         return ProgramStudim::firstOrCreate(
-            ['PROG_EM' => 'Informatikë (Bachelor)', 'DEP_ID' => $department->DEP_ID],
+            ['PROG_EM' => 'Informatikë (Bachelor)'],
             [
                 'PROG_EM' => 'Informatikë (Bachelor)',
                 'PROG_NIV' => 'Bachelor',
