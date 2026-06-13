@@ -80,17 +80,21 @@ interface ChatProvider
      * Stream a reply to a conversation turn.
      *
      * @param  array  $messages  [['role' => 'user'|'assistant', 'content' => string], ...]
+     * @param  array  $tools     tool schemas exposed to the LLM (empty until task 15)
      * @param  callable(string $token): void  $onToken   called for each streamed token
      * @param  callable(string $name, array $input): array  $onToolCall  called when LLM requests a tool
      * @return ChatResult  final token counts once stream is complete
      */
     public function stream(
         array $messages,
+        array $tools,
         callable $onToken,
         callable $onToolCall,
     ): ChatResult;
 }
 ```
+
+> **Why `$tools` now, even though it's unused in Phase 1:** the master plan (§6.1) defines the provider as `stream(messages, tools, onToken, onToolCall)`. Including the parameter from the start keeps the interface — and `FakeChatProvider` + `ChatService` — stable when task 15 wires real tools, instead of forcing a coordinated three-file signature change mid-feature.
 
 ---
 
@@ -109,9 +113,11 @@ class FakeChatProvider implements ChatProvider
 {
     public function stream(
         array $messages,
+        array $tools,
         callable $onToken,
         callable $onToolCall,
     ): ChatResult {
+        // $tools is ignored in Phase 1 — the fake never calls a tool.
         $lastUserContent = '';
         foreach (array_reverse($messages) as $msg) {
             if ($msg['role'] === 'user') {
@@ -169,19 +175,22 @@ class ChatService
         string $userContent,
         callable $onToken,
     ): void {
-        // Build message history for the LLM
+        // Build message history for the LLM.
+        // Order by `id`, not `created_at`: two messages in the same turn can share a
+        // second-granularity timestamp, but the auto-increment id is always monotonic.
         $history = $conversation->messages()
-            ->orderBy('created_at')
+            ->orderBy('id')
             ->get()
             ->map(fn ($m) => ['role' => $m->role, 'content' => $m->content])
             ->toArray();
 
         $history[] = ['role' => 'user', 'content' => $userContent];
 
-        // Stream from provider
+        // Stream from provider ($tools is empty until task 15)
         $fullReply = '';
         $result = $this->provider->stream(
             messages: $history,
+            tools: [],
             onToken: function (string $token) use (&$fullReply, $onToken) {
                 $fullReply .= $token;
                 $onToken($token);
@@ -191,7 +200,10 @@ class ChatService
 
         // Persist both messages and update quota — all in one transaction
         DB::transaction(function () use ($conversation, $userContent, $fullReply, $result, $user) {
-            $userMsg = ChatMessage::create([
+            // Insert user first, then assistant. Ordering is guaranteed by the
+            // auto-increment id (see the history query above), so both rows can
+            // safely share the same created_at — no addSecond() hack needed.
+            ChatMessage::create([
                 'conversation_id' => $conversation->id,
                 'role'            => 'user',
                 'content'         => $userContent,
@@ -204,24 +216,44 @@ class ChatService
                 'role'            => 'assistant',
                 'content'         => $fullReply,
                 'token_count'     => $result->outputTokens,
-                'created_at'      => now()->addSecond(),
+                'created_at'      => now(),
             ]);
 
             $conversation->update(['last_msg_at' => now()]);
 
-            // Upsert daily usage — increment atomically
-            ChatUsageDaily::upsert(
-                [
-                    'user_id'    => $user->id,
-                    'day'        => now()->toDateString(),
-                    'tokens_in'  => $result->inputTokens,
-                    'tokens_out' => $result->outputTokens,
-                    'messages'   => 1,
-                ],
-                uniqueBy: ['user_id', 'day'],
-                update:   ['tokens_in', 'tokens_out', 'messages'],
-            );
+            $this->accumulateUsage($user, $result->inputTokens, $result->outputTokens);
         });
+    }
+
+    /**
+     * Add this turn's tokens to the user's daily row. Must *increment*, not overwrite —
+     * Eloquent's upsert() would replace the totals and the quota would never trip.
+     * Done as a portable update-then-insert (works on SQLite locally and MySQL in prod)
+     * rather than a MySQL-only INSERT ... ON DUPLICATE KEY UPDATE. Runs inside the
+     * caller's transaction; token counts are ints, so the raw arithmetic is injection-safe.
+     */
+    private function accumulateUsage(User $user, int $tokensIn, int $tokensOut): void
+    {
+        $today = now()->toDateString();
+
+        $updated = DB::table('chat_usage_daily')
+            ->where('user_id', $user->id)
+            ->where('day', $today)
+            ->update([
+                'tokens_in'  => DB::raw('tokens_in + ' . (int) $tokensIn),
+                'tokens_out' => DB::raw('tokens_out + ' . (int) $tokensOut),
+                'messages'   => DB::raw('messages + 1'),
+            ]);
+
+        if ($updated === 0) {
+            DB::table('chat_usage_daily')->insert([
+                'user_id'    => $user->id,
+                'day'        => $today,
+                'tokens_in'  => $tokensIn,
+                'tokens_out' => $tokensOut,
+                'messages'   => 1,
+            ]);
+        }
     }
 
     /** Check if today's quota is exceeded. */
@@ -310,7 +342,7 @@ class ChatController extends Controller
             ->findOrFail($id);
 
         $messages = $conversation->messages()
-            ->orderBy('created_at')
+            ->orderBy('id')
             ->get()
             ->map(fn ($m) => [
                 'id'         => $m->id,
@@ -367,11 +399,21 @@ class ChatController extends Controller
 
         if ($this->service->isOverQuota($request->user())) {
             return response()->stream(function () {
+                if (ob_get_level()) {
+                    ob_end_clean();
+                }
                 $this->sseEvent(['type' => 'error', 'message' => 'Keni arritur limitin ditor. Provoni nesër.']);
             }, 200, $this->sseHeaders());
         }
 
         return response()->stream(function () use ($conversation, $request, $data) {
+            // Drop any active output buffer once, so events reach the client
+            // immediately and sseEvent() never calls ob_flush() without a buffer.
+            // Mirrors NotificationStreamController::stream().
+            if (ob_get_level()) {
+                ob_end_clean();
+            }
+
             $this->service->sendMessage(
                 conversation: $conversation,
                 user: $request->user(),
@@ -413,7 +455,11 @@ class ChatController extends Controller
     private function sseEvent(array $payload): void
     {
         echo 'data: ' . json_encode($payload) . "\n\n";
-        ob_flush();
+        // Only ob_flush() if a buffer is actually open — the stream callback calls
+        // ob_end_clean() up front, so normally there is none. flush() pushes to the client.
+        if (ob_get_level()) {
+            ob_flush();
+        }
         flush();
     }
 }
@@ -464,11 +510,13 @@ Route::prefix('chat')->group(function () {
 
 After `make dev`:
 
+> **Note on the login user:** the chat routes are only `auth:sanctum` (no role gate yet), and **students are Google-OAuth-only — they have no password**, so the email-login endpoint won't work for them. Smoke-test with a password-capable account such as `test.admin@uamd.edu.al` / `Testtest1!`. The token is at `.data.token`.
+
 ```bash
 # 1. Login and grab token
 TOKEN=$(curl -s -X POST http://localhost:8000/api/v1/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"test.student@students.uamd.edu.al","password":"password"}' \
+  -d '{"email":"test.admin@uamd.edu.al","password":"Testtest1!"}' \
   | jq -r '.data.token')
 
 # 2. Create a conversation
@@ -502,5 +550,7 @@ curl -s http://localhost:8000/api/v1/chat/conversations/$CONV_ID \
 - [ ] `POST /api/v1/chat/conversations/{id}/messages` returns an SSE stream with `token` events and a final `done` event
 - [ ] Two `chat_messages` rows are written to the DB after a message is sent (user + assistant)
 - [ ] `GET /api/v1/chat/usage` returns `{ tokensIn, tokensOut, messages, dailyLimit }`
+- [ ] **Usage accumulates:** sending two messages in the same day leaves `messages = 2` and token totals summed (not reset to the last turn) — guards against the upsert-overwrite bug
+- [ ] Messages come back in send order even when a user+assistant pair share the same `created_at` second (ordering is by `id`)
 - [ ] A user cannot access another user's conversation (returns 404)
 - [ ] `make ci` passes
