@@ -17,8 +17,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $PROG_ID
  * @property int $SEM_ID
  * @property int $SALL_ID
- * @property-read Lenda $lenda
- * @property-read Pedagog $pedagog
+ * @property-read Lenda|null $lenda
+ * @property-read Pedagog|null $pedagog
+ * @property-read Semestr|null $semester
+ * @property-read Auditor|null $sala
+ * @property-read ProgramStudim|null $program
  */
 class Seksion extends Model
 {

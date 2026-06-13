@@ -141,6 +141,7 @@ endpoints:
     cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
+<<<<<<< HEAD
     bodyParameters:
       name:
         custom: []
@@ -179,12 +180,21 @@ endpoints:
       name: b
       facultyId: 16
       headId: 16
+=======
+    bodyParameters: []
+    cleanBodyParameters: []
+>>>>>>> kristo/chat-db
     fileParameters: []
     responses:
       -
         custom: []
+<<<<<<< HEAD
         status: 201
         content: '{"data": {"id": 10, "name": "Departamenti i Ri", "facultyId": 2}, "message": "Departamenti u krijua me sukses.", "status": 201}'
+=======
+        status: 501
+        content: '{"data": null, "message": "Ende nuk është implementuar.", "status": 501}'
+>>>>>>> kristo/chat-db
         headers: []
         description: ''
     responseFields: []
@@ -230,6 +240,7 @@ endpoints:
       id: architecto
     queryParameters: []
     cleanQueryParameters: []
+<<<<<<< HEAD
     bodyParameters:
       name:
         custom: []
@@ -268,12 +279,21 @@ endpoints:
       name: b
       facultyId: 16
       headId: 16
+=======
+    bodyParameters: []
+    cleanBodyParameters: []
+>>>>>>> kristo/chat-db
     fileParameters: []
     responses:
       -
         custom: []
+<<<<<<< HEAD
         status: 200
         content: '{"data": {"id": 4, "name": "Emër i ri", "facultyId": 2}, "message": "Departamenti u përditësua me sukses.", "status": 200}'
+=======
+        status: 501
+        content: '{"data": null, "message": "Ende nuk është implementuar.", "status": 501}'
+>>>>>>> kristo/chat-db
         headers: []
         description: ''
     responseFields: []
@@ -325,8 +345,13 @@ endpoints:
     responses:
       -
         custom: []
+<<<<<<< HEAD
         status: 200
         content: '{"data": null, "message": "Departamenti u fshi me sukses.", "status": 200}'
+=======
+        status: 501
+        content: '{"data": null, "message": "Ende nuk është implementuar.", "status": 501}'
+>>>>>>> kristo/chat-db
         headers: []
         description: ''
     responseFields: []

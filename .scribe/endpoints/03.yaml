@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 name: Endpoints
+=======
+name: 'Dija Chat'
+>>>>>>> kristo/chat-db
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
+<<<<<<< HEAD
     uri: api/v1/notifications/stream
     metadata:
       custom: []
@@ -14,6 +19,347 @@ endpoints:
       subgroupDescription: ''
       title: ''
       description: ''
+=======
+    uri: api/v1/chat/conversations
+    metadata:
+      custom: []
+      groupName: 'Dija Chat'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List conversations'
+      description: "Returns the authenticated user's Dija conversations, newest activity first."
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      perPage:
+        custom: []
+        name: perPage
+        description: 'optional Items per page (max 100).'
+        required: false
+        example: 20
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      perPage: 20
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [{"id": 1, "title": "Pyetje për orarin", "lastMsgAt": "2026-06-07T09:12:00+00:00", "startedAt": "2026-06-07T09:10:00+00:00"}],
+            "pagination": {"current": 1, "pageSize": 20, "total": 1},
+            "message": "OK",
+            "status": 200
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/chat/conversations
+    metadata:
+      custom: []
+      groupName: 'Dija Chat'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Start a conversation'
+      description: 'Creates a new empty conversation for the authenticated user and returns its ID.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        custom: []
+        name: title
+        description: 'optional Conversation title (max 200 chars).'
+        required: false
+        example: '"Pyetje për orarin"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      title: '"Pyetje për orarin"'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: '{"data": {"id": 1}, "message": "Biseda u krijua me sukses.", "status": 201}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/chat/conversations/{id}'
+    metadata:
+      custom: []
+      groupName: 'Dija Chat'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get conversation history'
+      description: |-
+        Returns the full message list for a conversation, oldest first. Each assistant
+        message includes a `toolCalls` array (empty until tool calling ships in task 15).
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The conversation ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "conversation": {"id": 1, "title": "Pyetje për orarin", "startedAt": "2026-06-07T09:10:00+00:00"},
+              "messages": [
+                {"id": 1, "role": "user", "content": "Kur e kam orën tjetër?", "tokenCount": 5, "createdAt": "2026-06-07T09:10:01+00:00", "toolCalls": []},
+                {"id": 2, "role": "assistant", "content": "[Dija (fake)] Echo: Kur e kam orën tjetër?", "tokenCount": 10, "createdAt": "2026-06-07T09:10:01+00:00", "toolCalls": []}
+              ]
+            },
+            "message": "OK",
+            "status": 200
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"data": null, "message": "Not Found", "status": 404}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/chat/conversations/{id}'
+    metadata:
+      custom: []
+      groupName: 'Dija Chat'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete a conversation'
+      description: 'Deletes the conversation and cascades to all its messages and tool-call logs.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The conversation ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": null, "message": "Biseda u fshi me sukses.", "status": 200}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"data": null, "message": "Not Found", "status": 404}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/v1/chat/conversations/{id}/messages'
+    metadata:
+      custom: []
+      groupName: 'Dija Chat'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Send a message (SSE stream)'
+      description: |-
+        Posts a user message and streams the assistant reply back as Server-Sent Events
+        (`Content-Type: text/event-stream`) — this endpoint does NOT return JSON. Each
+        event is a `data:` line with one of these payloads:
+
+            data: {"type":"token","content":"..."}   ← one per streamed token
+            data: {"type":"done"}                      ← stream finished successfully
+            data: {"type":"error","message":"..."}    ← quota exceeded or failure
+
+        After the stream closes, the user + assistant messages are persisted and the
+        caller's daily token usage is incremented. In Phase 1 the assistant is the echo
+        provider; the real LLM arrives in task 14.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {SANCTUM_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The conversation ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      content:
+        custom: []
+        name: content
+        description: "The user's message (max 4000 chars)."
+        required: true
+        example: 'Kur e kam orën tjetër?'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      content: 'Kur e kam orën tjetër?'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          data: {"type":"token","content":"[Dija "}
+
+          data: {"type":"done"}
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"data": null, "message": "Not Found", "status": 404}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/chat/usage
+    metadata:
+      custom: []
+      groupName: 'Dija Chat'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: "Get today's usage"
+      description: |-
+        Returns the authenticated user's token usage for the current day and the
+        configured daily limit (used for quota enforcement).
+>>>>>>> kristo/chat-db
       authenticated: true
       deprecated: false
     headers:
@@ -30,6 +376,7 @@ endpoints:
     responses:
       -
         custom: []
+<<<<<<< HEAD
         status: 401
         content: '{"data":null,"message":"Nuk jeni i autentikuar.","status":401}'
         headers:
@@ -37,6 +384,12 @@ endpoints:
           content-type: application/json
           vary: Origin
         description: null
+=======
+        status: 200
+        content: '{"data": {"tokensIn": 120, "tokensOut": 340, "messages": 6, "dailyLimit": 50000}, "message": "OK", "status": 200}'
+        headers: []
+        description: ''
+>>>>>>> kristo/chat-db
     responseFields: []
     auth:
       - headers

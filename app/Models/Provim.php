@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,9 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property int $PROV_ID
  * @property string $TIP_EMER
- * @property string $DAT_PROVIM
+ * @property Carbon $DAT_PROVIM
  * @property int $SEK_ID
- * @property-read Seksion $seksion
+ * @property-read Seksion|null $seksion
  */
 class Provim extends Model
 {

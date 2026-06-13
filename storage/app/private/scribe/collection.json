@@ -10,7 +10,11 @@
     ],
     "info": {
         "name": "UAMD Portal API",
+<<<<<<< HEAD
         "_postman_id": "40eb761b-7684-4abb-b2e2-b7151770f91d",
+=======
+        "_postman_id": "208e3ab5-aa8b-4d59-91e1-4d9b80ba2676",
+>>>>>>> kristo/chat-db
         "description": "REST API p\u00ebr Portalin e Universitetit Aleksander Moisiu Durr\u00ebs (UAMD). T\u00eb gjitha endpoint-et jan\u00eb t\u00eb prefixuara me \/api\/v1\/.",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -726,6 +730,310 @@
                             "header": [],
                             "code": 200,
                             "body": "{\"data\": null, \"message\": \"Departamenti u fshi me sukses.\", \"status\": 200}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Endpoints",
+            "description": "",
+            "item": [
+                {
+                    "name": "GET api\/v1\/notifications\/stream",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/notifications\/stream",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/notifications\/stream"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "vary",
+                                    "value": "Origin"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"data\":null,\"message\":\"Nuk jeni i autentikuar.\",\"status\":401}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Dija Chat",
+            "description": "",
+            "item": [
+                {
+                    "name": "List conversations",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/chat\/conversations",
+                            "query": [
+                                {
+                                    "key": "perPage",
+                                    "value": "20",
+                                    "description": "optional Items per page (max 100).",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/chat\/conversations?perPage=20"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the authenticated user's Dija conversations, newest activity first."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": [{\"id\": 1, \"title\": \"Pyetje p\u00ebr orarin\", \"lastMsgAt\": \"2026-06-07T09:12:00+00:00\", \"startedAt\": \"2026-06-07T09:10:00+00:00\"}],\n  \"pagination\": {\"current\": 1, \"pageSize\": 20, \"total\": 1},\n  \"message\": \"OK\",\n  \"status\": 200\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Start a conversation",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/chat\/conversations",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/chat\/conversations"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"\\\"Pyetje p\u00ebr orarin\\\"\"}"
+                        },
+                        "description": "Creates a new empty conversation for the authenticated user and returns its ID."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"data\": {\"id\": 1}, \"message\": \"Biseda u krijua me sukses.\", \"status\": 201}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get conversation history",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/chat\/conversations\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/chat\/conversations\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The conversation ID."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the full message list for a conversation, oldest first. Each assistant\nmessage includes a `toolCalls` array (empty until tool calling ships in task 15)."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"data\": {\n    \"conversation\": {\"id\": 1, \"title\": \"Pyetje p\u00ebr orarin\", \"startedAt\": \"2026-06-07T09:10:00+00:00\"},\n    \"messages\": [\n      {\"id\": 1, \"role\": \"user\", \"content\": \"Kur e kam or\u00ebn tjet\u00ebr?\", \"tokenCount\": 5, \"createdAt\": \"2026-06-07T09:10:01+00:00\", \"toolCalls\": []},\n      {\"id\": 2, \"role\": \"assistant\", \"content\": \"[Dija (fake)] Echo: Kur e kam or\u00ebn tjet\u00ebr?\", \"tokenCount\": 10, \"createdAt\": \"2026-06-07T09:10:01+00:00\", \"toolCalls\": []}\n    ]\n  },\n  \"message\": \"OK\",\n  \"status\": 200\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"data\": null, \"message\": \"Not Found\", \"status\": 404}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete a conversation",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/chat\/conversations\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/chat\/conversations\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The conversation ID."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Deletes the conversation and cascades to all its messages and tool-call logs."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": null, \"message\": \"Biseda u fshi me sukses.\", \"status\": 200}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"data\": null, \"message\": \"Not Found\", \"status\": 404}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Send a message (SSE stream)",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/chat\/conversations\/:id\/messages",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/chat\/conversations\/:id\/messages",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The conversation ID."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"content\":\"Kur e kam or\u00ebn tjet\u00ebr?\"}"
+                        },
+                        "description": "Posts a user message and streams the assistant reply back as Server-Sent Events\n(`Content-Type: text\/event-stream`) \u2014 this endpoint does NOT return JSON. Each\nevent is a `data:` line with one of these payloads:\n\n    data: {\"type\":\"token\",\"content\":\"...\"}   \u2190 one per streamed token\n    data: {\"type\":\"done\"}                      \u2190 stream finished successfully\n    data: {\"type\":\"error\",\"message\":\"...\"}    \u2190 quota exceeded or failure\n\nAfter the stream closes, the user + assistant messages are persisted and the\ncaller's daily token usage is incremented. In Phase 1 the assistant is the echo\nprovider; the real LLM arrives in task 14."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "data: {\"type\":\"token\",\"content\":\"[Dija \"}\n\ndata: {\"type\":\"done\"}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"data\": null, \"message\": \"Not Found\", \"status\": 404}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get today's usage",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/chat\/usage",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/chat\/usage"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the authenticated user's token usage for the current day and the\nconfigured daily limit (used for quota enforcement)."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": {\"tokensIn\": 120, \"tokensOut\": 340, \"messages\": 6, \"dailyLimit\": 50000}, \"message\": \"OK\", \"status\": 200}",
                             "name": ""
                         }
                     ]

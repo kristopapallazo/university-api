@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 name: Notifications
+=======
+name: Endpoints
+>>>>>>> kristo/chat-db
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
+<<<<<<< HEAD
     uri: api/v1/notifications
     metadata:
       custom: []
@@ -60,6 +65,17 @@ endpoints:
       subgroupDescription: ''
       title: 'Unread notification count'
       description: 'Returns the count of unread notifications for the authenticated user.'
+=======
+    uri: api/v1/notifications/stream
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+>>>>>>> kristo/chat-db
       authenticated: true
       deprecated: false
     headers:
@@ -76,6 +92,7 @@ endpoints:
     responses:
       -
         custom: []
+<<<<<<< HEAD
         status: 200
         content: '{"data": {"count": 3}, "message": "OK", "status": 200}'
         headers: []
@@ -290,6 +307,15 @@ endpoints:
         content: '{"message": "The given data was invalid.", "errors": {}}'
         headers: []
         description: ''
+=======
+        status: 401
+        content: '{"data":null,"message":"Nuk jeni i autentikuar.","status":401}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          vary: Origin
+        description: null
+>>>>>>> kristo/chat-db
     responseFields: []
     auth:
       - headers

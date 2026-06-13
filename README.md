@@ -139,9 +139,11 @@ Të gjitha route-et janë nën `/api/v1/`. I gjen tek [routes/api.php](routes/ap
 | GET    | `/api/v1/faculties`       | Lista e fakulteteve                |
 | GET    | `/api/v1/faculties/{id}`  | Një fakultet i vetëm               |
 | GET    | `/api/v1/departments`     | Lista e departamenteve             |
-| GET    | `/api/v1/departments/{id}`| Një departament i vetëm            |
+| GET    | `/api/v1/departmeNëse diçka duket çuditshëm pas pull-it (ndryshime që nuk shfaqen, gabime "class not found"):
+nts/{id}`| Një departament i vetëm            |
 
 > **Nuk ka endpoint publik `/register`** — është hequr me qëllim. Studentët regjistrohen automatikisht nëpërmjet Google OAuth callback-ut. Pedagogët krijohen nga admin. Admin-i seedohet manualisht (shih `database/seeders/AdminSeeder.php`).
+`Nëse diçka duket çuditshëm pas pull-it (ndryshime që nuk shfaqen, gabime "class not found"):
 
 Për shemat e plota request/response shih Scribe te `http://localhost:8000/docs` (pas `make docs`).
 
@@ -173,11 +175,13 @@ Roli ruhet në kolonën `users.role`. **Mos prano kurrë `role` nga klienti** �
 
 **Mos kthe kurrë modele Eloquent direkt.** Gjithmonë kalo nëpër një API Resource në `app/Http/Resources/`.
 
----
+---Nëse diçka duket çuditshëm pas pull-it (ndryshime që nuk shfaqen, gabime "class not found"):
+
 
 ## Konvencionet (të detyrueshme)
 
-- **Validimi** jeton në klasa `FormRequest` nën `app/Http/Requests/`. Asnjë `$request->validate()` brenda kontrollerave.
+- **Validimi** jeton në klasa `FormRequest` nën `app/Http/Requests/`. Asnjë `$request->validatNëse diçka duket çuditshëm pas pull-it (ndryshime që nuk shfaqen, gabime "class not found"):
+e()` brenda kontrollerave.
 - **Transformimi** jeton në API Resources nën `app/Http/Resources/`.
 - Route-et grupohen sipas auth state-it në `routes/api.php`. Prefiksi `/api/v1/` është caktuar globalisht në `bootstrap/app.php`.
 - Rolet ruhen tek `users.role` (`student` | `pedagog` | `admin`).

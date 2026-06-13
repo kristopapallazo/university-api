@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property int $NOTA_ID
  * @property float $NOTA_VLERA
- * @property string $NOTA_DAT
+ * @property Carbon $NOTA_DAT
  * @property int $STU_ID
  * @property int $PROV_ID
  * @property-read Provim $provim

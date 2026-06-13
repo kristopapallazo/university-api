@@ -4,7 +4,11 @@ endpoints:
   -
     custom: []
     httpMethods:
+<<<<<<< HEAD
       - POST
+=======
+      - GET
+>>>>>>> kristo/chat-db
     uri: api/v1/programs
     metadata:
       custom: []
@@ -12,6 +16,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
+<<<<<<< HEAD
       title: 'Create a study program'
       description: ''
       authenticated: true
@@ -261,6 +266,8 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
+=======
+>>>>>>> kristo/chat-db
       title: 'List study programs'
       description: 'Returns all study programs. Pass `department_id` to filter by department.'
       authenticated: true

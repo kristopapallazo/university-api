@@ -44,4 +44,14 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+    'anthropic' => [
+        'key' => env('ANTHROPIC_API_KEY'),
+        'model' => env('CHATBOT_MODEL', 'claude-haiku-4-5-20251001'),
+        'daily_token_limit' => (int) env('CHATBOT_DAILY_TOKEN_LIMIT', 50000),
+    ],
+
+    'voyage' => [
+        'key' => env('VOYAGE_API_KEY'),
+    ],
+
 ];

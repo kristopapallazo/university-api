@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 name: Students
+=======
+name: Reports
+>>>>>>> kristo/chat-db
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
+<<<<<<< HEAD
     uri: api/v1/admin/students
     metadata:
       custom: []
@@ -14,6 +19,17 @@ endpoints:
       subgroupDescription: ''
       title: 'List students'
       description: 'Returns paginated students with optional status filter and sorting.'
+=======
+    uri: api/v1/student/grades
+    metadata:
+      custom: []
+      groupName: Reports
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List my grades'
+      description: 'Returns all grades for the authenticated student, sorted by date desc.'
+>>>>>>> kristo/chat-db
       authenticated: true
       deprecated: false
     headers:
@@ -22,6 +38,7 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
+<<<<<<< HEAD
     queryParameters:
       perPage:
         custom: []
@@ -60,6 +77,10 @@ endpoints:
       perPage: 20
       status: Aktiv
       sort: STU_MB
+=======
+    queryParameters: []
+    cleanQueryParameters: []
+>>>>>>> kristo/chat-db
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -69,9 +90,14 @@ endpoints:
         status: 200
         content: |-
           {
+<<<<<<< HEAD
             "data": [{"id": 1, "firstName": "Arta", "lastName": "Hoxha", "email": "ahoxha@students.uamd.edu.al", "status": "Aktiv"}],
             "meta": {"currentPage": 1, "perPage": 15, "total": 1, "lastPage": 1},
             "message": "OK",
+=======
+            "data": [{"gradeId": 1, "value": 8.5, "date": "2026-01-15", "examType": "Final", "examDate": "2026-01-14", "course": "Bazat e Programimit"}],
+            "message": "Notat u mor\u00ebn me sukses.",
+>>>>>>> kristo/chat-db
             "status": 200
           }
         headers: []
@@ -88,6 +114,7 @@ endpoints:
     custom: []
     httpMethods:
       - GET
+<<<<<<< HEAD
     uri: 'api/v1/admin/students/{id}'
     metadata:
       custom: []
@@ -158,6 +185,17 @@ endpoints:
       description: |-
         Creates a STUDENT row and a users (auth) row in a single transaction.
         Students authenticate via Google OAuth — no password is set.
+=======
+    uri: api/v1/student/invoices
+    metadata:
+      custom: []
+      groupName: Reports
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List my invoices'
+      description: 'Returns all invoices for the authenticated student, sorted by issue date desc.'
+>>>>>>> kristo/chat-db
       authenticated: true
       deprecated: false
     headers:
@@ -168,6 +206,7 @@ endpoints:
     cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
+<<<<<<< HEAD
     bodyParameters:
       firstName:
         custom: []
@@ -453,11 +492,16 @@ endpoints:
       phone: zmiyvdljnikhwayk
       status: Aktiv
       dormRoomId: 16
+=======
+    bodyParameters: []
+    cleanBodyParameters: []
+>>>>>>> kristo/chat-db
     fileParameters: []
     responses:
       -
         custom: []
         status: 200
+<<<<<<< HEAD
         content: '{"data": {"id": 1, "firstName": "Arta", "lastName": "Hoxha", "status": "Aktiv"}, "message": "Studenti u përditësua me sukses.", "status": 200}'
         headers: []
         description: ''
@@ -465,6 +509,14 @@ endpoints:
         custom: []
         status: 404
         content: '{"data": null, "message": "Not Found", "status": 404}'
+=======
+        content: |-
+          {
+            "data": [{"invoiceId": 3, "amount": 25000.0, "status": "E papaguar", "issuedDate": "2026-09-01", "description": "Tarif\u00eb vjetore 2025-2026"}],
+            "message": "Faturat u mor\u00ebn me sukses.",
+            "status": 200
+          }
+>>>>>>> kristo/chat-db
         headers: []
         description: ''
     responseFields: []
@@ -478,6 +530,7 @@ endpoints:
   -
     custom: []
     httpMethods:
+<<<<<<< HEAD
       - DELETE
     uri: 'api/v1/admin/students/{id}'
     metadata:
@@ -490,6 +543,20 @@ endpoints:
       description: |-
         Sets STU_STATUS to "Ç'regjistruar". Does not hard-delete because the
         student may have linked grades, invoices, or registrations (FK constraints).
+=======
+      - GET
+    uri: 'api/v1/pedagog/sections/{sectionId}/grades'
+    metadata:
+      custom: []
+      groupName: Reports
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List grades for a section'
+      description: |-
+        Returns grades for all students in the given section. The authenticated
+        pedagog must teach that section — otherwise 403 is returned.
+>>>>>>> kristo/chat-db
       authenticated: true
       deprecated: false
     headers:
@@ -497,6 +564,7 @@ endpoints:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
+<<<<<<< HEAD
       id:
         custom: []
         name: id
@@ -510,6 +578,21 @@ endpoints:
         deprecated: false
     cleanUrlParameters:
       id: architecto
+=======
+      sectionId:
+        custom: []
+        name: sectionId
+        description: 'The section ID.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      sectionId: 5
+>>>>>>> kristo/chat-db
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -519,13 +602,32 @@ endpoints:
       -
         custom: []
         status: 200
+<<<<<<< HEAD
         content: '{"data": null, "message": "Studenti u çregjistrua me sukses.", "status": 200}'
+=======
+        content: |-
+          {
+            "data": [{"gradeId": 1, "value": 9.0, "date": "2026-01-15", "examType": "Final", "student": {"id": 12, "firstName": "Arta", "lastName": "Hoxha", "matriculationNumber": "2021001234"}}],
+            "message": "Notat u mor\u00ebn me sukses.",
+            "status": 200
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 403
+        content: '{"data": null, "message": "Nuk keni leje p\u00ebr k\u00ebt\u00eb seksion.", "status": 403}'
+>>>>>>> kristo/chat-db
         headers: []
         description: ''
       -
         custom: []
         status: 404
+<<<<<<< HEAD
         content: '{"data": null, "message": "Not Found", "status": 404}'
+=======
+        content: '{"data": null, "message": "Seksioni nuk u gjet.", "status": 404}'
+>>>>>>> kristo/chat-db
         headers: []
         description: ''
     responseFields: []
