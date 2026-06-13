@@ -4,13 +4,17 @@ namespace App\Services\Chat;
 
 use App\Models\ChatConversation;
 use App\Models\ChatMessage;
+use App\Models\ChatToolCall;
 use App\Models\ChatUsageDaily;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class ChatService
 {
-    public function __construct(private readonly ChatProvider $provider) {}
+    public function __construct(
+        private readonly ChatProvider $provider,
+        private readonly ToolDispatcher $dispatcher,
+    ) {}
 
     /**
      * Stream one turn. Calls $onToken for each assistant token.
@@ -33,23 +37,35 @@ class ChatService
 
         $history[] = ['role' => 'user', 'content' => $userContent];
 
-        // Stream from provider ($tools is empty until task 15).
+        // Stream from provider. Collect tool calls for logging after persist.
         $fullReply = '';
+        $toolCallLog = [];
+
         $result = $this->provider->stream(
             messages: $history,
-            tools: [],
+            tools: $this->dispatcher->schemas(),
             onToken: function (string $token) use (&$fullReply, $onToken) {
                 $fullReply .= $token;
                 $onToken($token);
             },
-            onToolCall: fn (string $name, array $input) => [], // tools in task 15
+            onToolCall: function (string $name, array $input) use ($user, &$toolCallLog) {
+                $start = microtime(true);
+                $output = $this->dispatcher->dispatch($name, $input, $user);
+                $toolCallLog[] = [
+                    'tool_name' => $name,
+                    'input_json' => $input,
+                    'output_json' => $output,
+                    'duration_ms' => (int) ((microtime(true) - $start) * 1000),
+                    'status' => isset($output['error']) ? 'error' : 'success',
+                    'created_at' => now(),
+                ];
+
+                return $output;
+            },
         );
 
-        // Persist both messages and update quota — all in one transaction.
-        DB::transaction(function () use ($conversation, $userContent, $fullReply, $result, $user) {
-            // Insert user first, then assistant. Ordering is guaranteed by the
-            // auto-increment id (see the history query above), so both rows can
-            // safely share the same created_at — no addSecond() hack needed.
+        // Persist messages, tool call logs, and quota — all in one transaction.
+        DB::transaction(function () use ($conversation, $userContent, $fullReply, $result, $user, $toolCallLog) {
             ChatMessage::create([
                 'conversation_id' => $conversation->id,
                 'role' => 'user',
@@ -58,13 +74,17 @@ class ChatService
                 'created_at' => now(),
             ]);
 
-            ChatMessage::create([
+            $assistantMsg = ChatMessage::create([
                 'conversation_id' => $conversation->id,
                 'role' => 'assistant',
                 'content' => $fullReply,
                 'token_count' => $result->outputTokens,
                 'created_at' => now(),
             ]);
+
+            foreach ($toolCallLog as $tc) {
+                ChatToolCall::create(['message_id' => $assistantMsg->id, ...$tc]);
+            }
 
             $conversation->update(['last_msg_at' => now()]);
 

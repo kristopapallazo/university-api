@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @property int $SALL_ID
+ * @property string|null $AUD_Y
+ * @property string|null $AUD_TIP
+ * @property-read Salle|null $salle
+ */
 class Auditor extends Model
 {
     protected $table = 'AUDITOR';

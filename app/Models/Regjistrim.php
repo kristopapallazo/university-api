@@ -5,6 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $REGJ_ID
+ * @property int $STU_ID
+ * @property int $SEK_ID
+ * @property string $REGJ_STATUS
+ * @property-read Seksion|null $seksion
+ * @property-read Student|null $student
+ */
 class Regjistrim extends Model
 {
     protected $table = 'REGJISTRIM';

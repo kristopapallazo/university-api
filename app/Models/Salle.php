@@ -5,6 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @property int $SALLE_ID
+ * @property string $SALLE_NR
+ * @property int $SALLE_KAPACITET
+ * @property string $SALLE_LLOJ
+ */
 class Salle extends Model
 {
     protected $table = 'SALLE';

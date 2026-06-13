@@ -2,10 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property int $FAK_ID
+ * @property string $FAK_EM
+ * @property int $PED_ID
+ * @property-read Pedagog|null $dean
+ * @property-read Collection<int, Department> $departments
+ */
 class Faculty extends Model
 {
     protected $table = 'FAKULTET';

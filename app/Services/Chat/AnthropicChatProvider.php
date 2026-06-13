@@ -3,21 +3,15 @@
 namespace App\Services\Chat;
 
 use Illuminate\Support\Facades\Http;
-use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 
-/**
- * Real LLM provider — streams Claude's reply from the Anthropic Messages API.
- *
- * Per plan §11.2 we call the API with Laravel's built-in Http:: (Guzzle), no SDK:
- * one streaming POST, then we parse the SSE body ourselves. Tools/RAG arrive in
- * task 15 — until then $tools is empty and $onToolCall is never invoked.
- */
 class AnthropicChatProvider implements ChatProvider
 {
     private const ENDPOINT = 'https://api.anthropic.com/v1/messages';
 
     private const API_VERSION = '2023-06-01';
+
+    private const MAX_TOOL_ITERATIONS = 5;
 
     public function __construct(
         private readonly string $apiKey,
@@ -31,53 +25,100 @@ class AnthropicChatProvider implements ChatProvider
         callable $onToken,
         callable $onToolCall,
     ): ChatResult {
-        // $tools / $onToolCall are unused until task 15.
+        $totalInput = 0;
+        $totalOutput = 0;
+        $fullText = '';
+        $history = $messages;
 
-        $payload = [
-            'model' => $this->model,
-            'max_tokens' => 1024,
-            // System prompt as a cacheable block. Caching only kicks in once the
-            // prefix (system + tools) exceeds Haiku's 4096-token minimum, which
-            // won't happen until tools/RAG land in task 15 — harmless to set now.
-            'system' => [[
-                'type' => 'text',
-                'text' => $this->systemPrompt,
-                'cache_control' => ['type' => 'ephemeral'],
-            ]],
-            'messages' => array_values($messages),
-            'stream' => true,
-        ];
+        for ($i = 0; $i < self::MAX_TOOL_ITERATIONS; $i++) {
+            $payload = [
+                'model' => $this->model,
+                'max_tokens' => 1024,
+                'system' => [[
+                    'type' => 'text',
+                    'text' => $this->systemPrompt,
+                    'cache_control' => ['type' => 'ephemeral'],
+                ]],
+                'messages' => array_values($history),
+                'stream' => true,
+            ];
 
-        $response = Http::withHeaders([
-            'x-api-key' => $this->apiKey,
-            'anthropic-version' => self::API_VERSION,
-            'content-type' => 'application/json',
-        ])->withOptions(['stream' => true])
-            ->post(self::ENDPOINT, $payload);
+            if (! empty($tools)) {
+                $payload['tools'] = $tools;
+            }
 
-        if ($response->failed()) {
-            throw new RuntimeException('Anthropic API error: HTTP ' . $response->status());
+            $response = Http::withHeaders([
+                'x-api-key' => $this->apiKey,
+                'anthropic-version' => self::API_VERSION,
+                'content-type' => 'application/json',
+            ])->withOptions(['stream' => true])->post(self::ENDPOINT, $payload);
+
+            if ($response->failed()) {
+                throw new RuntimeException('Anthropic API error: HTTP ' . $response->status());
+            }
+
+            $parsed = $this->consumeStream($response->toPsrResponse()->getBody(), $onToken);
+
+            $totalInput += $parsed['inputTokens'];
+            $totalOutput += $parsed['outputTokens'];
+            $fullText .= $parsed['text'];
+
+            if ($parsed['stopReason'] !== 'tool_use' || empty($parsed['toolUses'])) {
+                break;
+            }
+
+            // Build the assistant turn with both text (if any) and tool_use blocks
+            $assistantContent = [];
+            if ($parsed['text'] !== '') {
+                $assistantContent[] = ['type' => 'text', 'text' => $parsed['text']];
+            }
+            foreach ($parsed['toolUses'] as $tu) {
+                $assistantContent[] = [
+                    'type' => 'tool_use',
+                    'id' => $tu['id'],
+                    'name' => $tu['name'],
+                    'input' => empty($tu['input']) ? new \stdClass : $tu['input'],
+                ];
+            }
+            $history[] = ['role' => 'assistant', 'content' => $assistantContent];
+
+            // Execute tools and build the tool_result user turn
+            $toolResults = [];
+            foreach ($parsed['toolUses'] as $tu) {
+                $result = $onToolCall($tu['name'], $tu['input'], $tu['id']);
+                $toolResults[] = [
+                    'type' => 'tool_result',
+                    'tool_use_id' => $tu['id'],
+                    'content' => json_encode($result, JSON_UNESCAPED_UNICODE),
+                ];
+            }
+            $history[] = ['role' => 'user', 'content' => $toolResults];
         }
 
-        return $this->consumeStream($response->toPsrResponse()->getBody(), $onToken);
+        return new ChatResult(
+            content: $fullText,
+            inputTokens: $totalInput,
+            outputTokens: $totalOutput,
+        );
     }
 
     /**
-     * Read the SSE body chunk by chunk, dispatch text deltas, and collect token counts.
+     * Parse the SSE body, emit text tokens, accumulate tool_use blocks.
      *
-     * @param  StreamInterface  $body
+     * Returns an array with keys: text, toolUses, inputTokens, outputTokens, stopReason.
      */
-    private function consumeStream($body, callable $onToken): ChatResult
+    private function consumeStream(mixed $body, callable $onToken): array
     {
         $buffer = '';
-        $fullText = '';
+        $text = '';
         $inputTokens = 0;
         $outputTokens = 0;
+        $stopReason = 'end_turn';
+        $blocks = []; // index => block data
 
         while (! $body->eof()) {
             $buffer .= $body->read(8192);
 
-            // SSE events are separated by a blank line ("\n\n").
             while (($sep = strpos($buffer, "\n\n")) !== false) {
                 $rawEvent = substr($buffer, 0, $sep);
                 $buffer = substr($buffer, $sep + 2);
@@ -94,21 +135,39 @@ class AnthropicChatProvider implements ChatProvider
 
                     switch ($json['type'] ?? '') {
                         case 'message_start':
-                            // Initial usage: prompt (and cache) input tokens.
                             $inputTokens = (int) ($json['message']['usage']['input_tokens'] ?? 0);
                             break;
 
+                        case 'content_block_start':
+                            $idx = $json['index'];
+                            $block = $json['content_block'] ?? [];
+                            if (($block['type'] ?? '') === 'tool_use') {
+                                $blocks[$idx] = [
+                                    'type' => 'tool_use',
+                                    'id' => $block['id'] ?? '',
+                                    'name' => $block['name'] ?? '',
+                                    'input_json' => '',
+                                ];
+                            } else {
+                                $blocks[$idx] = ['type' => 'text'];
+                            }
+                            break;
+
                         case 'content_block_delta':
-                            if (($json['delta']['type'] ?? '') === 'text_delta') {
-                                $token = $json['delta']['text'] ?? '';
-                                $fullText .= $token;
+                            $idx = $json['index'];
+                            $delta = $json['delta'] ?? [];
+                            if ($delta['type'] === 'text_delta') {
+                                $token = $delta['text'] ?? '';
+                                $text .= $token;
                                 $onToken($token);
+                            } elseif ($delta['type'] === 'input_json_delta') {
+                                $blocks[$idx]['input_json'] .= $delta['partial_json'] ?? '';
                             }
                             break;
 
                         case 'message_delta':
-                            // Cumulative output token count lands here.
                             $outputTokens = (int) ($json['usage']['output_tokens'] ?? $outputTokens);
+                            $stopReason = $json['delta']['stop_reason'] ?? 'end_turn';
                             break;
 
                         case 'error':
@@ -120,10 +179,23 @@ class AnthropicChatProvider implements ChatProvider
             }
         }
 
-        return new ChatResult(
-            content: $fullText,
-            inputTokens: $inputTokens,
-            outputTokens: $outputTokens,
-        );
+        $toolUses = [];
+        foreach ($blocks as $block) {
+            if (($block['type'] ?? '') === 'tool_use') {
+                $toolUses[] = [
+                    'id' => $block['id'],
+                    'name' => $block['name'],
+                    'input' => json_decode($block['input_json'] ?: '{}', true) ?? [],
+                ];
+            }
+        }
+
+        return [
+            'text' => $text,
+            'toolUses' => $toolUses,
+            'inputTokens' => $inputTokens,
+            'outputTokens' => $outputTokens,
+            'stopReason' => $stopReason,
+        ];
     }
 }

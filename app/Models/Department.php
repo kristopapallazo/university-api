@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property int $DEP_ID
+ * @property string $DEP_EM
+ * @property int $FAK_ID
+ */
 class Department extends Model
 {
     protected $table = 'DEPARTAMENT';
