@@ -58,7 +58,7 @@ class AuthControllerTest extends TestCase
             ->assertJsonPath('message', 'Email ose fjalëkalimi i gabuar.');
     }
 
-    public function test_student_cannot_login_with_password(): void
+    public function test_student_can_login_with_password(): void
     {
         User::factory()->student()->create([
             'email' => 'stu@students.uamd.edu.al',
@@ -69,8 +69,8 @@ class AuthControllerTest extends TestCase
             'email' => 'stu@students.uamd.edu.al',
             'password' => 'Testtest1!',
         ])
-            ->assertStatus(403)
-            ->assertJsonPath('message', 'Studentët hyjnë vetëm me Google OAuth.');
+            ->assertOk()
+            ->assertJsonPath('data.user.role', 'student');
     }
 
     public function test_login_validates_required_fields(): void
