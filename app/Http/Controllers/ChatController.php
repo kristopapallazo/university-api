@@ -216,14 +216,22 @@ class ChatController extends Controller
                 ob_end_clean();
             }
 
-            $this->service->sendMessage(
-                conversation: $conversation,
-                user: $request->user(),
-                userContent: $data['content'],
-                onToken: fn (string $token) => $this->sseEvent(['type' => 'token', 'content' => $token]),
-            );
+            // A provider/stream failure mid-flight would otherwise break the SSE
+            // connection with no signal. Emit a clean error event instead — the
+            // frontend already handles {"type":"error"} (plan §4).
+            try {
+                $this->service->sendMessage(
+                    conversation: $conversation,
+                    user: $request->user(),
+                    userContent: $data['content'],
+                    onToken: fn (string $token) => $this->sseEvent(['type' => 'token', 'content' => $token]),
+                );
 
-            $this->sseEvent(['type' => 'done']);
+                $this->sseEvent(['type' => 'done']);
+            } catch (\Throwable $e) {
+                report($e); // log for debugging
+                $this->sseEvent(['type' => 'error', 'message' => 'Dija ndeshi një problem. Provo përsëri.']);
+            }
         }, 200, $this->sseHeaders());
     }
 
